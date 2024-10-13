@@ -492,6 +492,10 @@ func show_target() -> void:
 	$Target.show()
 
 
+func hide_target() -> void:
+	$Target.hide()
+
+
 func _build_cell(x_position: float, y_position: float) -> Cell:
 	var cell: Cell = cell_packed_scene.instance()
 	

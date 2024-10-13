@@ -21,13 +21,6 @@ custom_constants/separation = 0
 [node name="PlayerContainer2" parent="HBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 320.0
-margin_bottom = 360.0
-player_index = 1
-
-[node name="PlayerContainer" parent="HBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 320.0
 margin_right = 640.0
 margin_bottom = 360.0
+player_index = 1
