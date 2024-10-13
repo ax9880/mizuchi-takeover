@@ -154,8 +154,6 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 	elif path_mode_chance < 0.4:
 		path_mode = PathMode.ASCENDING
 	
-	print(values)
-	
 	for cell_id in shortest_id_path:
 		var cell: Cell = astar.cells[cell_id]
 		
@@ -169,16 +167,29 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 				var index: int = values.find(current_value)
 				
 				if previous_value < current_value:
+					# Lower range
 					values = values.slice(0, index - 1)
+					
+					start_value_index = values.size() - 1
+					
 				elif previous_value > current_value:
+					# Upper range
 					values = values.slice(index + 1, values.size() - 1)
+					
+					start_value_index = 0
 				else:
 					var distance_to_end: int = values.size() - index
 					
 					if distance_to_end > index:
+						# Upper range
 						values = values.slice(index + 1, values.size() - 1)
+						
+						start_value_index = 0
 					else:
+						# Lower range
 						values = values.slice(0, index - 1)
+						
+						start_value_index = values.size() - 1
 				
 				shuffled_bags.erase(current_value)
 				
@@ -187,31 +198,41 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 				# Is .5 or .8
 				var index: int = values.find(current_value)
 				
+				if rng.randf() < 0.5:
+					start_value_index -= 1
+				else:
+					start_value_index += 1
+				
+				var next_value: float = values[start_value_index]
+				
 				values.remove(index)
 				shuffled_bags.erase(current_value)
+				
+				start_value_index = values.find(next_value)
 				
 				assert(values.size() > 0)
 			
 			current_value = previous_value
+		else:
+			# No adjustment needed, pick next index according to path mode
+			var next_index: int = 0
+		
+			if path_mode == PathMode.RANDOM:
+				next_index = start_value_index + rng.randi_range(-1, 1)
+			elif path_mode == PathMode.DESCENDING:
+				next_index = start_value_index - 1
+				
+				if next_index < 0:
+					path_mode = PathMode.RANDOM
+			else:
+				next_index = start_value_index + 1
+				
+				if next_index >= values.size():
+					path_mode = PathMode.RANDOM
+			
+			start_value_index = int(clamp(next_index, 0, values.size() - 1))
 		
 		assert(values.size() > 0)
-		
-		var next_index: int = 0
-		
-		if path_mode == PathMode.RANDOM:
-			next_index = start_value_index + rng.randi_range(-1, 1)
-		elif path_mode == PathMode.DESCENDING:
-			next_index = start_value_index - 1
-			
-			if next_index < 0:
-				path_mode = PathMode.RANDOM
-		else:
-			next_index = start_value_index + 1
-			
-			if next_index >= values.size():
-				path_mode = PathMode.RANDOM
-		
-		start_value_index = int(clamp(next_index, 0, values.size() - 1))
 		
 		assert(start_value_index >= 0)
 		
