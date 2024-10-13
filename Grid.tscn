@@ -40,8 +40,12 @@ stream = ExtResource( 5 )
 [node name="WrongPathAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 
-[node name="Timer" type="Timer" parent="."]
+[node name="PathResultsTimer" type="Timer" parent="."]
 wait_time = 0.1
+one_shot = true
+
+[node name="DropCellsTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="GoodScoreAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )

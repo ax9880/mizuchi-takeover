@@ -23,14 +23,18 @@ class MyAStar:
 			return 1.0
 		else:
 			return abs(cells[from_id].value - to_cell.value)
-
-	func _estimate_cost(u, v) -> float:
-		return _compute_cost(u, v)
+	
+	
+	func _estimate_cost(from_id: int, to_id: int) -> float:
+		return _compute_cost(from_id, to_id)
 
 
 # Array[Array[Cell]]
 var grid: Array = []
 var astar: MyAStar = MyAStar.new()
+
+var start_id: int = 0
+var target_id: int = 0
 
 # Dictionary[float, int (index of character)]
 var bags: Dictionary = {}
@@ -38,10 +42,7 @@ var bags: Dictionary = {}
 # Array[float]
 var values: Array = []
 
-# Array[float]
-var values_with_decimals: Array = []
-
-var rng = RandomNumberGenerator.new()
+var rng := RandomNumberGenerator.new()
 
 var base_score: int = 0
 
@@ -56,6 +57,7 @@ onready var half_tilesize: float = tilesize / 2.0
 
 
 signal cells_dropped
+signal score_calculated
 signal score_shown
 
 
@@ -64,10 +66,18 @@ func _ready() -> void:
 
 
 func generate(width: int, height: int) -> void:
+	for cell in astar.cells:
+		astar.remove_point(cell.id)
+		
+		cell.queue_free()
+	
 	grid.clear()
 	astar.cells.clear()
 	bags.clear()
 	values.clear()
+	
+	start_id = 0
+	target_id = 0
 	
 	base_score = width * height * 1000
 	
@@ -105,11 +115,14 @@ func generate(width: int, height: int) -> void:
 	_read_characters("res://Split")
 
 
-func randomize_board() -> void:
+func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) -> void:
 	for cell in astar.cells:
 		cell.value = rng.randi_range(0, 1)
 	
-	var shortest_id_path: Array = astar.get_id_path(0, 24)
+	start_id = get_cell_from_coordinates(start_coordinates).id
+	target_id = get_cell_from_coordinates(target_coordinates).id
+	
+	var shortest_id_path: Array = astar.get_id_path(start_id, target_id)
 	
 	var shuffled_bags: Dictionary = bags.duplicate(true)
 	
@@ -140,6 +153,8 @@ func randomize_board() -> void:
 		path_mode = PathMode.DESCENDING
 	elif path_mode_chance < 0.4:
 		path_mode = PathMode.ASCENDING
+	
+	print(values)
 	
 	for cell_id in shortest_id_path:
 		var cell: Cell = astar.cells[cell_id]
@@ -174,6 +189,7 @@ func randomize_board() -> void:
 				
 				values.remove(index)
 				shuffled_bags.erase(current_value)
+				
 				assert(values.size() > 0)
 			
 			current_value = previous_value
@@ -218,6 +234,8 @@ func randomize_board() -> void:
 			if characters.empty():
 				values.remove(index)
 				shuffled_bags.erase(value)
+	
+	set_target()
 
 
 func _read_characters(path: String) -> void:
@@ -282,11 +300,11 @@ func _extract_index(path: String) -> int:
 	return path.substr(index_start, extension_start - index_start).to_int() - 1
 
 
-# Results:
-# Shortest path (cells)
-# Score
-func compare_paths(path: Array) -> void:
-	var shortest_id_path: Array = astar.get_id_path(0, 24)
+func compare_paths(path: Array, target_coordinates: Vector2) -> void:
+	var start_cell: Cell = path.front()
+	var target_cell: Cell = get_cell_from_coordinates(target_coordinates)
+	
+	var shortest_id_path: Array = astar.get_id_path(start_cell.id, target_cell.id)
 	var lowest_cost: float = calculate_path_cost(shortest_id_path)
 	
 	var id_path: Array = []
@@ -297,11 +315,8 @@ func compare_paths(path: Array) -> void:
 	var current_cost: float = calculate_path_cost(id_path)
 	
 	print("Lowest: %s, current: %s" % [lowest_cost, current_cost])
-	print(shortest_id_path)
-	print(id_path)
 	
 	var score: int = 0
-	var base_score: int = grid.size() * grid.front().size() * 1000
 	
 	if current_cost <= lowest_cost:
 		score = base_score
@@ -311,10 +326,11 @@ func compare_paths(path: Array) -> void:
 	print("Score: %d" % [score])
 	
 	if is_equal_approx(current_cost, lowest_cost):
-		# In case there are two paths with lowest cost
-		show_paths(id_path, id_path, lowest_cost, score)
-	else:
-		show_paths(shortest_id_path, id_path, lowest_cost, score)
+		# In case there are two paths with lowest cost, use the one
+		# that the player used
+		shortest_id_path = id_path
+	
+	show_paths(shortest_id_path, id_path, lowest_cost, score)
 
 
 func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: float, score: int) -> void:
@@ -335,15 +351,18 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: fl
 		var cell: Cell = astar.cells[current_id_path[i]]
 		cell.show_value(is_in_shortest_path)
 		
-		$Timer.start()
+		$PathResultsTimer.start()
 		
-		yield($Timer, "timeout")
+		yield($PathResultsTimer, "timeout")
 	
 	for id in shortest_id_path:
 		if not id in current_id_path:
 			var cell: Cell = astar.cells[id]
 			
 			cell.show_value(true)
+			
+			# TODO: Highlight shortest path with a different color
+			# if shortest path is better than current path
 	
 	var floating_label: Node2D = floating_label_packed_scene.instance()
 	
@@ -352,18 +371,25 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: fl
 	var cell: Cell = astar.cells[shortest_id_path.back()]
 	floating_label.position = cell.position
 	
-	if score >= 10000:
+	if score == base_score:
 		$GoodScoreAudioStreamPlayer.play()
+	elif score >= int(base_score * 0.10):
+		$BadScoreAudioStreamPlayer2.play()
 	else:
 		$BadScoreAudioStreamPlayer2.play()
+		
+		print("Very bad score")
 	
 	# TODO: If score is less than 10% of base score, play wrong score and lose one life
 	# Also set score to 0
 	
 	floating_label.start(score)
-	# TODO: Emit signal with score
 	
-	yield(get_tree().create_timer(1), "timeout")
+	emit_signal("score_calculated", score)
+	
+	$DropCellsTimer.start()
+	
+	yield($DropCellsTimer, "timeout")
 	
 	drop_cells()
 
@@ -417,15 +443,16 @@ func drop_cells() -> void:
 	emit_signal("score_shown")
 
 
-func set_target(target: Vector2) -> void:
-	var cell: Cell = get_cell_from_coordinates(target)
+func set_target() -> void:
+	var cell: Cell = astar.cells[target_id]
+	
 	cell.set_frame(0)
 	cell.has_cost_one = true
+
+
+func show_target() -> void:
+	var cell: Cell = astar.cells[target_id]
 	
-	show_target(cell)
-
-
-func show_target(cell: Cell) -> void:
 	$Target.position = cell.position
 	
 	$Target.position.x -= 26

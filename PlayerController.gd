@@ -3,7 +3,10 @@ extends Node2D
 
 export var lives: int = 2
 
-export(int, 0, 1) var player_index: int = 0
+export var width: int = 3
+export var height: int = 3
+
+var player_index: int = 0
 
 var coordinates: Vector2 = Vector2.ZERO
 var target: Vector2 = Vector2(4, 4)
@@ -14,14 +17,16 @@ var _score: int = 0
 var _boards_cleared: int = 0
 var _perfect_boards: int = 0
 
+var _random := RandomNumberGenerator.new()
 
 func _ready() -> void:
-	var width: float = get_parent().rect_size.x
+	var rect_width: float = get_parent().rect_size.x
 	#width = 318
 	
 	var grid_width: float = 48 * 5
 	
-	position = Vector2((width - grid_width) / 2, position.y)
+	position = Vector2((rect_width - grid_width) / 2, position.y)
+	# TODO: Adjust y position
 
 
 func _process(_delta: float) -> void:
@@ -39,7 +44,7 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_just_pressed("ui_right_%d" % player_index):
 		next_coordinates.x += 1
 	
-	if !coordinates.is_equal_approx(next_coordinates) and $Grid._is_in_range(next_coordinates, 5, 5):
+	if !coordinates.is_equal_approx(next_coordinates) and $Grid._is_in_range(next_coordinates, width, height):
 		var cell = $Grid.get_cell_from_coordinates(next_coordinates)
 		
 		if not cell in traversed_cells:
@@ -82,37 +87,13 @@ func _process(_delta: float) -> void:
 		# TODO: Emit signal
 		_boards_cleared += 1
 		
-		$Grid.compare_paths(traversed_cells)
-		# Move characters down
-		# Move skull up
-		# Create new board
-		# Move skull from corner to start position
+		$Grid.compare_paths(traversed_cells, target)
 		
 		set_process(false)
-		
-		return
-		
-		var children: Array = $Path.get_children()
-		
-		for child in children:
-			$Path.remove_child(child)
-		
-		var i: int = 0
-		for cell in traversed_cells:
-			var copied_cell: Cell = cell.duplicate()
-			
-			copied_cell.reset()
-			
-			copied_cell.position = Vector2.ZERO
-			copied_cell.position.x = 16 * i
-			
-			$Path.add_child(copied_cell)
-			
-			i += 1
 
 
 func generate() -> void:
-	$Grid.generate(5, 5)
+	$Grid.generate(width, height)
 
 
 func start() -> void:
@@ -128,13 +109,27 @@ func _create_new_board() -> void:
 	
 	$Grid.hide()
 	
-	$Grid.randomize_board()
+	if _boards_cleared > 0 and _boards_cleared % 1 == 0:
+		if width < 8:
+			width += 1
+		
+		if height < 6:
+			height += 1
+		
+		generate()
+		
+		# TODO: Reposition grid
+	
+	_choose_random_target()
+	
+	$Grid.randomize_board(coordinates, target)
 	$Grid.drop_down_cells()
 	
 	yield($Grid, "cells_dropped")
 	
+	$Grid.show_target()
+	
 	traversed_cells.clear()
-	coordinates = Vector2.ZERO
 	traversed_cells.push_back($Grid.get_cell_from_coordinates(coordinates))
 	
 	update_player_position()
@@ -142,9 +137,24 @@ func _create_new_board() -> void:
 	
 	$PosessionTimer.start()
 	
-	$Grid.set_target(target)
-	
 	set_process(true)
+
+
+func _choose_random_target() -> void:
+	var corners_1 := [Vector2(0, 0), Vector2(width - 1, height - 1)]
+	var corners_2 := [Vector2(0, height - 1), Vector2(width - 1, 0)]
+	
+	var chosen_corners: Array
+	
+	if _random.randf() < 0.5:
+		chosen_corners = corners_1
+	else:
+		chosen_corners = corners_2
+	
+	chosen_corners.shuffle()
+	
+	coordinates = chosen_corners.front()
+	target = chosen_corners.back()
 
 
 func update_player_position() -> void:
