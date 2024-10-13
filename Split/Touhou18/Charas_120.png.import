@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/um7.png-c060a68912c352099e7a8f799a3883f9.stex"
+path="res://.import/Charas_120.png-ecc1015c93eebf873831805e688cef63.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Split/Touhou18/um7.png"
-dest_files=[ "res://.import/um7.png-c060a68912c352099e7a8f799a3883f9.stex" ]
+source_file="res://Split/Touhou18/Charas_120.png"
+dest_files=[ "res://.import/Charas_120.png-ecc1015c93eebf873831805e688cef63.stex" ]
 
 [params]
 

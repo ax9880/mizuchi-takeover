@@ -9,10 +9,15 @@ enum DIRECTION {
 	RIGHT
 }
 
-export var value = 6
-var id = 0
+# Value of this cell
+var value: float = 6 setget set_value
 
-export var texture: Texture setget set_texture
+# ID in AStar graph, for pathfinding
+var id: int = 0
+
+export var has_cost_one: bool = false
+
+onready var value_label: Label = $CanvasLayer/MarginContainer/ValueLabel
 
 
 # x,y coordinates in the grid matrix, for convenience.
@@ -21,36 +26,20 @@ var coordinates: Vector2 = Vector2.ZERO
 # Array of Cell. Only valid, non-null neighbors
 var neighbors: Array = []
 
-# All neighbors, including invalid ones (those neighbors are set to null)
-# {String, nullable Cell}
-# TODO: Remove, unused
-var all_neighbors: Dictionary = {}
-
 
 func add_neighbor(neighbor: Cell, direction: int) -> void:
-	all_neighbors[direction] = neighbor
-	
 	if neighbor != null:
 		neighbors.push_back(neighbor)
-
-
-func set_text(_id) -> void:
-	#$Label.text = str(_id)
-	pass
 
 
 func possess() -> void:
 	_play_animation("possess")
 	$AnimationPlayer.play("possess")
-	
-	#$Highlight.show()
-	#modulate = Color.purple
 
 
 func possess_again() -> void:
 	$AnimationPlayer.play("jump_higher")
 	
-	#$PossessionSound.play()
 	hide_arrows()
 
 
@@ -62,35 +51,33 @@ func release() -> void:
 
 
 func reset() -> void:
+	has_cost_one = false
+	
 	$AnimationPlayer.play("RESET")
 	
 	$Highlight.hide()
 	
 	hide_arrows()
 	
-	$MarginContainer/ValueLabel.hide()
+	value_label.hide()
 
 
 func show_value(is_in_shortest_path: bool) -> void:
 	$AnimationPlayer.play("fade")
 	
-	if is_equal_approx(value, floor(value)):
-		$MarginContainer/ValueLabel.text = "%.f" % value
-	else:
-		$MarginContainer/ValueLabel.text = "%.1f" % value
+	value_label.text = _value_to_string()
 	
-	$MarginContainer/ValueLabel.show()
+	value_label.show()
 	
 	if not is_in_shortest_path:
-		$MarginContainer/ValueLabel.modulate = Color.red
+		# TODO: Use red color from palette
+		value_label.modulate = Color.red
 	else:
-		$MarginContainer/ValueLabel.modulate = Color.white
+		value_label.modulate = Color.white
 
 
-func set_texture(_texture: Texture) -> void:
-	texture = _texture
-	
-	$Sprite.texture = _texture
+func set_frame(frame: int) -> void:
+	$Sprite.frame = frame
 
 
 func show_arrow(direction: int) -> void:
@@ -102,6 +89,19 @@ func show_arrow(direction: int) -> void:
 func hide_arrows() -> void:
 	for child in $Arrows.get_children():
 		child.hide()
+
+
+func set_value(_value: float) -> void:
+	value = _value
+	
+	$CanvasLayer/MarginContainer2/VBoxContainer/ValueHintLabel.text = _value_to_string()
+
+
+func _value_to_string() -> String:
+	if is_equal_approx(value, floor(value)):
+		return "%.f" % value
+	else:
+		return "%.1f" % value
 
 
 func _play_animation(animation_name: String) -> void:

@@ -1,7 +1,7 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://Cell.gd" type="Script" id=1]
-[ext_resource path="res://Split/Touhou10/Charas_038.png" type="Texture" id=2]
+[ext_resource path="res://DotPack/All.png" type="Texture" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://DotPack/bohun.png" type="Texture" id=4]
 [ext_resource path="res://DotPack/Smoke_2.png" type="Texture" id=5]
@@ -11,6 +11,7 @@
 [ext_resource path="res://ui.png" type="Texture" id=9]
 [ext_resource path="res://Fonts/theme.tres" type="Theme" id=10]
 [ext_resource path="res://Fonts/GravityBold8EnEs.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://Fonts/GravityRegular5EnEs.ttf" type="DynamicFontData" id=12]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 4 )
@@ -392,6 +393,12 @@ region = Rect2( 16, 16, 16, 16 )
 [sub_resource type="DynamicFont" id=41]
 font_data = ExtResource( 11 )
 
+[sub_resource type="DynamicFont" id=43]
+size = 5
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 12 )
+
 [node name="Cell" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -403,6 +410,9 @@ vframes = 2
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
+hframes = 12
+vframes = 11
+frame = 125
 
 [node name="Highlight" type="Sprite" parent="."]
 visible = false
@@ -460,14 +470,17 @@ position = Vector2( 23, 6 )
 rotation = -1.5708
 texture = SubResource( 40 )
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="CanvasLayer" type="Node2D" parent="."]
+z_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 margin_left = -24.0
 margin_top = -18.0
 margin_right = 24.0
 margin_bottom = 30.0
 theme = ExtResource( 10 )
 
-[node name="ValueLabel" type="Label" parent="MarginContainer"]
+[node name="ValueLabel" type="Label" parent="CanvasLayer/MarginContainer"]
 margin_top = 16.0
 margin_right = 48.0
 margin_bottom = 32.0
@@ -475,3 +488,37 @@ custom_fonts/font = SubResource( 41 )
 text = "6"
 align = 1
 valign = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
+margin_left = -24.0
+margin_top = -18.0
+margin_right = 24.0
+margin_bottom = 30.0
+theme = ExtResource( 10 )
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 44.0
+margin_bottom = 44.0
+
+[node name="ValueHintLabel" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 43 )
+text = "13.5"
+
+[node name="CostHintLabel" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
+visible = false
+margin_top = 35.0
+margin_right = 40.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 43 )
+text = "13.5"
+align = 2

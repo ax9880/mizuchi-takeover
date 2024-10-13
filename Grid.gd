@@ -1,6 +1,9 @@
 extends Node2D
 
 
+const _SPRITE_PREFFIX: String = "Charas_"
+const _SPRITE_EXTENSION: String = ".png"
+
 enum PathMode {
 	RANDOM,
 	ASCENDING,
@@ -13,22 +16,34 @@ class MyAStar:
 	
 	var cells: Array = []
 	
-	# from_id, to_id
 	func _compute_cost(from_id: int, to_id: int) -> float:
-		return abs(cells[from_id].value - cells[to_id].value)
+		var to_cell: Cell = cells[to_id]
+		
+		if to_cell.has_cost_one:
+			return 1.0
+		else:
+			return abs(cells[from_id].value - to_cell.value)
 
 	func _estimate_cost(u, v) -> float:
 		return _compute_cost(u, v)
 
 
-var grid = []
+# Array[Array[Cell]]
+var grid: Array = []
 var astar: MyAStar = MyAStar.new()
 
+# Dictionary[float, int (index of character)]
 var bags: Dictionary = {}
+
+# Array[float]
 var values: Array = []
+
+# Array[float]
 var values_with_decimals: Array = []
 
 var rng = RandomNumberGenerator.new()
+
+var base_score: int = 0
 
 export(PackedScene) var floating_label_packed_scene: PackedScene
 
@@ -54,6 +69,8 @@ func generate(width: int, height: int) -> void:
 	bags.clear()
 	values.clear()
 	
+	base_score = width * height * 1000
+	
 	var id := 0
 	
 	for x in width:
@@ -65,7 +82,6 @@ func generate(width: int, height: int) -> void:
 			grid[x][y] = cell
 			
 			cell.id = id
-			cell.set_text(id)
 			astar.add_point(cell.id, Vector3(cell.position.x, cell.position.y, 0))
 			
 			id += 1
@@ -86,21 +102,14 @@ func generate(width: int, height: int) -> void:
 		for neighbor in cell.neighbors:
 			astar.connect_points(cell.id, neighbor.id, false)
 	
-	dir_contents("res://Split")
+	_read_characters("res://Split")
 
 
 func randomize_board() -> void:
 	for cell in astar.cells:
 		cell.value = rng.randi_range(0, 1)
 	
-	var start: int = 0
-	var end: int = 0
-	
-	start = Time.get_ticks_msec()
-	
 	var shortest_id_path: Array = astar.get_id_path(0, 24)
-	
-	print("shortest_id_path: %d" % [Time.get_ticks_msec() - start])
 	
 	var shuffled_bags: Dictionary = bags.duplicate(true)
 	
@@ -132,15 +141,13 @@ func randomize_board() -> void:
 	elif path_mode_chance < 0.4:
 		path_mode = PathMode.ASCENDING
 	
-	print("shuffled_bags: %f" % [Time.get_ticks_msec() - start])
-	
 	for cell_id in shortest_id_path:
 		var cell: Cell = astar.cells[cell_id]
 		
 		cell.value = current_value
 		var characters: Array = shuffled_bags[current_value]
 		
-		cell.texture = load(characters.pop_back())
+		cell.set_frame(characters.pop_back())
 		
 		if characters.empty():
 			if is_equal_approx(current_value, floor(current_value)):
@@ -172,7 +179,6 @@ func randomize_board() -> void:
 			current_value = previous_value
 		
 		assert(values.size() > 0)
-		print("PathMode: %d" % [Time.get_ticks_msec() - start])
 		
 		var next_index: int = 0
 		
@@ -196,8 +202,6 @@ func randomize_board() -> void:
 		previous_value = current_value
 		current_value = values[start_value_index]
 	
-	print("current_value: %f" % [Time.get_ticks_msec() - start])
-	
 	values = shuffled_bags.keys()
 	values.sort()
 	
@@ -209,58 +213,73 @@ func randomize_board() -> void:
 			var characters: Array = shuffled_bags[value]
 			
 			cell.value = value
-			cell.texture = load(characters.pop_back())
+			cell.set_frame(characters.pop_back())
 			
 			if characters.empty():
 				values.remove(index)
 				shuffled_bags.erase(value)
-	
-	print("end: %f" % [Time.get_ticks_msec() - start])
-	
 
 
-func dir_contents(path: String) -> void:
+func _read_characters(path: String) -> void:
 	var directory = Directory.new()
 	
-	if directory.open(path) == OK:
-		directory.list_dir_begin()
-		
-		var file_name: String = directory.get_next()
-		
-		while not file_name.empty():
-			if file_name.begins_with("."):
-				file_name = directory.get_next()
-				
-				continue
-			
-			if directory.current_is_dir():
-				var value: float = file_name.replace("Touhou", "").to_float()
-				
-				bags[value] = []
-				values.push_back(value)
-				
-				var character_directory = Directory.new()
-				character_directory.open(directory.get_current_dir() + "/" + file_name)
-				
-				character_directory.list_dir_begin()
-				
-				var character: String = character_directory.get_next()
-				
-				while not character.empty():
-					if character.ends_with(".png"):
-						bags[value].push_back("%s/%s/%s" %[path, file_name, character])
-						
-					character = character_directory.get_next()
-					
-				character_directory.list_dir_end()
-			
-			file_name = directory.get_next()
-		
-		directory.list_dir_end()
-	else:
+	if directory.open(path) != OK:
 		printerr("An error occurred when trying to access the path %s" % path)
+		
+		return
+	
+	directory.list_dir_begin()
+	
+	var file_name: String = directory.get_next()
+	
+	while not file_name.empty():
+		if file_name.begins_with("."):
+			file_name = directory.get_next()
+			
+			continue
+		
+		if directory.current_is_dir():
+			var value: float = file_name.replace("Touhou", "").to_float()
+			
+			bags[value] = []
+			values.push_back(value)
+			
+			var character_directory = Directory.new()
+			character_directory.open(directory.get_current_dir() + "/" + file_name)
+			
+			character_directory.list_dir_begin()
+			
+			var character: String = character_directory.get_next()
+			
+			while not character.empty():
+				if character.ends_with(_SPRITE_EXTENSION):
+					bags[value].push_back(_extract_index(character))
+					
+				character = character_directory.get_next()
+				
+			character_directory.list_dir_end()
+		
+		file_name = directory.get_next()
+	
+	directory.list_dir_end()
 	
 	values.sort()
+
+
+# Extracts an index from a path in the form "path/Charas_***.png
+func _extract_index(path: String) -> int:
+	var prefix_start: int = path.find(_SPRITE_PREFFIX)
+	
+	assert(prefix_start != -1)
+	
+	var extension_start: int = path.find(_SPRITE_EXTENSION)
+	
+	assert(extension_start != -1)
+	
+	var index_start: int = prefix_start + _SPRITE_PREFFIX.length()
+	
+	# -1 because indexes in the filenames start from 1
+	return path.substr(index_start, extension_start - index_start).to_int() - 1
 
 
 # Results:
@@ -400,7 +419,8 @@ func drop_cells() -> void:
 
 func set_target(target: Vector2) -> void:
 	var cell: Cell = get_cell_from_coordinates(target)
-	cell.texture = load("res://DotPack/Charas_001.png")
+	cell.set_frame(0)
+	cell.has_cost_one = true
 	
 	show_target(cell)
 
