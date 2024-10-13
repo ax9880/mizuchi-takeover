@@ -27,6 +27,10 @@ signal game_finished(points, boards_cleared, perfect_boards, level, lives)
 signal score_updated(points, boards_cleared)
 
 
+func _ready() -> void:
+	_random.randomize()
+
+
 func _process(_delta: float) -> void:
 	#$TimerLabel.text = str($Timer.time_left)
 	#$PosessionTimerLabel.text = str($PosessionTimer.time_left)
