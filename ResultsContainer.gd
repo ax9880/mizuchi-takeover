@@ -39,27 +39,31 @@ func show_results(score, boards_cleared, perfect_boards, level, lives) -> void:
 	
 	yield($Timer, "timeout")
 	
-	var total_score: int = score + boards_cleared * 1000 + level * 10000 + lives * 20000
+	var boards_score: int = boards_cleared * 1000
+	var level_score: int = level * 10000
+	var lives_score: int = lives * 20000
 	
-	show_value($VBoxContainer/BoardsClearedHBox/ValueLabel,  boards_cleared * 1000)
-	show_value($VBoxContainer/LevelHBox/ValueLabel, level * 10000)
-	show_value($VBoxContainer/LivesHBox/ValueLabel, lives * 20000)
+	var total_score: int = score + boards_score + level_score + lives_score
+	
+	show_value($VBoxContainer/BoardsClearedHBox/ValueLabel, boards_score)
+	show_value($VBoxContainer/LevelHBox/ValueLabel, level_score)
+	show_value($VBoxContainer/LivesHBox/ValueLabel, lives_score)
 	show_value($VBoxContainer/TotalHBox/ValueLabel, total_score)
 	
-	
-	$Tween.interpolate_property($VBoxContainer/Button, "modulate",
-		$VBoxContainer/Button.modulate, Color.white,
+	# TODO: Only in 1P mode OR only enable for the winner (or the loser)
+	$Tween.interpolate_property($VBoxContainer/PlayAgainButton, "modulate",
+		$VBoxContainer/PlayAgainButton.modulate, Color.white,
 		1)
 	
-	$Tween.interpolate_property($VBoxContainer/Button2, "modulate",
-		$VBoxContainer/Button2.modulate, Color.white,
+	$Tween.interpolate_property($VBoxContainer/QuitButton, "modulate",
+		$VBoxContainer/QuitButton.modulate, Color.white,
 		1)
 	
 	$Tween.start()
 	
 	yield($Tween, "tween_all_completed")
 	
-	$VBoxContainer/Button.grab_focus()
+	$VBoxContainer/PlayAgainButton.grab_focus()
 
 
 func show_value(label: Label, value: int) -> void:

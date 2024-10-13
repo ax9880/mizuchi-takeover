@@ -70,10 +70,9 @@ func show_value(is_in_shortest_path: bool, is_correction: bool) -> void:
 	value_label.show()
 	
 	if not is_in_shortest_path:
-		# TODO: Use red color from palette
-		value_label.modulate = Color.red
+		value_label.modulate = Color("#514445")
 	elif is_correction:
-		value_label.modulate = Color.blue
+		value_label.modulate = Color("#5285bd")
 	else:
 		value_label.modulate = Color.white
 

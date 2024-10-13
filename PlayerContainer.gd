@@ -11,6 +11,11 @@ func _ready():
 	$MarginContainer/HBoxContainer/Points.text = "0"
 	$MarginContainer/HBoxContainer/BoardsCleared.text = "0"
 	
+	# Set size and global position because the nodes in the canvas layer do
+	# not inherit that from the root container
+	$CanvasLayer/MarginContainer.rect_size = rect_size
+	$CanvasLayer/MarginContainer.rect_global_position = rect_global_position
+	
 	$AnimationPlayer.play("ready")
 	
 	yield($AnimationPlayer, "animation_finished")
@@ -21,7 +26,9 @@ func _ready():
 
 
 func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, level, lives) -> void:
-	$CanvasLayer/ResultsMarginContainer.show_results(points, boards_cleared, perfect_boards, level, lives)
+	$AnimationPlayer.play("game over")
+	
+	$CanvasLayer/MarginContainer/ResultsMarginContainer.show_results(points, boards_cleared, perfect_boards, level, lives)
 
 
 func _on_PlayerController_score_updated(points: int, boards_cleared: int) -> void:
