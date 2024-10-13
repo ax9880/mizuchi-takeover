@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/sceneswitch1.mp3-14494da773101106b74acb3b2d455111.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/sceneswitch1.mp3"
+dest_files=[ "res://.import/sceneswitch1.mp3-14494da773101106b74acb3b2d455111.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

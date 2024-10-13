@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/No Button.wav-db2fdd51c3bbdd2a93c9ad143b3339d5.sample"
+
+[deps]
+
+source_file="res://Sounds/Ovani/No Button.wav"
+dest_files=[ "res://.import/No Button.wav-db2fdd51c3bbdd2a93c9ad143b3339d5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

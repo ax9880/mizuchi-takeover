@@ -1,0 +1,472 @@
+extends Node2D
+
+
+enum PathMode {
+	RANDOM,
+	ASCENDING,
+	DESCENDING
+}
+
+
+class MyAStar:
+	extends AStar
+	
+	var cells: Array = []
+	
+	# from_id, to_id
+	func _compute_cost(from_id: int, to_id: int) -> float:
+		return abs(cells[from_id].value - cells[to_id].value)
+
+	func _estimate_cost(u, v) -> float:
+		return _compute_cost(u, v)
+
+
+var grid = []
+var astar: MyAStar = MyAStar.new()
+
+var bags: Dictionary = {}
+var values: Array = []
+var values_with_decimals: Array = []
+
+var rng = RandomNumberGenerator.new()
+
+export(PackedScene) var floating_label_packed_scene: PackedScene
+
+export(PackedScene) var cell_packed_scene: PackedScene = null
+
+export var tilesize: float = 48.0
+export var tile_offset: float = 0.0
+
+onready var half_tilesize: float = tilesize / 2.0
+
+
+signal cells_dropped
+signal score_shown
+
+
+func _ready() -> void:
+	rng.randomize()
+
+
+func generate(width: int, height: int) -> void:
+	grid.clear()
+	astar.cells.clear()
+	bags.clear()
+	values.clear()
+	
+	var id := 0
+	
+	for x in width:
+		grid.append([])
+		grid[x].resize(height)
+		
+		for y in height:
+			var cell: Cell = _build_cell(x, y)
+			grid[x][y] = cell
+			
+			cell.id = id
+			cell.set_text(id)
+			astar.add_point(cell.id, Vector3(cell.position.x, cell.position.y, 0))
+			
+			id += 1
+	
+	# Populate cell neighbors
+	for x in range(width):
+		for y in range(height):
+			var cell: Cell = grid[x][y]
+			
+			_set_neighbors(cell, width, height)
+	
+	astar.cells.clear()
+	
+	for row in grid:
+		astar.cells.append_array(row)
+	
+	for cell in astar.cells:
+		for neighbor in cell.neighbors:
+			astar.connect_points(cell.id, neighbor.id, false)
+	
+	dir_contents("res://Split")
+
+
+func randomize_board() -> void:
+	for cell in astar.cells:
+		cell.value = rng.randi_range(0, 1)
+	
+	var start: int = 0
+	var end: int = 0
+	
+	start = Time.get_ticks_msec()
+	
+	var shortest_id_path: Array = astar.get_id_path(0, 24)
+	
+	print("shortest_id_path: %d" % [Time.get_ticks_msec() - start])
+	
+	var shuffled_bags: Dictionary = bags.duplicate(true)
+	
+	values = shuffled_bags.keys()
+	
+	if rng.randf() < 0.7:
+		# Remove values with decimals
+		for value in values:
+			if not is_equal_approx(value, floor(value)):
+				shuffled_bags.erase(value)
+		
+		values = shuffled_bags.keys()
+	
+	values.sort()
+	
+	for characters in shuffled_bags.values():
+		characters.shuffle()
+	
+	var start_value_index: int = rng.randi_range(0, values.size() - 1)
+	var current_value: float = values[start_value_index]
+	var previous_value: float = current_value
+	
+	var path_mode: int = PathMode.RANDOM
+	
+	var path_mode_chance: float = rng.randf()
+	
+	if path_mode_chance < 0.2:
+		path_mode = PathMode.DESCENDING
+	elif path_mode_chance < 0.4:
+		path_mode = PathMode.ASCENDING
+	
+	print("shuffled_bags: %f" % [Time.get_ticks_msec() - start])
+	
+	for cell_id in shortest_id_path:
+		var cell: Cell = astar.cells[cell_id]
+		
+		cell.value = current_value
+		var characters: Array = shuffled_bags[current_value]
+		
+		cell.texture = load(characters.pop_back())
+		
+		if characters.empty():
+			if is_equal_approx(current_value, floor(current_value)):
+				var index: int = values.find(current_value)
+				
+				if previous_value < current_value:
+					values = values.slice(0, index - 1)
+				elif previous_value > current_value:
+					values = values.slice(index + 1, values.size() - 1)
+				else:
+					var distance_to_end: int = values.size() - index
+					
+					if distance_to_end > index:
+						values = values.slice(index + 1, values.size() - 1)
+					else:
+						values = values.slice(0, index - 1)
+				
+				shuffled_bags.erase(current_value)
+				
+				assert(values.size() > 0)
+			else:
+				# Is .5 or .8
+				var index: int = values.find(current_value)
+				
+				values.remove(index)
+				shuffled_bags.erase(current_value)
+				assert(values.size() > 0)
+			
+			current_value = previous_value
+		
+		assert(values.size() > 0)
+		print("PathMode: %d" % [Time.get_ticks_msec() - start])
+		
+		var next_index: int = 0
+		
+		if path_mode == PathMode.RANDOM:
+			next_index = start_value_index + rng.randi_range(-1, 1)
+		elif path_mode == PathMode.DESCENDING:
+			next_index = start_value_index - 1
+			
+			if next_index < 0:
+				path_mode = PathMode.RANDOM
+		else:
+			next_index = start_value_index + 1
+			
+			if next_index >= values.size():
+				path_mode = PathMode.RANDOM
+		
+		start_value_index = int(clamp(next_index, 0, values.size() - 1))
+		
+		assert(start_value_index >= 0)
+		
+		previous_value = current_value
+		current_value = values[start_value_index]
+	
+	print("current_value: %f" % [Time.get_ticks_msec() - start])
+	
+	values = shuffled_bags.keys()
+	values.sort()
+	
+	for cell in astar.cells:
+		if not cell.id in shortest_id_path:
+			var index: int = rng.randi_range(0, values.size() - 1)
+			var value: float = values[index]
+			
+			var characters: Array = shuffled_bags[value]
+			
+			cell.value = value
+			cell.texture = load(characters.pop_back())
+			
+			if characters.empty():
+				values.remove(index)
+				shuffled_bags.erase(value)
+	
+	print("end: %f" % [Time.get_ticks_msec() - start])
+	
+
+
+func dir_contents(path: String) -> void:
+	var directory = Directory.new()
+	
+	if directory.open(path) == OK:
+		directory.list_dir_begin()
+		
+		var file_name: String = directory.get_next()
+		
+		while not file_name.empty():
+			if file_name.begins_with("."):
+				file_name = directory.get_next()
+				
+				continue
+			
+			if directory.current_is_dir():
+				var value: float = file_name.replace("Touhou", "").to_float()
+				
+				bags[value] = []
+				values.push_back(value)
+				
+				var character_directory = Directory.new()
+				character_directory.open(directory.get_current_dir() + "/" + file_name)
+				
+				character_directory.list_dir_begin()
+				
+				var character: String = character_directory.get_next()
+				
+				while not character.empty():
+					if character.ends_with(".png"):
+						bags[value].push_back("%s/%s/%s" %[path, file_name, character])
+						
+					character = character_directory.get_next()
+					
+				character_directory.list_dir_end()
+			
+			file_name = directory.get_next()
+		
+		directory.list_dir_end()
+	else:
+		printerr("An error occurred when trying to access the path %s" % path)
+	
+	values.sort()
+
+
+# Results:
+# Shortest path (cells)
+# Score
+func compare_paths(path: Array) -> void:
+	var shortest_id_path: Array = astar.get_id_path(0, 24)
+	var lowest_cost: float = calculate_path_cost(shortest_id_path)
+	
+	var id_path: Array = []
+	
+	for cell in path:
+		id_path.push_back(astar.get_closest_point(Vector3(cell.position.x, cell.position.y, 0)))
+	
+	var current_cost: float = calculate_path_cost(id_path)
+	
+	print("Lowest: %s, current: %s" % [lowest_cost, current_cost])
+	print(shortest_id_path)
+	print(id_path)
+	
+	var score: int = 0
+	var base_score: int = grid.size() * grid.front().size() * 1000
+	
+	if current_cost <= lowest_cost:
+		score = base_score
+	else:
+		score = int(base_score / (current_cost + 1 - lowest_cost))
+	
+	print("Score: %d" % [score])
+	
+	if is_equal_approx(current_cost, lowest_cost):
+		# In case there are two paths with lowest cost
+		show_paths(id_path, id_path, lowest_cost, score)
+	else:
+		show_paths(shortest_id_path, id_path, lowest_cost, score)
+
+
+func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: float, score: int) -> void:
+	var current_cost: float = 0
+	
+	for i in current_id_path.size() - 1:
+		var id: int = current_id_path[i]
+		
+		current_cost += astar._compute_cost(id, current_id_path[i + 1])
+		
+		var is_in_shortest_path: bool = id in shortest_id_path
+		
+		if is_in_shortest_path:
+			$PathAudioStreamPlayer.play()
+		else:
+			$WrongPathAudioStreamPlayer.play()
+		
+		var cell: Cell = astar.cells[current_id_path[i]]
+		cell.show_value(is_in_shortest_path)
+		
+		$Timer.start()
+		
+		yield($Timer, "timeout")
+	
+	for id in shortest_id_path:
+		if not id in current_id_path:
+			var cell: Cell = astar.cells[id]
+			
+			cell.show_value(true)
+	
+	var floating_label: Node2D = floating_label_packed_scene.instance()
+	
+	add_child(floating_label)
+	
+	var cell: Cell = astar.cells[shortest_id_path.back()]
+	floating_label.position = cell.position
+	
+	if score >= 10000:
+		$GoodScoreAudioStreamPlayer.play()
+	else:
+		$BadScoreAudioStreamPlayer2.play()
+	
+	# TODO: If score is less than 10% of base score, play wrong score and lose one life
+	# Also set score to 0
+	
+	floating_label.start(score)
+	# TODO: Emit signal with score
+	
+	yield(get_tree().create_timer(1), "timeout")
+	
+	drop_cells()
+
+
+func calculate_path_cost(id_path: Array) -> float:
+	var cost: float = 0
+	
+	for i in id_path.size() - 1:
+		cost += astar._compute_cost(id_path[i], id_path[i + 1])
+	
+	return cost
+
+
+func drop_down_cells() -> void:
+	$Target.hide()
+	
+	for cell in astar.cells:
+		cell.reset()
+		
+		cell.position =  cell_coordinates_to_cell_origin(cell.coordinates)
+		
+		$Tween.interpolate_property(cell, "position", Vector2(cell.position.x, cell.position.y - 360), cell.position, 0.75, Tween.TRANS_SINE, Tween.EASE_IN)
+		
+		$Tween.start()
+		
+		yield(get_tree(), "physics_frame")
+	
+	show()
+	
+	$AudioStreamPlayer.play()
+	
+	yield($Tween, "tween_all_completed")
+	
+	emit_signal("cells_dropped")
+
+
+func drop_cells() -> void:
+	$Target.hide()
+	
+	$DropCellsAudioStreamPlayer.play()
+	
+	for cell in astar.cells:
+		$Tween.interpolate_property(cell, "position", cell.position, Vector2(cell.position.x, cell.position.y + 480), 0.75, Tween.TRANS_SINE, Tween.EASE_IN)
+		
+		$Tween.start()
+		
+		yield(get_tree(), "physics_frame")
+	
+	yield($Tween, "tween_all_completed")
+	
+	emit_signal("score_shown")
+
+
+func set_target(target: Vector2) -> void:
+	var cell: Cell = get_cell_from_coordinates(target)
+	cell.texture = load("res://DotPack/Charas_001.png")
+	
+	show_target(cell)
+
+
+func show_target(cell: Cell) -> void:
+	$Target.position = cell.position
+	
+	$Target.position.x -= 26
+	$Target.position.y -= 19
+	
+	$Target.show()
+
+
+func _build_cell(x_position: float, y_position: float) -> Cell:
+	var cell: Cell = cell_packed_scene.instance()
+	
+	add_child(cell)
+	
+	var cell_coordinates := Vector2(x_position, y_position)
+	cell.position = cell_coordinates_to_cell_origin(cell_coordinates)
+	cell.coordinates = cell_coordinates
+	
+	return cell
+
+
+func _set_neighbors(node: Cell, width, height) -> void:
+	var cell_coordinates: Vector2 = node.coordinates
+	
+	_set_neighbor(node, Vector2(cell_coordinates.x, cell_coordinates.y - 1), Cell.DIRECTION.UP, width, height)
+	_set_neighbor(node, Vector2(cell_coordinates.x, cell_coordinates.y + 1), Cell.DIRECTION.DOWN, width, height)
+	_set_neighbor(node, Vector2(cell_coordinates.x + 1, cell_coordinates.y), Cell.DIRECTION.RIGHT, width, height)
+	_set_neighbor(node, Vector2(cell_coordinates.x - 1, cell_coordinates.y), Cell.DIRECTION.LEFT, width, height)
+
+
+func _set_neighbor(cell: Cell, neighbor_coordinates: Vector2, direction: int, width, height) -> void:
+	var neighbor: Cell = null
+	
+	if _is_in_range(neighbor_coordinates, width, height):
+		neighbor = get_cell_from_coordinates(neighbor_coordinates)
+	
+	cell.add_neighbor(neighbor, direction)
+
+
+func _is_in_range(cell_coordinates: Vector2, width, height) -> bool:
+	if cell_coordinates.x < 0 or cell_coordinates.x >= width:
+		return false
+	elif cell_coordinates.y < 0 or cell_coordinates.y >= height:
+		return false
+	else:
+		return true
+
+
+# Returns the x, y coordinates of a cell (whole numbers)
+func get_cell_coordinates(unit_position: Vector2) -> Vector2:
+	return Vector2(floor(unit_position.x / tilesize), floor(unit_position.y / tilesize))
+
+
+func get_cell_from_position(unit_position: Vector2) -> Cell:
+	var cell_coordinates := get_cell_coordinates(unit_position)
+	
+	return get_cell_from_coordinates(cell_coordinates)
+
+
+func get_cell_from_coordinates(cell_coordinates: Vector2) -> Cell:
+	return grid[cell_coordinates.x][cell_coordinates.y]
+
+
+func cell_coordinates_to_cell_origin(cell_coordinates: Vector2) -> Vector2:
+	return Vector2(cell_coordinates.x * tilesize + half_tilesize + tile_offset, cell_coordinates.y * tilesize + + half_tilesize + tile_offset)

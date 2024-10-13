@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/warning1.mp3-44c28f3b3699fcdb822edbdd3903d6aa.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/warning1.mp3"
+dest_files=[ "res://.import/warning1.mp3-44c28f3b3699fcdb822edbdd3903d6aa.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/papa1.mp3-20fba703b7e4ab5d1dd79b78376fbc69.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/papa1.mp3"
+dest_files=[ "res://.import/papa1.mp3-20fba703b7e4ab5d1dd79b78376fbc69.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

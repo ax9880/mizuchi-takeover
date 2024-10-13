@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/04_hooduki_140.ogg-19ef541ae13425a207982a174b3cc54d.oggstr"
+
+[deps]
+
+source_file="res://Sounds/DbuMusic/04_hooduki_140.ogg"
+dest_files=[ "res://.import/04_hooduki_140.ogg-19ef541ae13425a207982a174b3cc54d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

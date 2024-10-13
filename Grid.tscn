@@ -1,0 +1,53 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Grid.gd" type="Script" id=1]
+[ext_resource path="res://Cell.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Sounds/SoundEffectLab/sceneswitch1.mp3" type="AudioStream" id=3]
+[ext_resource path="res://Target.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Sounds/SoundEffectLab/cursor1.mp3" type="AudioStream" id=5]
+[ext_resource path="res://Sounds/Ovani/Hollow Clicks.wav" type="AudioStream" id=6]
+[ext_resource path="res://FloatingLabel.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Sounds/SoundEffectLab/decision39.mp3" type="AudioStream" id=8]
+[ext_resource path="res://Sounds/SoundEffectLab/eye-shine2.mp3" type="AudioStream" id=9]
+[ext_resource path="res://Sounds/SoundEffectLab/warning1.mp3" type="AudioStream" id=10]
+[ext_resource path="res://Sounds/SoundEffectLab/cancel4.mp3" type="AudioStream" id=11]
+
+[node name="Grid" type="Node2D"]
+script = ExtResource( 1 )
+floating_label_packed_scene = ExtResource( 7 )
+cell_packed_scene = ExtResource( 2 )
+
+[node name="Target" parent="." instance=ExtResource( 4 )]
+visible = false
+z_index = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "Sound effects"
+
+[node name="DropCellsAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+bus = "Sound effects"
+
+[node name="PathAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="WrongPathAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="GoodScoreAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="BadScoreAudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="WarningAudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/gong-played2.mp3-a52e9f293b2dfb9b4b23b09b53b16135.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/gong-played2.mp3"
+dest_files=[ "res://.import/gong-played2.mp3-a52e9f293b2dfb9b4b23b09b53b16135.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

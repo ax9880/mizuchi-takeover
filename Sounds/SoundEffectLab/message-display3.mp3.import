@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/message-display3.mp3-5e31f2d975ed247affa215744c52c366.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/message-display3.mp3"
+dest_files=[ "res://.import/message-display3.mp3-5e31f2d975ed247affa215744c52c366.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

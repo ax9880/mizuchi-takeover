@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/cursor7.mp3-41830ad1004c5d8d9c0d90428cd59845.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/cursor7.mp3"
+dest_files=[ "res://.import/cursor7.mp3-41830ad1004c5d8d9c0d90428cd59845.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

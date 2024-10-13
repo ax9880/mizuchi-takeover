@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/quiz-timer-x2-1.mp3-aaefd037713d50b346c07d97b43d9c3e.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/quiz-timer-x2-1.mp3"
+dest_files=[ "res://.import/quiz-timer-x2-1.mp3-aaefd037713d50b346c07d97b43d9c3e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

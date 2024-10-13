@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/eye-shine2.mp3-da877a36450caebee3c47e736111cba0.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/eye-shine2.mp3"
+dest_files=[ "res://.import/eye-shine2.mp3-da877a36450caebee3c47e736111cba0.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

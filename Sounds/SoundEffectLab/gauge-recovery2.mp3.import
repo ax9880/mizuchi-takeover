@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/gauge-recovery2.mp3-10b551d667f27d2a1123c1c5cbafa77e.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/gauge-recovery2.mp3"
+dest_files=[ "res://.import/gauge-recovery2.mp3-10b551d667f27d2a1123c1c5cbafa77e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

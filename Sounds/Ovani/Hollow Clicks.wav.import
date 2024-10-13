@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Hollow Clicks.wav-d4c4c091b35f481c1fd7d411e8018812.sample"
+
+[deps]
+
+source_file="res://Sounds/Ovani/Hollow Clicks.wav"
+dest_files=[ "res://.import/Hollow Clicks.wav-d4c4c091b35f481c1fd7d411e8018812.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

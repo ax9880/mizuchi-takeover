@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/cursor1.mp3-6debbca2b15eb75b7f4c412bcff470d9.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/cursor1.mp3"
+dest_files=[ "res://.import/cursor1.mp3-6debbca2b15eb75b7f4c412bcff470d9.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
