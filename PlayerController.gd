@@ -84,6 +84,8 @@ func _process(_delta: float) -> void:
 	if coordinates.is_equal_approx(target):
 		print("you win!")
 		
+		$Grid.hide_target()
+		
 		$PosessionTimer.stop()
 		
 		# TODO: Emit signal
