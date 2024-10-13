@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Fonts/theme.tres" type="Theme" id=1]
 [ext_resource path="res://Fonts/GravityBold8EnEsx2.tres" type="DynamicFont" id=2]
 [ext_resource path="res://ResultsContainer.gd" type="Script" id=3]
 [ext_resource path="res://Sounds/SoundEffectLab/cursor7.mp3" type="AudioStream" id=4]
 [ext_resource path="res://AudioButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Sounds/SoundEffectLab/decision30.mp3" type="AudioStream" id=6]
 
 [node name="ResultsMarginContainer" type="MarginContainer"]
 anchor_right = 1.0
@@ -18,16 +19,16 @@ script = ExtResource( 3 )
 wait_time = 0.5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 200.0
-margin_top = 108.0
-margin_right = 440.0
-margin_bottom = 252.0
+margin_left = 218.0
+margin_top = 106.0
+margin_right = 422.0
+margin_bottom = 254.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 alignment = 1
 
 [node name="GameOverLabel" type="Label" parent="VBoxContainer"]
-margin_right = 240.0
+margin_right = 204.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 0, 32 )
 size_flags_vertical = 0
@@ -38,7 +39,7 @@ valign = 1
 
 [node name="PointsHBox" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 36.0
-margin_right = 240.0
+margin_right = 204.0
 margin_bottom = 44.0
 
 [node name="Points" type="Label" parent="VBoxContainer/PointsHBox"]
@@ -58,7 +59,7 @@ clip_text = true
 
 [node name="BoardsClearedHBox" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 48.0
-margin_right = 240.0
+margin_right = 204.0
 margin_bottom = 56.0
 
 [node name="BoardsCleared" type="Label" parent="VBoxContainer/BoardsClearedHBox"]
@@ -78,7 +79,7 @@ clip_text = true
 
 [node name="LevelHBox" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 60.0
-margin_right = 240.0
+margin_right = 204.0
 margin_bottom = 68.0
 
 [node name="Level" type="Label" parent="VBoxContainer/LevelHBox"]
@@ -98,7 +99,7 @@ clip_text = true
 
 [node name="LivesHBox" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 72.0
-margin_right = 240.0
+margin_right = 204.0
 margin_bottom = 80.0
 
 [node name="Lives" type="Label" parent="VBoxContainer/LivesHBox"]
@@ -118,14 +119,14 @@ clip_text = true
 
 [node name="Total2" type="Label" parent="VBoxContainer"]
 margin_top = 84.0
-margin_right = 240.0
+margin_right = 204.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 128, 0 )
 text = "---"
 
 [node name="TotalHBox" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 96.0
-margin_right = 240.0
+margin_right = 204.0
 margin_bottom = 104.0
 
 [node name="Total" type="Label" parent="VBoxContainer/TotalHBox"]
@@ -144,13 +145,26 @@ align = 2
 clip_text = true
 
 [node name="PlayAgainButton" parent="VBoxContainer" instance=ExtResource( 5 )]
+margin_left = 42.0
 margin_top = 108.0
-margin_bottom = 124.0
+margin_right = 162.0
+margin_bottom = 126.0
+text = "PLAY_AGAIN"
 
 [node name="QuitButton" parent="VBoxContainer" instance=ExtResource( 5 )]
-margin_top = 128.0
-margin_bottom = 144.0
+margin_left = 42.0
+margin_top = 130.0
+margin_right = 162.0
+margin_bottom = 148.0
+text = "QUIT"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="GameOverAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+bus = "Sound effects"
+
+[node name="ScoreItemAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 bus = "Sound effects"
+
+[connection signal="pressed" from="VBoxContainer/PlayAgainButton" to="." method="_on_PlayAgainButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

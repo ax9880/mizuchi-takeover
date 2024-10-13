@@ -382,6 +382,9 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: fl
 	
 	if shortest_id_path != current_id_path:
 		for id in shortest_id_path:
+			if id == shortest_id_path.back():
+				continue
+			
 			var cell: Cell = astar.cells[id]
 			
 			cell.show_value(true, true)

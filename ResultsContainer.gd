@@ -10,6 +10,8 @@ func _ready():
 func show_results(score, boards_cleared, perfect_boards, level, lives) -> void:
 	show()
 	
+	$GameOverAudioStreamPlayer.play()
+	
 	for child in $VBoxContainer.get_children():
 		child.modulate.a = 0
 	
@@ -70,7 +72,7 @@ func show_value(label: Label, value: int) -> void:
 	label.text = str(value)
 	label.get_parent().modulate = Color.white
 	
-	$AudioStreamPlayer.play()
+	$ScoreItemAudioStreamPlayer.play()
 
 
 func show_value_with_multiplier(label: Label, value: int, multiplier: int) -> void:
@@ -78,4 +80,14 @@ func show_value_with_multiplier(label: Label, value: int, multiplier: int) -> vo
 	
 	label.get_parent().modulate = Color.white
 	
-	$AudioStreamPlayer.play()
+	$ScoreItemAudioStreamPlayer.play()
+
+
+func _on_PlayAgainButton_pressed() -> void:
+		# TODO: Don't reset music?
+		
+		Loader.change_scene("res://Main.tscn")
+
+
+func _on_QuitButton_pressed() -> void:
+	Loader.change_scene("res://TitleScene.tscn")

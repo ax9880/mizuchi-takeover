@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/decision30.mp3-f511277cee296ef6bf935fd0baf85884.mp3str"
+
+[deps]
+
+source_file="res://Sounds/SoundEffectLab/decision30.mp3"
+dest_files=[ "res://.import/decision30.mp3-f511277cee296ef6bf935fd0baf85884.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
