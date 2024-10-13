@@ -13,20 +13,13 @@ var target: Vector2 = Vector2(4, 4)
 
 var traversed_cells: Array = []
 
+var rect_size: Vector2
+
 var _score: int = 0
 var _boards_cleared: int = 0
 var _perfect_boards: int = 0
 
 var _random := RandomNumberGenerator.new()
-
-func _ready() -> void:
-	var rect_width: float = get_parent().rect_size.x
-	#width = 318
-	
-	var grid_width: float = 48 * 5
-	
-	position = Vector2((rect_width - grid_width) / 2, position.y)
-	# TODO: Adjust y position
 
 
 func _process(_delta: float) -> void:
@@ -94,6 +87,11 @@ func _process(_delta: float) -> void:
 
 func generate() -> void:
 	$Grid.generate(width, height)
+	
+	var grid_width: float = $Grid.tilesize * width
+	var grid_height: float = $Grid.tilesize * height
+	
+	$Grid.position = Vector2(rect_size.x - grid_width, rect_size.y - grid_height) / 2.0
 
 
 func start() -> void:

@@ -6,6 +6,7 @@ export(int, 0, 1) var player_index: int = 0
 
 func _ready():
 	player_controller.player_index = player_index
+	player_controller.rect_size = rect_size
 	
 	$AnimationPlayer.play("ready")
 	
