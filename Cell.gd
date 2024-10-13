@@ -17,7 +17,7 @@ var id: int = 0
 
 export var has_cost_one: bool = false
 
-onready var value_label: Label = $CanvasLayer/MarginContainer/ValueLabel
+onready var value_label: Label = $CanvasLayer/MarginContainer2/VBoxContainer/ValueHintLabel
 
 
 # x,y coordinates in the grid matrix, for convenience.
@@ -62,8 +62,8 @@ func reset() -> void:
 	value_label.hide()
 
 
-func show_value(is_in_shortest_path: bool) -> void:
-	$AnimationPlayer.play("fade")
+func show_value(is_in_shortest_path: bool, is_correction: bool) -> void:
+	#$AnimationPlayer.play("fade")
 	
 	value_label.text = _value_to_string()
 	
@@ -72,6 +72,8 @@ func show_value(is_in_shortest_path: bool) -> void:
 	if not is_in_shortest_path:
 		# TODO: Use red color from palette
 		value_label.modulate = Color.red
+	elif is_correction:
+		value_label.modulate = Color.blue
 	else:
 		value_label.modulate = Color.white
 

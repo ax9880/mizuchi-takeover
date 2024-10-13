@@ -57,7 +57,7 @@ onready var half_tilesize: float = tilesize / 2.0
 
 
 signal cells_dropped
-signal score_calculated
+signal score_calculated(points, is_perfect_board)
 signal score_shown
 
 
@@ -242,6 +242,12 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 	values = shuffled_bags.keys()
 	values.sort()
 	
+	_fill_cells_with_random_characters(shortest_id_path, shuffled_bags)
+	
+	set_target()
+
+
+func _fill_cells_with_random_characters(shortest_id_path: Array, shuffled_bags: Dictionary) -> void:
 	for cell in astar.cells:
 		if not cell.id in shortest_id_path:
 			var index: int = rng.randi_range(0, values.size() - 1)
@@ -255,8 +261,6 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 			if characters.empty():
 				values.remove(index)
 				shuffled_bags.erase(value)
-	
-	set_target()
 
 
 func _read_characters(path: String) -> void:
@@ -337,24 +341,24 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 	
 	print("Lowest: %s, current: %s" % [lowest_cost, current_cost])
 	
-	var score: int = 0
+	var points: int = 0
 	
 	if current_cost <= lowest_cost:
-		score = base_score
+		points = base_score
 	else:
-		score = int(base_score / (current_cost + 1 - lowest_cost))
+		points = int(base_score / (current_cost + 1 - lowest_cost))
 	
-	print("Score: %d" % [score])
+	print("Score: %d" % [points])
 	
 	if is_equal_approx(current_cost, lowest_cost):
 		# In case there are two paths with lowest cost, use the one
 		# that the player used
 		shortest_id_path = id_path
 	
-	show_paths(shortest_id_path, id_path, lowest_cost, score)
+	show_paths(shortest_id_path, id_path, lowest_cost, points)
 
 
-func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: float, score: int) -> void:
+func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: float, points: int) -> void:
 	var current_cost: float = 0
 	
 	for i in current_id_path.size() - 1:
@@ -370,20 +374,17 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: fl
 			$WrongPathAudioStreamPlayer.play()
 		
 		var cell: Cell = astar.cells[current_id_path[i]]
-		cell.show_value(is_in_shortest_path)
+		cell.show_value(is_in_shortest_path, false)
 		
 		$PathResultsTimer.start()
 		
 		yield($PathResultsTimer, "timeout")
 	
-	for id in shortest_id_path:
-		if not id in current_id_path:
+	if shortest_id_path != current_id_path:
+		for id in shortest_id_path:
 			var cell: Cell = astar.cells[id]
 			
-			cell.show_value(true)
-			
-			# TODO: Highlight shortest path with a different color
-			# if shortest path is better than current path
+			cell.show_value(true, true)
 	
 	var floating_label: Node2D = floating_label_packed_scene.instance()
 	
@@ -392,9 +393,13 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: fl
 	var cell: Cell = astar.cells[shortest_id_path.back()]
 	floating_label.position = cell.position
 	
-	if score == base_score:
+	var is_perfect_board: bool = false
+	
+	if points == base_score:
 		$GoodScoreAudioStreamPlayer.play()
-	elif score >= int(base_score * 0.10):
+		
+		is_perfect_board = true
+	elif points >= int(base_score * 0.10):
 		$BadScoreAudioStreamPlayer2.play()
 	else:
 		$BadScoreAudioStreamPlayer2.play()
@@ -404,9 +409,14 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: fl
 	# TODO: If score is less than 10% of base score, play wrong score and lose one life
 	# Also set score to 0
 	
-	floating_label.start(score)
+	floating_label.start(points)
 	
-	emit_signal("score_calculated", score)
+	emit_signal("score_calculated", points, is_perfect_board)
+	
+	if shortest_id_path != current_id_path:
+		$DropCellsTimer.wait_time = 2
+	else:
+		$DropCellsTimer.wait_time = 1
 	
 	$DropCellsTimer.start()
 	

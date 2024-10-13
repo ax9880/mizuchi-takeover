@@ -1,0 +1,159 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Fonts/theme.tres" type="Theme" id=1]
+[ext_resource path="res://Fonts/GravityBold8EnEsx2.tres" type="DynamicFont" id=2]
+[ext_resource path="res://ResultsContainer.gd" type="Script" id=3]
+[ext_resource path="res://Sounds/SoundEffectLab/cursor7.mp3" type="AudioStream" id=4]
+
+[node name="ResultsMarginContainer" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 218.0
+margin_top = 110.0
+margin_right = 422.0
+margin_bottom = 250.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="VBoxContainer"]
+margin_right = 204.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 2 )
+text = "GAME_OVER"
+align = 1
+valign = 1
+
+[node name="PointsHBox" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 36.0
+margin_right = 204.0
+margin_bottom = 44.0
+
+[node name="Points" type="Label" parent="VBoxContainer/PointsHBox"]
+margin_right = 128.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 128, 0 )
+text = "POINTS"
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/PointsHBox"]
+margin_left = 132.0
+margin_right = 204.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 72, 0 )
+text = "999.999"
+align = 2
+clip_text = true
+
+[node name="BoardsClearedHBox" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 48.0
+margin_right = 204.0
+margin_bottom = 56.0
+
+[node name="BoardsCleared" type="Label" parent="VBoxContainer/BoardsClearedHBox"]
+margin_right = 128.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 128, 0 )
+text = "BOARDS_CLEARED"
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/BoardsClearedHBox"]
+margin_left = 132.0
+margin_right = 204.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 72, 0 )
+text = "999 x 1000"
+align = 2
+clip_text = true
+
+[node name="LevelHBox" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 60.0
+margin_right = 204.0
+margin_bottom = 68.0
+
+[node name="Level" type="Label" parent="VBoxContainer/LevelHBox"]
+margin_right = 128.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 128, 0 )
+text = "LEVEL"
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/LevelHBox"]
+margin_left = 132.0
+margin_right = 204.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 72, 0 )
+text = "99 x 10000"
+align = 2
+clip_text = true
+
+[node name="LivesHBox" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 204.0
+margin_bottom = 80.0
+
+[node name="Lives" type="Label" parent="VBoxContainer/LivesHBox"]
+margin_right = 128.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 128, 0 )
+text = "LIVES"
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/LivesHBox"]
+margin_left = 132.0
+margin_right = 204.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 72, 0 )
+text = "3 x 20000"
+align = 2
+clip_text = true
+
+[node name="Total2" type="Label" parent="VBoxContainer"]
+margin_top = 84.0
+margin_right = 204.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 128, 0 )
+text = "---"
+
+[node name="TotalHBox" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 96.0
+margin_right = 204.0
+margin_bottom = 104.0
+
+[node name="Total" type="Label" parent="VBoxContainer/TotalHBox"]
+margin_right = 128.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 128, 0 )
+text = "TOTAL"
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/TotalHBox"]
+margin_left = 132.0
+margin_right = 204.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 72, 0 )
+text = "999.999.999"
+align = 2
+clip_text = true
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+margin_top = 108.0
+margin_right = 204.0
+margin_bottom = 122.0
+text = "PLAY AGAIN"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+margin_top = 126.0
+margin_right = 204.0
+margin_bottom = 140.0
+text = "QUIT"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+bus = "Sound effects"

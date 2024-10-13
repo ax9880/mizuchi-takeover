@@ -15,11 +15,16 @@ var traversed_cells: Array = []
 
 var rect_size: Vector2
 
-var _score: int = 0
+var _points: int = 0
 var _boards_cleared: int = 0
 var _perfect_boards: int = 0
+var _level: int = 1
 
 var _random := RandomNumberGenerator.new()
+
+
+signal game_finished(points, boards_cleared, perfect_boards, level, lives)
+signal score_updated(points, boards_cleared)
 
 
 func _process(_delta: float) -> void:
@@ -114,6 +119,8 @@ func _create_new_board() -> void:
 		if height < 6:
 			height += 1
 		
+		_level += 1
+		
 		generate()
 		
 		# TODO: Reposition grid
@@ -171,6 +178,8 @@ func _finish_game() -> void:
 	$PosessionTimer.stop()
 	
 	print("Game over!")
+	
+	emit_signal("game_finished", _points, _boards_cleared, _perfect_boards, _level, lives)
 
 
 func _on_Timer_timeout() -> void:
@@ -192,3 +201,12 @@ func _on_PosessionTimer_timeout() -> void:
 
 func _on_Grid_score_shown() -> void:
 	_create_new_board()
+
+
+func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
+	_points += points
+	
+	if is_perfect_board:
+		_perfect_boards += 1
+	
+	emit_signal("score_updated", _points, _boards_cleared)
