@@ -2,7 +2,7 @@ extends Node2D
 
 
 const _SPRITE_PREFFIX: String = "Charas_"
-const _SPRITE_EXTENSION: String = ".png"
+const _SPRITE_EXTENSION: String = ".png.import"
 
 enum PathMode {
 	RANDOM,
@@ -69,6 +69,8 @@ func _ready() -> void:
 
 
 func generate(width: int, height: int) -> void:
+	rng.randomize()
+	
 	grid.clear()
 	astar.clear()
 	
