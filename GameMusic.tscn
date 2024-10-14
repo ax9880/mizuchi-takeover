@@ -1,17 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Sounds/DbuMusic/04_hooduki_140.ogg" type="AudioStream" id=1]
 [ext_resource path="res://GameMusic.gd" type="Script" id=2]
 [ext_resource path="res://Sounds/DbuMusic/01_shoujo_kisoukyoku_171.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Sounds/DbuMusic/02_koiiro_fms_167.ogg" type="AudioStream" id=4]
+[ext_resource path="res://FadeableAudioStreamPlayer.gd" type="Script" id=5]
 
 [node name="GameMusic" type="Node"]
 script = ExtResource( 2 )
 audio_streams = [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ) ]
 
-[node name="Tween" type="Tween" parent="."]
-
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )
 volume_db = -8.0
 bus = "Music"
+script = ExtResource( 5 )
+
+[node name="Tween" type="Tween" parent="AudioStreamPlayer"]

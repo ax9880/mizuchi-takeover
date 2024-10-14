@@ -24,30 +24,9 @@ func play() -> void:
 		$AudioStreamPlayer.stream = audio_streams[_random.randi_range(0, audio_streams.size() - 1)]
 	else:
 		$AudioStreamPlayer.stream = audio_streams.front()
-	
-	$Tween.interpolate_property($AudioStreamPlayer, "volume_db",
-		-80, -8, 0.5)
-	
-	$Tween.start()
-	
-	$AudioStreamPlayer.play()
+		
+	$AudioStreamPlayer.start_playing()
 
 
 func stop() -> void:
-	if _is_stopping:
-		return
-	
-	_is_stopping = true
-	
-	$Tween.remove_all()
-	
-	$Tween.interpolate_property($AudioStreamPlayer, "volume_db",
-		$AudioStreamPlayer.volume_db, -80, 0.5)
-	
-	$Tween.start()
-	
-	yield($Tween, "tween_all_completed")
-	
-	$AudioStreamPlayer.stop()
-	
-	_is_stopping = false
+	$AudioStreamPlayer.stop_playing()
