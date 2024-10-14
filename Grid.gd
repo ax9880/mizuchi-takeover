@@ -42,6 +42,8 @@ var bags: Dictionary = {}
 # Array[float]
 var values: Array = []
 
+var _cell_pool: Array = []
+
 var rng := RandomNumberGenerator.new()
 
 var base_score: int = 0
@@ -63,18 +65,19 @@ signal score_shown
 
 func _ready() -> void:
 	rng.randomize()
+	
+	_read_characters("res://Split")
 
 
 func generate(width: int, height: int) -> void:
 	for cell in astar.cells:
 		astar.remove_point(cell.id)
 		
-		cell.queue_free()
+		remove_child(cell)
+		_cell_pool.push_back(cell)
 	
 	grid.clear()
 	astar.cells.clear()
-	bags.clear()
-	values.clear()
 	
 	start_id = 0
 	target_id = 0
@@ -111,8 +114,6 @@ func generate(width: int, height: int) -> void:
 	for cell in astar.cells:
 		for neighbor in cell.neighbors:
 			astar.connect_points(cell.id, neighbor.id, false)
-	
-	_read_characters("res://Split")
 
 
 func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) -> void:
@@ -132,7 +133,9 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 		# Remove values with decimals
 		for value in values:
 			if not is_equal_approx(value, floor(value)):
-				shuffled_bags.erase(value)
+				var is_erased := shuffled_bags.erase(value)
+				
+				assert(is_erased)
 		
 		values = shuffled_bags.keys()
 	
@@ -445,7 +448,9 @@ func drop_down_cells() -> void:
 		
 		cell.position =  cell_coordinates_to_cell_origin(cell.coordinates)
 		
-		$Tween.interpolate_property(cell, "position", Vector2(cell.position.x, cell.position.y - 360), cell.position, 0.75, Tween.TRANS_SINE, Tween.EASE_IN)
+		var y_start: float = cell.position.y - max(grid.front().size() * tilesize + tilesize, 360)
+		
+		$Tween.interpolate_property(cell, "position", Vector2(cell.position.x, y_start), cell.position, 0.75, Tween.TRANS_SINE, Tween.EASE_IN)
 		
 		$Tween.start()
 		
@@ -500,7 +505,10 @@ func hide_target() -> void:
 
 
 func _build_cell(x_position: float, y_position: float) -> Cell:
-	var cell: Cell = cell_packed_scene.instance()
+	if _cell_pool.empty():
+		_cell_pool.push_back(cell_packed_scene.instance())
+	
+	var cell: Cell = _cell_pool.pop_back()
 	
 	add_child(cell)
 	
@@ -514,19 +522,19 @@ func _build_cell(x_position: float, y_position: float) -> Cell:
 func _set_neighbors(node: Cell, width, height) -> void:
 	var cell_coordinates: Vector2 = node.coordinates
 	
-	_set_neighbor(node, Vector2(cell_coordinates.x, cell_coordinates.y - 1), Cell.DIRECTION.UP, width, height)
-	_set_neighbor(node, Vector2(cell_coordinates.x, cell_coordinates.y + 1), Cell.DIRECTION.DOWN, width, height)
-	_set_neighbor(node, Vector2(cell_coordinates.x + 1, cell_coordinates.y), Cell.DIRECTION.RIGHT, width, height)
-	_set_neighbor(node, Vector2(cell_coordinates.x - 1, cell_coordinates.y), Cell.DIRECTION.LEFT, width, height)
+	_set_neighbor(node, Vector2(cell_coordinates.x, cell_coordinates.y - 1), width, height)
+	_set_neighbor(node, Vector2(cell_coordinates.x, cell_coordinates.y + 1), width, height)
+	_set_neighbor(node, Vector2(cell_coordinates.x + 1, cell_coordinates.y), width, height)
+	_set_neighbor(node, Vector2(cell_coordinates.x - 1, cell_coordinates.y), width, height)
 
 
-func _set_neighbor(cell: Cell, neighbor_coordinates: Vector2, direction: int, width, height) -> void:
+func _set_neighbor(cell: Cell, neighbor_coordinates: Vector2, width: int, height: int) -> void:
 	var neighbor: Cell = null
 	
 	if _is_in_range(neighbor_coordinates, width, height):
 		neighbor = get_cell_from_coordinates(neighbor_coordinates)
 	
-	cell.add_neighbor(neighbor, direction)
+	cell.add_neighbor(neighbor)
 
 
 func _is_in_range(cell_coordinates: Vector2, width, height) -> bool:

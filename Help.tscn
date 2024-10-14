@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Cell.tscn" type="PackedScene" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Example1" type="Node2D" parent="."]
+position = Vector2( 38, 30 )
+
+[node name="Cell" parent="Example1" instance=ExtResource( 1 )]
+
+[node name="Cell2" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 48, 0 )
+
+[node name="Cell3" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 96, 0 )
+
+[node name="Cell4" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 0, 48 )
+
+[node name="Cell5" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 48, 48 )
+
+[node name="Cell6" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 96, 48 )
+
+[node name="Cell7" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 0, 96 )
+
+[node name="Cell8" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 48, 96 )
+
+[node name="Cell9" parent="Example1" instance=ExtResource( 1 )]
+position = Vector2( 96, 96 )

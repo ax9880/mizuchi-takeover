@@ -32,33 +32,48 @@ margin_bottom = 360.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 340.0
-margin_bottom = 180.0
-rect_min_size = Vector2( 0, 180 )
+margin_bottom = 146.0
+rect_min_size = Vector2( 0, 120 )
+size_flags_vertical = 3
 custom_fonts/font = ExtResource( 5 )
 text = "MIZUCHI'S
 REVENGE"
 align = 1
 valign = 1
 
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_top = 150.0
+margin_right = 340.0
+margin_bottom = 169.0
+text = "Help Mizuchi find the shortest path to possess Reimu!"
+align = 1
+autowrap = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 173.0
+margin_right = 340.0
+margin_bottom = 189.0
+custom_constants/margin_bottom = 16
+
 [node name="ArcadeModeButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 110.0
-margin_top = 184.0
+margin_top = 193.0
 margin_right = 230.0
-margin_bottom = 202.0
+margin_bottom = 211.0
 text = "ARCADE_MODE"
 
 [node name="VsModeButton2" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 110.0
-margin_top = 206.0
+margin_top = 215.0
 margin_right = 230.0
-margin_bottom = 224.0
+margin_bottom = 233.0
 text = "VS_MODE"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_left = 110.0
-margin_top = 228.0
+margin_top = 237.0
 margin_right = 230.0
-margin_bottom = 244.0
+margin_bottom = 253.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 
@@ -77,9 +92,9 @@ size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_left = 110.0
-margin_top = 248.0
+margin_top = 257.0
 margin_right = 230.0
-margin_bottom = 264.0
+margin_bottom = 273.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 
@@ -98,6 +113,7 @@ size_flags_horizontal = 3
 bus_name = "Sound effects"
 
 [node name="HelpButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
+visible = false
 margin_left = 110.0
 margin_top = 268.0
 margin_right = 230.0
@@ -106,16 +122,28 @@ text = "HELP"
 
 [node name="QuitButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 110.0
-margin_top = 290.0
+margin_top = 277.0
 margin_right = 230.0
-margin_bottom = 308.0
+margin_bottom = 295.0
 text = "QUIT"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 312.0
+modulate = Color( 1, 1, 1, 0.415686 )
+margin_top = 299.0
 margin_right = 340.0
-margin_bottom = 320.0
-text = "illusorybread"
+margin_bottom = 340.0
+text = "By: illusorybread
+Touhou Pixel Character pack provided by tea_basira
+Touhou Game Jam BGM pack provided by dBu Music
+SFX: SoundEffect-lab, Ovani Sound"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 344.0
+margin_right = 340.0
+margin_bottom = 360.0
+custom_constants/margin_bottom = 16
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ArcadeModeButton" to="." method="_on_ArcadeModeButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VsModeButton2" to="." method="_on_VsModeButton2_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HelpButton" to="." method="_on_HelpButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

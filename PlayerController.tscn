@@ -127,6 +127,7 @@ anims/ready = SubResource( 1 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AnimationPlayer"]
 stream = ExtResource( 12 )
+bus = "Sound effects"
 
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource( 2 )
@@ -245,6 +246,7 @@ bus = "Music"
 
 [connection signal="game_finished" from="PlayerController" to="." method="_on_PlayerController_game_finished"]
 [connection signal="score_updated" from="PlayerController" to="." method="_on_PlayerController_score_updated"]
+[connection signal="cells_dropped" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_cells_dropped"]
 [connection signal="score_calculated" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_calculated"]
 [connection signal="score_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_shown"]
 [connection signal="timeout" from="PlayerController/Timer" to="PlayerController" method="_on_Timer_timeout"]

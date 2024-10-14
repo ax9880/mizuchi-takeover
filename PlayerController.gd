@@ -20,6 +20,8 @@ var _boards_cleared: int = 0
 var _perfect_boards: int = 0
 var _level: int = 1
 
+var _is_game_over: bool = false
+
 var _random := RandomNumberGenerator.new()
 
 
@@ -29,13 +31,16 @@ signal score_updated(points, boards_cleared)
 
 func _ready() -> void:
 	_random.randomize()
+	
+	$Timer.wait_time = GameData.time_seconds
+	width = GameData.starting_size
+	height = GameData.starting_size
+	
+	set_process(false)
 
 
 func _process(_delta: float) -> void:
-	#$TimerLabel.text = str($Timer.time_left)
-	#$PosessionTimerLabel.text = str($PosessionTimer.time_left)
-	
-	var next_coordinates = coordinates
+	var next_coordinates: Vector2 = coordinates
 	
 	if Input.is_action_just_pressed("ui_up_%d" % player_index):
 		next_coordinates.y -= 1
@@ -82,13 +87,12 @@ func _process(_delta: float) -> void:
 			$NoMovementAudioStreamPlayer.play()
 	
 	if coordinates.is_equal_approx(target):
-		print("you win!")
+		print("You win!")
 		
 		$Grid.hide_target()
 		
 		$PosessionTimer.stop()
 		
-		# TODO: Emit signal
 		_boards_cleared += 1
 		
 		$Grid.compare_paths(traversed_cells, target)
@@ -118,7 +122,7 @@ func _create_new_board() -> void:
 	
 	$Grid.hide()
 	
-	if _boards_cleared > 0 and _boards_cleared % 1 == 0:
+	if GameData.can_grow_size and _boards_cleared > 0 and _boards_cleared % 1 == 0:
 		if width < 8:
 			width += 1
 		
@@ -128,8 +132,6 @@ func _create_new_board() -> void:
 		_level += 1
 		
 		generate()
-		
-		# TODO: Reposition grid
 	
 	_choose_random_target()
 	
@@ -137,6 +139,9 @@ func _create_new_board() -> void:
 	$Grid.drop_down_cells()
 	
 	yield($Grid, "cells_dropped")
+	
+	if _is_game_over:
+		return
 	
 	$Grid.show_target()
 	
@@ -181,6 +186,8 @@ func update_player_position() -> void:
 func _finish_game() -> void:
 	set_process(false)
 	
+	_is_game_over = true
+	
 	$PosessionTimer.stop()
 	
 	print("Game over!")
@@ -216,3 +223,8 @@ func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
 		_perfect_boards += 1
 	
 	emit_signal("score_updated", _points, _boards_cleared)
+
+
+func _on_Grid_cells_dropped() -> void:
+	if not _is_game_over:
+		set_process(true)

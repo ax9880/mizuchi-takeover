@@ -12,7 +12,6 @@ export(int, 0, 1) var player_index: int = 0
 
 
 func _ready() -> void:
-	
 	player_controller.player_index = player_index
 	player_controller.rect_size = rect_size
 	
@@ -20,6 +19,8 @@ func _ready() -> void:
 	boards_cleared_label.text = "0"
 	
 	_update_timer_label(timer.wait_time)
+	
+	$CanvasLayer/MarginContainer/ResultsMarginContainer.player_index = player_index
 	
 	# Set size and global position because the nodes in the canvas layer do
 	# not inherit that from the root container

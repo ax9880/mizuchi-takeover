@@ -26,7 +26,7 @@ func advance_tween() -> void:
 	_start_rotation()
 
 
-func _on_Tween_tween_completed(object, key):
+func _on_Tween_tween_completed(_object, _key) -> void:
 	_angle_degrees = int(_angle_degrees) % 360
 	
 	_start_rotation()

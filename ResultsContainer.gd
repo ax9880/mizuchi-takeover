@@ -1,16 +1,30 @@
 extends MarginContainer
 
 
-func _ready():
+var player_index: int = 0
+
+var boards_cleared_multiplier: int = 1000
+var level_multiplier: int = 10000
+var lives_multiplier: int = 20000
+
+
+func _ready() -> void:
 	hide()
-	
-	#show_results(100, 10, 1, 2, 3)
 
 
 func show_results(score, boards_cleared, perfect_boards, level, lives) -> void:
 	show()
 	
-	$GameOverAudioStreamPlayer.play()
+	var boards_score: int = boards_cleared * boards_cleared_multiplier
+	var level_score: int = level * level_multiplier
+	var lives_score: int = lives * lives_multiplier
+	
+	var total_score: int = score + boards_score + level_score + lives_score
+	
+	_update_global_score(total_score)
+	
+	if GameData.is_player_one(player_index):
+		$GameOverAudioStreamPlayer.play()
 	
 	for child in $VBoxContainer.get_children():
 		child.modulate.a = 0
@@ -29,33 +43,62 @@ func show_results(score, boards_cleared, perfect_boards, level, lives) -> void:
 	
 	yield($Timer, "timeout")
 	
-	show_value_with_multiplier($VBoxContainer/BoardsClearedHBox/ValueLabel, boards_cleared, 1000)
+	show_value_with_multiplier($VBoxContainer/BoardsClearedHBox/ValueLabel, boards_cleared, boards_cleared_multiplier)
 	
 	yield($Timer, "timeout")
 	
-	show_value_with_multiplier($VBoxContainer/LevelHBox/ValueLabel, level, 10000)
+	show_value_with_multiplier($VBoxContainer/LevelHBox/ValueLabel, level, level_multiplier)
 	
 	yield($Timer, "timeout")
 	
-	show_value_with_multiplier($VBoxContainer/LivesHBox/ValueLabel, lives, 20000)
+	show_value_with_multiplier($VBoxContainer/LivesHBox/ValueLabel, lives, lives_multiplier)
 	
 	yield($Timer, "timeout")
-	
-	var boards_score: int = boards_cleared * 1000
-	var level_score: int = level * 10000
-	var lives_score: int = lives * 20000
-	
-	var total_score: int = score + boards_score + level_score + lives_score
 	
 	show_value($VBoxContainer/BoardsClearedHBox/ValueLabel, boards_score)
 	show_value($VBoxContainer/LevelHBox/ValueLabel, level_score)
 	show_value($VBoxContainer/LivesHBox/ValueLabel, lives_score)
 	show_value($VBoxContainer/TotalHBox/ValueLabel, total_score)
 	
-	# TODO: Only in 1P mode OR only enable for the winner (or the loser)
+	if GameData.is_two_player_mode:
+		_show_vs_results()
+	else:
+		_show_buttons()
+
+
+func _show_vs_results() -> void:
+	var winner_index: int = GameData.get_winner_player_index()
+	
+	var is_tie: bool = false
+	var is_win: bool = false
+	
+	if winner_index == -1:
+		$VBoxContainer/GameOverLabel.text = "TIE"
+		
+		is_tie = true
+	elif player_index == winner_index:
+		$VBoxContainer/GameOverLabel.text = "YOU WON"
+		
+		is_win = true
+		
+		$ScoreItemAudioStreamPlayer.play()
+	else:
+		$VBoxContainer/GameOverLabel.text = "YOU LOSE"
+	
+	if is_tie and GameData.is_player_one(player_index):
+		_show_buttons()
+	elif not is_win:
+		_show_buttons()
+
+
+func _show_buttons() -> void:
+	$VBoxContainer/PlayAgainButton.disabled = false
+	
 	$Tween.interpolate_property($VBoxContainer/PlayAgainButton, "modulate",
 		$VBoxContainer/PlayAgainButton.modulate, Color.white,
 		1)
+	
+	$VBoxContainer/QuitButton.disabled = false
 	
 	$Tween.interpolate_property($VBoxContainer/QuitButton, "modulate",
 		$VBoxContainer/QuitButton.modulate, Color.white,
@@ -72,7 +115,8 @@ func show_value(label: Label, value: int) -> void:
 	label.text = str(value)
 	label.get_parent().modulate = Color.white
 	
-	$ScoreItemAudioStreamPlayer.play()
+	if GameData.is_player_one(player_index):
+		$ScoreItemAudioStreamPlayer.play()
 
 
 func show_value_with_multiplier(label: Label, value: int, multiplier: int) -> void:
@@ -80,14 +124,28 @@ func show_value_with_multiplier(label: Label, value: int, multiplier: int) -> vo
 	
 	label.get_parent().modulate = Color.white
 	
-	$ScoreItemAudioStreamPlayer.play()
+	if GameData.is_player_one(player_index):
+		$ScoreItemAudioStreamPlayer.play()
+
+
+func _update_global_score(total_score: int) -> void:
+	if not GameData.is_two_player_mode:
+		return
+	
+	if GameData.is_player_one(player_index):
+		GameData.player_one_score = total_score
+	else:
+		GameData.player_two_score = total_score
 
 
 func _on_PlayAgainButton_pressed() -> void:
 		# TODO: Don't reset music?
 		
-		Loader.change_scene("res://Main.tscn")
+		if GameData.is_two_player_mode:
+			Loader.change_scene("res://VsMode.tscn")
+		else:
+			Loader.change_scene("res://Main.tscn")
 
 
 func _on_QuitButton_pressed() -> void:
-	Loader.change_scene("res://TitleScene.tscn")
+	Loader.change_scene("res://TitleScreen.tscn")

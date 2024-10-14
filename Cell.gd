@@ -27,7 +27,7 @@ var coordinates: Vector2 = Vector2.ZERO
 var neighbors: Array = []
 
 
-func add_neighbor(neighbor: Cell, direction: int) -> void:
+func add_neighbor(neighbor: Cell) -> void:
 	if neighbor != null:
 		neighbors.push_back(neighbor)
 
