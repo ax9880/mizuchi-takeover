@@ -50,9 +50,13 @@ func release() -> void:
 	hide_arrows()
 
 
-func reset() -> void:
-	has_cost_one = false
+func clear() -> void:
+	reset()
 	
+	neighbors.clear()
+
+
+func reset() -> void:
 	$AnimationPlayer.play("RESET")
 	
 	$Highlight.hide()

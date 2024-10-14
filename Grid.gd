@@ -10,7 +10,6 @@ enum PathMode {
 	DESCENDING
 }
 
-
 class MyAStar:
 	extends AStar
 	
@@ -70,13 +69,18 @@ func _ready() -> void:
 
 
 func generate(width: int, height: int) -> void:
+	grid.clear()
+	astar.clear()
+	
 	for cell in astar.cells:
-		astar.remove_point(cell.id)
-		
 		remove_child(cell)
+		
+		cell.clear()
+		
+		assert(not cell in _cell_pool)
+		
 		_cell_pool.push_back(cell)
 	
-	grid.clear()
 	astar.cells.clear()
 	
 	start_id = 0
@@ -119,6 +123,8 @@ func generate(width: int, height: int) -> void:
 func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) -> void:
 	for cell in astar.cells:
 		cell.value = rng.randi_range(0, 1)
+		
+		cell.has_cost_one = false
 	
 	start_id = get_cell_from_coordinates(start_coordinates).id
 	target_id = get_cell_from_coordinates(target_coordinates).id
@@ -418,17 +424,6 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: fl
 	floating_label.start(points)
 	
 	emit_signal("score_calculated", points, is_perfect_board)
-	
-	if shortest_id_path != current_id_path:
-		$DropCellsTimer.wait_time = 2
-	else:
-		$DropCellsTimer.wait_time = 1
-	
-	$DropCellsTimer.start()
-	
-	yield($DropCellsTimer, "timeout")
-	
-	drop_cells()
 
 
 func calculate_path_cost(id_path: Array) -> float:
@@ -508,7 +503,9 @@ func _build_cell(x_position: float, y_position: float) -> Cell:
 	if _cell_pool.empty():
 		_cell_pool.push_back(cell_packed_scene.instance())
 	
-	var cell: Cell = _cell_pool.pop_back()
+	var cell: Cell = _cell_pool.pop_front()
+	
+	assert(not cell.is_inside_tree())
 	
 	add_child(cell)
 	
