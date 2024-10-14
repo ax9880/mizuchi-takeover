@@ -5,11 +5,13 @@ QUIT,Quit,Salir
 CREDITS,"By: illusorybread for Touhou Station Game Jam 2024
 Touhou Pixel Character pack provided by tea_basira
 Touhou Game Jam BGM pack provided by dBu Music
-Sounds: SoundEffect-lab, Ovani Sound","Por: illusorybread para Touhou Station Game Jam 2024
+Sounds: SoundEffect-lab, Ovani Sound
+Fonts: Gravity Pixel Font by jotson, 04B-25 by 04.jp.org","Por: illusorybread para Touhou Station Game Jam 2024
 Touhou Pixel Character pack por tea_basira
 Touhou Game Jam BGM pack por dBu Music
-Sonidos: SoundEffect-lab, Ovani Sound"
-SUBTITLE,"Help Mizuchi find the shortest path to possess Reimu!","Ayuda a Mizuchi a encontrar el camino más corto para poseer a Reimu"
+Sonidos: SoundEffect-lab, Ovani Sound,
+Fuentes: Gravity Pixel Font por jotson, 04B-25 por 04.jp.org"
+SUBTITLE,"Help Mizuchi find the best path to possess Reimu","Ayuda a Mizuchi a encontrar el mejor camino para poseer a Reimu"
 TIME_LEFT,Time,Tiempo
 SIZE,Size,Tamaño
 GROW_SIZE,Grow board,Crecer tablero

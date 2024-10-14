@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Fonts/theme.tres" type="Theme" id=1]
 [ext_resource path="res://AudioButton.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Fonts/04b_30.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Sounds/DbuMusic/04_hooduki_140.ogg" type="AudioStream" id=6]
 [ext_resource path="res://FadeableAudioStreamPlayer.gd" type="Script" id=7]
+[ext_resource path="res://Background.tscn" type="PackedScene" id=8]
 
 [node name="TitleScreen" type="MarginContainer"]
 anchor_right = 1.0
@@ -14,10 +15,7 @@ anchor_bottom = 1.0
 theme = ExtResource( 1 )
 script = ExtResource( 4 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 640.0
-margin_bottom = 360.0
-color = Color( 0.564706, 0.717647, 0.752941, 1 )
+[node name="ColorRect" parent="." instance=ExtResource( 8 )]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 640.0
@@ -35,11 +33,10 @@ margin_bottom = 360.0
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 340.0
 margin_bottom = 168.0
-rect_min_size = Vector2( 0, 120 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 5 )
-text = "MIZUCHI'S
-REVENGE"
+text = "MIZUCHI
+TAKEOVER"
 align = 1
 valign = 1
 
@@ -129,7 +126,7 @@ margin_bottom = 328.0
 text = "QUIT"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-modulate = Color( 1, 1, 1, 0.415686 )
+modulate = Color( 1, 1, 1, 0.752941 )
 margin_top = 332.0
 margin_right = 340.0
 margin_bottom = 340.0

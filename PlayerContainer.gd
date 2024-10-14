@@ -56,7 +56,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	_update_timer_label(timer.time_left)
 	
-	if Input.is_action_just_pressed("ui_select"):
+	if Input.is_action_just_pressed("ui_cancel"):
 		var _error = Loader.change_scene("res://TitleScreen.tscn")
 		
 		GameMusic.stop()
