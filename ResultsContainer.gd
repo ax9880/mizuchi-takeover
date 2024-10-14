@@ -23,7 +23,7 @@ func show_results(score, boards_cleared, perfect_boards, level, lives) -> void:
 	
 	_update_global_score(total_score)
 	
-	if GameData.is_player_one(player_index):
+	if GameData.is_left_side_player(player_index):
 		$GameOverAudioStreamPlayer.play()
 	
 	for child in $VBoxContainer.get_children():
@@ -85,7 +85,7 @@ func _show_vs_results() -> void:
 	else:
 		$VBoxContainer/GameOverLabel.text = "YOU LOSE"
 	
-	if is_tie and GameData.is_player_one(player_index):
+	if is_tie and GameData.is_left_side_player(player_index):
 		_show_buttons()
 	elif not is_win:
 		_show_buttons()
@@ -115,7 +115,7 @@ func show_value(label: Label, value: int) -> void:
 	label.text = str(value)
 	label.get_parent().modulate = Color.white
 	
-	if GameData.is_player_one(player_index):
+	if GameData.is_left_side_player(player_index):
 		$ScoreItemAudioStreamPlayer.play()
 
 
@@ -124,7 +124,7 @@ func show_value_with_multiplier(label: Label, value: int, multiplier: int) -> vo
 	
 	label.get_parent().modulate = Color.white
 	
-	if GameData.is_player_one(player_index):
+	if GameData.is_left_side_player(player_index):
 		$ScoreItemAudioStreamPlayer.play()
 
 
@@ -132,7 +132,7 @@ func _update_global_score(total_score: int) -> void:
 	if not GameData.is_two_player_mode:
 		return
 	
-	if GameData.is_player_one(player_index):
+	if GameData.is_left_side_player(player_index):
 		GameData.player_one_score = total_score
 	else:
 		GameData.player_two_score = total_score
@@ -142,9 +142,9 @@ func _on_PlayAgainButton_pressed() -> void:
 		# TODO: Don't reset music?
 		
 		if GameData.is_two_player_mode:
-			Loader.change_scene("res://VsMode.tscn")
+			var _error := Loader.change_scene("res://VsMode.tscn")
 		else:
-			Loader.change_scene("res://Main.tscn")
+			var _error := Loader.change_scene("res://Main.tscn")
 
 
 func _on_QuitButton_pressed() -> void:

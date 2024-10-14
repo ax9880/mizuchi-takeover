@@ -9,8 +9,10 @@ func _ready() -> void:
 	
 	if GameData.is_two_player_mode:
 		GameData.can_grow_size = false
+		GameData.starting_size = 4
 		
 		$MarginContainer/VBoxContainer/CanGrowSizeCheckBox.set_pressed_no_signal(false)
+		$MarginContainer/VBoxContainer/HBoxContainer/SizeOptionButton.select(1)
 	
 	$MarginContainer/VBoxContainer/StartButton.grab_focus()
 

@@ -1,10 +1,16 @@
 extends Node2D
 
+enum State {
+	ACTIVE,
+	SHOWING_PATHS
+}
 
 export var lives: int = 2
 
 export var width: int = 3
 export var height: int = 3
+
+export(NodePath) var next_prompt_node_path: NodePath
 
 var player_index: int = 0
 
@@ -24,6 +30,9 @@ var _is_game_over: bool = false
 
 var _random := RandomNumberGenerator.new()
 
+var _state: int = State.ACTIVE
+
+onready var next_prompt: Control = get_node(next_prompt_node_path)
 
 signal game_finished(points, boards_cleared, perfect_boards, level, lives)
 signal score_updated(points, boards_cleared)
@@ -40,6 +49,19 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	match(_state):
+		State.ACTIVE:
+			_move_player()
+		State.SHOWING_PATHS:
+			if Input.is_action_just_pressed("ui_down_%d" % player_index):
+				$Grid.drop_cells()
+				
+				next_prompt.stop()
+				
+				set_process(false)
+
+
+func _move_player() -> void:
 	var next_coordinates: Vector2 = coordinates
 	
 	if Input.is_action_just_pressed("ui_up_%d" % player_index):
@@ -223,8 +245,15 @@ func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
 		_perfect_boards += 1
 	
 	emit_signal("score_updated", _points, _boards_cleared)
+	
+	_state = State.SHOWING_PATHS
+	next_prompt.start(player_index)
+	
+	set_process(true)
 
 
 func _on_Grid_cells_dropped() -> void:
 	if not _is_game_over:
+		_state = State.ACTIVE
+		
 		set_process(true)

@@ -200,7 +200,7 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 						
 						start_value_index = values.size() - 1
 				
-				shuffled_bags.erase(current_value)
+				var _is_erased := shuffled_bags.erase(current_value)
 				
 				assert(values.size() > 0)
 			else:
@@ -215,7 +215,7 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 				var next_value: float = values[start_value_index]
 				
 				values.remove(index)
-				shuffled_bags.erase(current_value)
+				var _is_erased := shuffled_bags.erase(current_value)
 				
 				start_value_index = values.find(next_value)
 				
@@ -269,7 +269,7 @@ func _fill_cells_with_random_characters(shortest_id_path: Array, shuffled_bags: 
 			
 			if characters.empty():
 				values.remove(index)
-				shuffled_bags.erase(value)
+				var _is_erased := shuffled_bags.erase(value)
 
 
 func _read_characters(path: String) -> void:
@@ -368,12 +368,8 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 
 
 func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: float, points: int) -> void:
-	var current_cost: float = 0
-	
 	for i in current_id_path.size() - 1:
 		var id: int = current_id_path[i]
-		
-		current_cost += astar._compute_cost(id, current_id_path[i + 1])
 		
 		var is_in_shortest_path: bool = id in shortest_id_path
 		

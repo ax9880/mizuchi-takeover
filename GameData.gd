@@ -20,6 +20,9 @@ func get_winner_player_index() -> int:
 		return 0
 
 
-func is_player_one(player_index: int) -> bool:
+func is_left_side_player(player_index: int) -> bool:
+	if not is_two_player_mode:
+		return false
+	
 	# Index 0 is for arrow controls, which are on the right (player 2)
 	return player_index == 1

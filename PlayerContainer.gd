@@ -22,6 +22,8 @@ func _ready() -> void:
 	
 	$CanvasLayer/MarginContainer/ResultsMarginContainer.player_index = player_index
 	
+	$CanvasLayer/MarginContainer2/VBoxContainer/NextPrompt.hide()
+	
 	# Set size and global position because the nodes in the canvas layer do
 	# not inherit that from the root container
 	_set_container_rect_size($CanvasLayer/MarginContainer)
@@ -42,6 +44,11 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_update_timer_label(timer.time_left)
+	
+	if Input.is_action_just_pressed("ui_cancel"):
+		var _error = Loader.change_scene("res://TitleScreen.tscn")
+		
+		set_process(false)
 
 
 func _update_timer_label(time_left: float) -> void:
