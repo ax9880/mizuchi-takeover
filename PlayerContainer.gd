@@ -2,9 +2,10 @@ extends MarginContainer
 
 onready var player_controller := $PlayerController
 
-onready var points_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/Points
-onready var boards_cleared_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/BoardsCleared
-onready var timer_label = $CanvasLayer/MarginContainer2/HBoxContainer/TimerLabel
+onready var timer_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer/TimerLabel
+onready var level_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer2/Level
+onready var boards_cleared_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer3/BoardsCleared
+onready var points_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer4/Points
 
 onready var timer := $PlayerController/Timer
 
@@ -85,8 +86,8 @@ func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, 
 func _on_PlayerController_score_updated(points: int, boards_cleared: int, perfect_boards: int) -> void:
 	points_label.text = str(points)
 	
-	boards_cleared_label.text = "%s: %d | %d" % [tr("BOARDS"), boards_cleared, perfect_boards]
+	boards_cleared_label.text = "%d | %d" % [boards_cleared, perfect_boards]
 
 
 func _on_PlayerController_level_increased(level: int) -> void:
-	$CanvasLayer/MarginContainer2/HBoxContainer/Level.text = "%s: %d" % [tr("LEVEL"), level]
+	level_label.text = "%d" % [level]

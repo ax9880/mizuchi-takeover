@@ -193,16 +193,28 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 
 [node name="PlayerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
-margin_top = 12.0
 margin_right = 24.0
-margin_bottom = 20.0
+margin_bottom = 8.0
 rect_min_size = Vector2( 24, 0 )
+size_flags_vertical = 0
 text = "P1"
 
-[node name="TimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_left = 28.0
-margin_top = 12.0
 margin_right = 174.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Time" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer"]
+margin_right = 146.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 36, 0 )
+size_flags_horizontal = 3
+text = "TIME"
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer"]
+margin_top = 12.0
+margin_right = 146.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 36, 0 )
 size_flags_horizontal = 3
@@ -218,32 +230,62 @@ rect_min_size = Vector2( 60, 0 )
 size_flags_horizontal = 3
 text = "P. Timer"
 
-[node name="Level" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_left = 178.0
-margin_top = 12.0
 margin_right = 324.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 72, 0 )
+margin_bottom = 32.0
 size_flags_horizontal = 3
-text = "LEVEL: 999"
 
-[node name="BoardsCleared" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
-margin_left = 328.0
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer2"]
+margin_right = 146.0
+margin_bottom = 8.0
+text = "LEVEL"
+
+[node name="Level" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer2"]
 margin_top = 12.0
+margin_right = 146.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "999"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+margin_left = 328.0
 margin_right = 474.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer3"]
+margin_right = 146.0
+margin_bottom = 8.0
+text = "BOARDS"
+
+[node name="BoardsCleared" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer3"]
+margin_top = 12.0
+margin_right = 146.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 96, 0 )
 size_flags_horizontal = 3
-text = "BOARDS: 999"
+text = "999 | 999"
 
-[node name="Points" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+[node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_left = 478.0
-margin_top = 12.0
 margin_right = 624.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer4"]
+margin_right = 146.0
+margin_bottom = 8.0
+text = "POINTS"
+
+[node name="Points" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer4"]
+margin_top = 12.0
+margin_right = 146.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 3
 text = "999.999"
+clip_text = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2"]
 margin_left = 8.0
