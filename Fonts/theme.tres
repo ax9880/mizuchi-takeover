@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=15 format=2]
 
-[ext_resource path="res://Fonts/04b_30.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Fonts/GravityBold8EnEs.tres" type="DynamicFont" id=1]
 [ext_resource path="res://DotPack/System_Icons.png" type="Texture" id=2]
 
 [sub_resource type="StyleBoxFlat" id=4]

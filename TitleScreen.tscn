@@ -1,14 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Fonts/theme.tres" type="Theme" id=1]
 [ext_resource path="res://AudioButton.tscn" type="PackedScene" id=2]
-[ext_resource path="res://TitleScene.gd" type="Script" id=3]
+[ext_resource path="res://VolumeSlider.tscn" type="PackedScene" id=3]
+[ext_resource path="res://TitleScreen.gd" type="Script" id=4]
+[ext_resource path="res://Fonts/04b_30.tres" type="DynamicFont" id=5]
 
-[node name="TitleScene" type="MarginContainer"]
+[node name="TitleScreen" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 640.0
@@ -30,30 +32,35 @@ margin_bottom = 360.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 340.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 0, 200 )
-text = "MIZUCHI'S REVENGE"
+margin_bottom = 180.0
+rect_min_size = Vector2( 0, 180 )
+custom_fonts/font = ExtResource( 5 )
+text = "MIZUCHI'S
+REVENGE"
 align = 1
 valign = 1
 
 [node name="ArcadeModeButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 110.0
-margin_top = 204.0
+margin_top = 184.0
 margin_right = 230.0
-margin_bottom = 222.0
+margin_bottom = 202.0
 text = "ARCADE_MODE"
 
 [node name="VsModeButton2" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 110.0
-margin_top = 226.0
+margin_top = 206.0
 margin_right = 230.0
-margin_bottom = 244.0
+margin_bottom = 224.0
 text = "VS_MODE"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 248.0
-margin_right = 340.0
-margin_bottom = 264.0
+margin_left = 110.0
+margin_top = 228.0
+margin_right = 230.0
+margin_bottom = 244.0
+rect_min_size = Vector2( 120, 0 )
+size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 margin_top = 4.0
@@ -62,17 +69,19 @@ margin_bottom = 12.0
 rect_min_size = Vector2( 50, 0 )
 text = "BGM"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="VolumeSlider" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 3 )]
 margin_left = 54.0
-margin_right = 340.0
+margin_right = 120.0
 margin_bottom = 16.0
-rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 268.0
-margin_right = 340.0
-margin_bottom = 284.0
+margin_left = 110.0
+margin_top = 248.0
+margin_right = 230.0
+margin_bottom = 264.0
+rect_min_size = Vector2( 120, 0 )
+size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_top = 4.0
@@ -81,31 +90,32 @@ margin_bottom = 12.0
 rect_min_size = Vector2( 50, 0 )
 text = "SFX"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VolumeSlider" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
 margin_left = 54.0
-margin_right = 340.0
+margin_right = 120.0
 margin_bottom = 16.0
-rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
+bus_name = "Sound effects"
 
 [node name="HelpButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 110.0
-margin_top = 288.0
+margin_top = 268.0
 margin_right = 230.0
-margin_bottom = 306.0
+margin_bottom = 286.0
 text = "HELP"
 
 [node name="QuitButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 110.0
-margin_top = 310.0
+margin_top = 290.0
 margin_right = 230.0
-margin_bottom = 328.0
+margin_bottom = 308.0
 text = "QUIT"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 332.0
+margin_top = 312.0
 margin_right = 340.0
-margin_bottom = 340.0
+margin_bottom = 320.0
 text = "illusorybread"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ArcadeModeButton" to="." method="_on_ArcadeModeButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
