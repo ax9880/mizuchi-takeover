@@ -6,3 +6,5 @@ Split/**/*.png
 Sounds/DbuMusic/*.ogg
 Sounds/Ovani/*.wav
 Sounds/SoundEffectLab/*.mp3
+
+*.translation
