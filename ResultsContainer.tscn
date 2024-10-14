@@ -77,10 +77,30 @@ text = "999 x 1000"
 align = 2
 clip_text = true
 
-[node name="LevelHBox" type="HBoxContainer" parent="VBoxContainer"]
+[node name="PerfectBoardsHBox" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 60.0
 margin_right = 204.0
 margin_bottom = 68.0
+
+[node name="PerfectBoards" type="Label" parent="VBoxContainer/PerfectBoardsHBox"]
+margin_right = 128.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 128, 0 )
+text = "PERFECT_BOARDS"
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/PerfectBoardsHBox"]
+margin_left = 132.0
+margin_right = 204.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 72, 0 )
+text = "3 x 20000"
+align = 2
+clip_text = true
+
+[node name="LevelHBox" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 204.0
+margin_bottom = 80.0
 
 [node name="Level" type="Label" parent="VBoxContainer/LevelHBox"]
 margin_right = 128.0
@@ -94,26 +114,6 @@ margin_right = 204.0
 margin_bottom = 8.0
 rect_min_size = Vector2( 72, 0 )
 text = "99 x 10000"
-align = 2
-clip_text = true
-
-[node name="LivesHBox" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 72.0
-margin_right = 204.0
-margin_bottom = 80.0
-
-[node name="Lives" type="Label" parent="VBoxContainer/LivesHBox"]
-margin_right = 128.0
-margin_bottom = 8.0
-rect_min_size = Vector2( 128, 0 )
-text = "LIVES"
-
-[node name="ValueLabel" type="Label" parent="VBoxContainer/LivesHBox"]
-margin_left = 132.0
-margin_right = 204.0
-margin_bottom = 8.0
-rect_min_size = Vector2( 72, 0 )
-text = "3 x 20000"
 align = 2
 clip_text = true
 

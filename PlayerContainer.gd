@@ -15,8 +15,13 @@ func _ready() -> void:
 	player_controller.player_index = player_index
 	player_controller.rect_size = rect_size
 	
-	points_label.text = "0"
-	boards_cleared_label.text = "0"
+	if not GameData.is_two_player_mode or GameData.is_left_side_player(player_index):
+		$CanvasLayer/MarginContainer2/HBoxContainer/PlayerLabel.text = "P1"
+	else:
+		$CanvasLayer/MarginContainer2/HBoxContainer/PlayerLabel.text = "P2"
+	
+	_on_PlayerController_score_updated(0, 0)
+	_on_PlayerController_level_increased(player_controller._level)
 	
 	_update_timer_label(timer.wait_time)
 	
@@ -56,7 +61,7 @@ func _update_timer_label(time_left: float) -> void:
 	var seconds = int(time_left) % 60
 	
 	# Time left: 59:59
-	timer_label.text = "%s: %02d:%02d" % [tr("TIME_LEFT"), minutes, seconds]
+	timer_label.text = "%02d:%02d" % [minutes, seconds]
 
 
 func _set_container_rect_size(container: Control) -> void:
@@ -73,4 +78,8 @@ func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, 
 func _on_PlayerController_score_updated(points: int, boards_cleared: int) -> void:
 	points_label.text = str(points)
 	
-	boards_cleared_label.text = str(boards_cleared)
+	boards_cleared_label.text = "%s: %d" % [tr("BOARDS"), boards_cleared]
+
+
+func _on_PlayerController_level_increased(level: int) -> void:
+	$CanvasLayer/MarginContainer2/HBoxContainer/Level.text = "%s: %d" % [tr("LEVEL"), level]

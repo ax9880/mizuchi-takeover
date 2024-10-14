@@ -5,25 +5,25 @@ var player_index: int = 0
 
 var boards_cleared_multiplier: int = 1000
 var level_multiplier: int = 10000
-var lives_multiplier: int = 20000
+var perfect_boards_multiplier: int = 20000
 
 
 func _ready() -> void:
 	hide()
 
 
-func show_results(score, boards_cleared, perfect_boards, level, lives) -> void:
+func show_results(score, boards_cleared, perfect_boards, level, _lives) -> void:
 	show()
 	
 	var boards_score: int = boards_cleared * boards_cleared_multiplier
 	var level_score: int = level * level_multiplier
-	var lives_score: int = lives * lives_multiplier
+	var perfect_boards_score: int = perfect_boards * perfect_boards_multiplier
 	
-	var total_score: int = score + boards_score + level_score + lives_score
+	var total_score: int = score + boards_score + level_score + perfect_boards_score
 	
 	_update_global_score(total_score)
 	
-	if GameData.is_left_side_player(player_index):
+	if not GameData.is_left_side_player(player_index):
 		$GameOverAudioStreamPlayer.play()
 	
 	for child in $VBoxContainer.get_children():
@@ -47,17 +47,17 @@ func show_results(score, boards_cleared, perfect_boards, level, lives) -> void:
 	
 	yield($Timer, "timeout")
 	
-	show_value_with_multiplier($VBoxContainer/LevelHBox/ValueLabel, level, level_multiplier)
+	show_value_with_multiplier($VBoxContainer/PerfectBoardsHBox/ValueLabel, perfect_boards, perfect_boards_multiplier)
 	
 	yield($Timer, "timeout")
 	
-	show_value_with_multiplier($VBoxContainer/LivesHBox/ValueLabel, lives, lives_multiplier)
+	show_value_with_multiplier($VBoxContainer/LevelHBox/ValueLabel, level, level_multiplier)
 	
 	yield($Timer, "timeout")
 	
 	show_value($VBoxContainer/BoardsClearedHBox/ValueLabel, boards_score)
 	show_value($VBoxContainer/LevelHBox/ValueLabel, level_score)
-	show_value($VBoxContainer/LivesHBox/ValueLabel, lives_score)
+	show_value($VBoxContainer/PerfectBoardsHBox/ValueLabel, perfect_boards_score)
 	show_value($VBoxContainer/TotalHBox/ValueLabel, total_score)
 	
 	if GameData.is_two_player_mode:
@@ -85,8 +85,9 @@ func _show_vs_results() -> void:
 	else:
 		$VBoxContainer/GameOverLabel.text = "YOU LOSE"
 	
-	if is_tie and GameData.is_left_side_player(player_index):
-		_show_buttons()
+	if is_tie:
+		if GameData.is_left_side_player(player_index):
+			_show_buttons()
 	elif not is_win:
 		_show_buttons()
 
@@ -115,7 +116,7 @@ func show_value(label: Label, value: int) -> void:
 	label.text = str(value)
 	label.get_parent().modulate = Color.white
 	
-	if GameData.is_left_side_player(player_index):
+	if not GameData.is_left_side_player(player_index):
 		$ScoreItemAudioStreamPlayer.play()
 
 
@@ -124,7 +125,7 @@ func show_value_with_multiplier(label: Label, value: int, multiplier: int) -> vo
 	
 	label.get_parent().modulate = Color.white
 	
-	if GameData.is_left_side_player(player_index):
+	if not GameData.is_left_side_player(player_index):
 		$ScoreItemAudioStreamPlayer.play()
 
 
@@ -148,4 +149,4 @@ func _on_PlayAgainButton_pressed() -> void:
 
 
 func _on_QuitButton_pressed() -> void:
-	Loader.change_scene("res://TitleScreen.tscn")
+	var _error := Loader.change_scene("res://TitleScreen.tscn")

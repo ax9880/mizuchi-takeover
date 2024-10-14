@@ -36,6 +36,7 @@ onready var next_prompt: Control = get_node(next_prompt_node_path)
 
 signal game_finished(points, boards_cleared, perfect_boards, level, lives)
 signal score_updated(points, boards_cleared)
+signal level_increased(level)
 
 
 func _ready() -> void:
@@ -44,6 +45,8 @@ func _ready() -> void:
 	$Timer.wait_time = GameData.time_seconds
 	width = GameData.starting_size
 	height = GameData.starting_size
+	
+	_level = GameData.starting_size - 2
 	
 	set_process(false)
 
@@ -144,7 +147,7 @@ func _create_new_board() -> void:
 	
 	$Grid.hide()
 	
-	if GameData.can_grow_size and _boards_cleared > 0 and _boards_cleared % 1 == 0:
+	if GameData.can_grow_size and _perfect_boards > 1 and _perfect_boards % 5 == 0:
 		if width < 8:
 			width += 1
 		
@@ -152,12 +155,13 @@ func _create_new_board() -> void:
 			height += 1
 		
 		_level += 1
+		emit_signal("level_increased", _level)
 		
 		generate()
 	
 	_choose_random_target()
 	
-	$Grid.randomize_board(coordinates, target)
+	$Grid.randomize_board(coordinates, target, GameData.is_left_side_player(player_index))
 	$Grid.drop_down_cells()
 	
 	yield($Grid, "cells_dropped")

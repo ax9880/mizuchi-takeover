@@ -120,7 +120,7 @@ func generate(width: int, height: int) -> void:
 			astar.connect_points(cell.id, neighbor.id, false)
 
 
-func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) -> void:
+func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is_left_side_player: bool) -> void:
 	for cell in astar.cells:
 		cell.value = rng.randi_range(0, 1)
 		
@@ -253,7 +253,7 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2) ->
 	
 	_fill_cells_with_random_characters(shortest_id_path, shuffled_bags)
 	
-	set_target()
+	set_target(is_left_side_player)
 
 
 func _fill_cells_with_random_characters(shortest_id_path: Array, shuffled_bags: Dictionary) -> void:
@@ -364,10 +364,10 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 		# that the player used
 		shortest_id_path = id_path
 	
-	show_paths(shortest_id_path, id_path, lowest_cost, points)
+	show_paths(shortest_id_path, id_path, points)
 
 
-func show_paths(shortest_id_path: Array, current_id_path: Array, lowest_cost: float, points: int) -> void:
+func show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -> void:
 	for i in current_id_path.size() - 1:
 		var id: int = current_id_path[i]
 		
@@ -473,10 +473,14 @@ func drop_cells() -> void:
 	emit_signal("score_shown")
 
 
-func set_target() -> void:
+func set_target(is_left_side_player: bool) -> void:
 	var cell: Cell = astar.cells[target_id]
 	
-	cell.set_frame(0)
+	if is_left_side_player:
+		cell.set_frame(1)
+	else:
+		cell.set_frame(0)
+	
 	cell.has_cost_one = true
 
 

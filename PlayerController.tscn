@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://PlayerContainer.gd" type="Script" id=1]
 [ext_resource path="res://PlayerController.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://ResultsContainer.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Sounds/SoundEffectLab/decision2.mp3" type="AudioStream" id=11]
 [ext_resource path="res://Sounds/SoundEffectLab/cursor1.mp3" type="AudioStream" id=12]
+[ext_resource path="res://DotPack/System_Icons.png" type="Texture" id=13]
 
 [sub_resource type="Animation" id=2]
 resource_name = "game over"
@@ -115,6 +116,10 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 1, 2 )
 }
 
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 13 )
+region = Rect2( 192, 208, 16, 16 )
+
 [node name="PlayerContainer" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -168,6 +173,9 @@ custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
 custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2"]
 margin_left = 8.0
@@ -178,15 +186,24 @@ rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="TimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+[node name="PlayerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_top = 12.0
-margin_right = 153.0
+margin_right = 24.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 60, 0 )
+rect_min_size = Vector2( 24, 0 )
+text = "P1"
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+margin_left = 28.0
+margin_top = 12.0
+margin_right = 174.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 36, 0 )
 size_flags_horizontal = 3
-text = "1:00.99"
+text = "99:99"
 
 [node name="PosessionTimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+visible = false
 margin_left = 157.0
 margin_top = 12.0
 margin_right = 310.0
@@ -195,17 +212,26 @@ rect_min_size = Vector2( 60, 0 )
 size_flags_horizontal = 3
 text = "P. Timer"
 
-[node name="BoardsCleared" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
-margin_left = 314.0
+[node name="Level" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+margin_left = 178.0
 margin_top = 12.0
-margin_right = 467.0
+margin_right = 324.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 50, 0 )
+rect_min_size = Vector2( 72, 0 )
 size_flags_horizontal = 3
-text = "999"
+text = "LEVEL: 999"
+
+[node name="BoardsCleared" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+margin_left = 328.0
+margin_top = 12.0
+margin_right = 474.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 96, 0 )
+size_flags_horizontal = 3
+text = "BOARDS: 999"
 
 [node name="Points" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
-margin_left = 471.0
+margin_left = 478.0
 margin_top = 12.0
 margin_right = 624.0
 margin_bottom = 20.0
@@ -235,6 +261,18 @@ margin_bottom = 344.0
 margin_right = 640.0
 margin_bottom = 360.0
 theme = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/MarginContainer"]
+margin_right = 640.0
+margin_bottom = 360.0
+texture = SubResource( 3 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/MarginContainer"]
 visible = false
@@ -254,6 +292,7 @@ align = 1
 valign = 1
 
 [node name="ResultsMarginContainer" parent="CanvasLayer/MarginContainer" instance=ExtResource( 10 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 640.0
@@ -265,6 +304,7 @@ autoplay = true
 bus = "Music"
 
 [connection signal="game_finished" from="PlayerController" to="." method="_on_PlayerController_game_finished"]
+[connection signal="level_increased" from="PlayerController" to="." method="_on_PlayerController_level_increased"]
 [connection signal="score_updated" from="PlayerController" to="." method="_on_PlayerController_score_updated"]
 [connection signal="cells_dropped" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_cells_dropped"]
 [connection signal="score_calculated" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_calculated"]
