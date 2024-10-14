@@ -1,20 +1,32 @@
 extends MarginContainer
 
-onready var player_controller = $MarginContainer/PlayerController
+onready var player_controller := $PlayerController
+
+onready var points_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/Points
+onready var boards_cleared_label: Label = $CanvasLayer/MarginContainer2/HBoxContainer/BoardsCleared
+onready var timer_label = $CanvasLayer/MarginContainer2/HBoxContainer/TimerLabel
+
+onready var timer := $PlayerController/Timer
 
 export(int, 0, 1) var player_index: int = 0
 
-func _ready():
+
+func _ready() -> void:
+	
 	player_controller.player_index = player_index
 	player_controller.rect_size = rect_size
 	
-	$MarginContainer/HBoxContainer/Points.text = "0"
-	$MarginContainer/HBoxContainer/BoardsCleared.text = "0"
+	points_label.text = "0"
+	boards_cleared_label.text = "0"
+	
+	_update_timer_label(timer.wait_time)
 	
 	# Set size and global position because the nodes in the canvas layer do
 	# not inherit that from the root container
 	$CanvasLayer/MarginContainer.rect_size = rect_size
 	$CanvasLayer/MarginContainer.rect_global_position = rect_global_position
+	
+	set_process(false)
 	
 	$AnimationPlayer.play("ready")
 	
@@ -23,6 +35,20 @@ func _ready():
 	player_controller.generate()
 	
 	player_controller.start()
+	
+	set_process(true)
+
+
+func _process(_delta: float) -> void:
+	_update_timer_label(timer.time_left)
+
+
+func _update_timer_label(time_left: float) -> void:
+	var minutes = int(time_left / 60)
+	var seconds = int(time_left) % 60
+	
+	# Time left: 59:59
+	timer_label.text = "%s: %02d:%02d" % [tr("TIME_LEFT"), minutes, seconds]
 
 
 func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, level, lives) -> void:
@@ -32,6 +58,6 @@ func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, 
 
 
 func _on_PlayerController_score_updated(points: int, boards_cleared: int) -> void:
-	$MarginContainer/HBoxContainer/Points.text = str(points)
+	points_label.text = str(points)
 	
-	$MarginContainer/HBoxContainer/BoardsCleared.text = str(boards_cleared)
+	boards_cleared_label.text = str(boards_cleared)

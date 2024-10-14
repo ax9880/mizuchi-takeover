@@ -129,15 +129,44 @@ anims/ready = SubResource( 1 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AnimationPlayer"]
 stream = ExtResource( 12 )
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 640.0
-margin_bottom = 360.0
+[node name="PlayerController" type="Node2D" parent="."]
+script = ExtResource( 2 )
+lives = 3
+
+[node name="Grid" parent="PlayerController" instance=ExtResource( 4 )]
+
+[node name="Player" parent="PlayerController" instance=ExtResource( 3 )]
+position = Vector2( 32, 64 )
+
+[node name="Timer" type="Timer" parent="PlayerController"]
+wait_time = 60.0
+one_shot = true
+
+[node name="PosessionTimer" type="Timer" parent="PlayerController"]
+wait_time = 900.0
+one_shot = true
+
+[node name="Path" type="Node2D" parent="PlayerController"]
+position = Vector2( 8, 295 )
+
+[node name="Tween" type="Tween" parent="PlayerController"]
+
+[node name="NoMovementAudioStreamPlayer" type="AudioStreamPlayer" parent="PlayerController"]
+stream = ExtResource( 7 )
+bus = "Sound effects"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
 custom_constants/margin_bottom = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 632.0
@@ -146,7 +175,7 @@ rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="TimerLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="TimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_top = 12.0
 margin_right = 153.0
 margin_bottom = 20.0
@@ -155,7 +184,7 @@ size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 5 )
 text = "1:00.99"
 
-[node name="PosessionTimerLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="PosessionTimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_left = 157.0
 margin_top = 12.0
 margin_right = 310.0
@@ -165,7 +194,7 @@ size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 5 )
 text = "P. Timer"
 
-[node name="BoardsCleared" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="BoardsCleared" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_left = 314.0
 margin_top = 12.0
 margin_right = 467.0
@@ -175,7 +204,7 @@ size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 5 )
 text = "999"
 
-[node name="Points" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="Points" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_left = 471.0
 margin_top = 12.0
 margin_right = 624.0
@@ -184,35 +213,6 @@ rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 5 )
 text = "999.999"
-
-[node name="PlayerController" type="Node2D" parent="MarginContainer"]
-script = ExtResource( 2 )
-lives = 3
-
-[node name="Grid" parent="MarginContainer/PlayerController" instance=ExtResource( 4 )]
-
-[node name="Player" parent="MarginContainer/PlayerController" instance=ExtResource( 3 )]
-position = Vector2( 32, 64 )
-
-[node name="Timer" type="Timer" parent="MarginContainer/PlayerController"]
-wait_time = 2.0
-one_shot = true
-
-[node name="PosessionTimer" type="Timer" parent="MarginContainer/PlayerController"]
-wait_time = 900.0
-one_shot = true
-
-[node name="Path" type="Node2D" parent="MarginContainer/PlayerController"]
-position = Vector2( 8, 295 )
-
-[node name="Tween" type="Tween" parent="MarginContainer/PlayerController"]
-
-[node name="NoMovementAudioStreamPlayer" type="AudioStreamPlayer" parent="MarginContainer/PlayerController"]
-stream = ExtResource( 7 )
-bus = "Sound effects"
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-follow_viewport_enable = true
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 margin_right = 640.0
@@ -246,9 +246,9 @@ stream = ExtResource( 6 )
 autoplay = true
 bus = "Music"
 
-[connection signal="game_finished" from="MarginContainer/PlayerController" to="." method="_on_PlayerController_game_finished"]
-[connection signal="score_updated" from="MarginContainer/PlayerController" to="." method="_on_PlayerController_score_updated"]
-[connection signal="score_calculated" from="MarginContainer/PlayerController/Grid" to="MarginContainer/PlayerController" method="_on_Grid_score_calculated"]
-[connection signal="score_shown" from="MarginContainer/PlayerController/Grid" to="MarginContainer/PlayerController" method="_on_Grid_score_shown"]
-[connection signal="timeout" from="MarginContainer/PlayerController/Timer" to="MarginContainer/PlayerController" method="_on_Timer_timeout"]
-[connection signal="timeout" from="MarginContainer/PlayerController/PosessionTimer" to="MarginContainer/PlayerController" method="_on_PosessionTimer_timeout"]
+[connection signal="game_finished" from="PlayerController" to="." method="_on_PlayerController_game_finished"]
+[connection signal="score_updated" from="PlayerController" to="." method="_on_PlayerController_score_updated"]
+[connection signal="score_calculated" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_calculated"]
+[connection signal="score_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_shown"]
+[connection signal="timeout" from="PlayerController/Timer" to="PlayerController" method="_on_Timer_timeout"]
+[connection signal="timeout" from="PlayerController/PosessionTimer" to="PlayerController" method="_on_PosessionTimer_timeout"]
