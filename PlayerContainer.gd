@@ -23,8 +23,8 @@ func _ready() -> void:
 	
 	# Set size and global position because the nodes in the canvas layer do
 	# not inherit that from the root container
-	$CanvasLayer/MarginContainer.rect_size = rect_size
-	$CanvasLayer/MarginContainer.rect_global_position = rect_global_position
+	_set_container_rect_size($CanvasLayer/MarginContainer)
+	_set_container_rect_size($CanvasLayer/MarginContainer2)
 	
 	set_process(false)
 	
@@ -49,6 +49,11 @@ func _update_timer_label(time_left: float) -> void:
 	
 	# Time left: 59:59
 	timer_label.text = "%s: %02d:%02d" % [tr("TIME_LEFT"), minutes, seconds]
+
+
+func _set_container_rect_size(container: Control) -> void:
+	container.rect_size = rect_size
+	container.rect_global_position = rect_global_position
 
 
 func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, level, lives) -> void:
