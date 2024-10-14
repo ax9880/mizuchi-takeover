@@ -3,7 +3,7 @@
 [ext_resource path="res://Fonts/GravityBold8EnEs.tres" type="DynamicFont" id=1]
 [ext_resource path="res://DotPack/System_Icons.png" type="Texture" id=2]
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -20,7 +20,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 anti_aliasing = false
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=2]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -54,7 +54,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 anti_aliasing = false
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -71,36 +71,36 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 anti_aliasing = false
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 2 )
 region = Rect2( 64, 96, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 80, 96, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 80, 96, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 2 )
-region = Rect2( 80, 96, 16, 16 )
+region = Rect2( 64, 96, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 2 )
-region = Rect2( 80, 96, 16, 16 )
+region = Rect2( 176, 192, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 2 )
-region = Rect2( 64, 96, 16, 16 )
+region = Rect2( 176, 208, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 2 )
-region = Rect2( 176, 192, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 2 )
-region = Rect2( 176, 208, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 2 )
 region = Rect2( 224, 192, 16, 16 )
 
-[sub_resource type="StyleBoxTexture" id=14]
-texture = SubResource( 13 )
+[sub_resource type="StyleBoxTexture" id=12]
+texture = SubResource( 11 )
 region_rect = Rect2( 0, 0, 16, 16 )
 margin_left = 4.0
 margin_right = 4.0
@@ -110,16 +110,16 @@ margin_bottom = 6.0
 [resource]
 default_font = ExtResource( 1 )
 Button/colors/font_color = Color( 1, 1, 1, 1 )
-Button/styles/focus = SubResource( 4 )
-Button/styles/hover = SubResource( 5 )
+Button/styles/focus = SubResource( 1 )
+Button/styles/hover = SubResource( 2 )
 Button/styles/normal = SubResource( 3 )
-Button/styles/pressed = SubResource( 6 )
-CheckBox/icons/checked = SubResource( 7 )
-CheckBox/icons/unchecked = SubResource( 8 )
-CheckButton/icons/off = SubResource( 9 )
-CheckButton/icons/on = SubResource( 10 )
-HSlider/icons/grabber = SubResource( 11 )
-HSlider/icons/grabber_highlight = SubResource( 12 )
-HSlider/styles/grabber_area = SubResource( 14 )
-HSlider/styles/grabber_area_highlight = SubResource( 14 )
-HSlider/styles/slider = SubResource( 14 )
+Button/styles/pressed = SubResource( 4 )
+CheckBox/icons/checked = SubResource( 5 )
+CheckBox/icons/unchecked = SubResource( 6 )
+CheckButton/icons/off = SubResource( 7 )
+CheckButton/icons/on = SubResource( 8 )
+HSlider/icons/grabber = SubResource( 9 )
+HSlider/icons/grabber_highlight = SubResource( 10 )
+HSlider/styles/grabber_area = SubResource( 12 )
+HSlider/styles/grabber_area_highlight = SubResource( 12 )
+HSlider/styles/slider = SubResource( 12 )
