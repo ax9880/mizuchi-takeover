@@ -31,4 +31,4 @@ func _on_VsModeButton2_pressed() -> void:
 
 
 func _on_HelpButton_pressed() -> void:
-	pass # Replace with function body.
+	var _error: int = Loader.change_scene("res://CharacterList.tscn")

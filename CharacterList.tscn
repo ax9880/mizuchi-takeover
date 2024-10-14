@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://GameCharactersContainer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://AudioButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Fonts/theme.tres" type="Theme" id=3]
+[ext_resource path="res://Grid.tscn" type="PackedScene" id=4]
+[ext_resource path="res://CharacterList.gd" type="Script" id=5]
+
+[node name="CharacterList" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+script = ExtResource( 5 )
+game_characters_container_packed_scene = ExtResource( 1 )
+
+[node name="Grid" parent="." instance=ExtResource( 4 )]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 640.0
+margin_bottom = 360.0
+color = Color( 0.564706, 0.717647, 0.752941, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 640.0
+margin_bottom = 360.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 632.0
+margin_bottom = 352.0
+follow_focus = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+margin_right = 120.0
+margin_bottom = 18.0
+
+[node name="QuitButton" parent="MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_bottom = 18.0
+text = "RETURN"
+
+[connection signal="pressed" from="MarginContainer/ScrollContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
