@@ -35,7 +35,7 @@ var _state: int = State.ACTIVE
 onready var next_prompt: Control = get_node(next_prompt_node_path)
 
 signal game_finished(points, boards_cleared, perfect_boards, level, lives)
-signal score_updated(points, boards_cleared)
+signal score_updated(points, boards_cleared, perfect_boards)
 signal level_increased(level)
 
 
@@ -147,17 +147,7 @@ func _create_new_board() -> void:
 	
 	$Grid.hide()
 	
-	if GameData.can_grow_size and _perfect_boards > 1 and _perfect_boards % 5 == 0:
-		if width < 8:
-			width += 1
-		
-		if height < 6:
-			height += 1
-		
-		_level += 1
-		emit_signal("level_increased", _level)
-		
-		generate()
+	_advance_level()
 	
 	_choose_random_target()
 	
@@ -180,6 +170,31 @@ func _create_new_board() -> void:
 	$PosessionTimer.start()
 	
 	set_process(true)
+
+
+func _advance_level() -> void:
+	if not GameData.can_grow_size:
+		return
+	
+	if GameData.is_two_player_mode and (width == 6 or height == 6):
+		return
+	
+	if _perfect_boards == 0:
+		return
+	
+	if _perfect_boards % 5 != 0:
+		return
+	
+	if width < 8:
+		width += 1
+	
+	if height < 6:
+		height += 1
+	
+	_level += 1
+	emit_signal("level_increased", _level)
+	
+	generate()
 
 
 func _choose_random_target() -> void:
@@ -248,7 +263,7 @@ func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
 	if is_perfect_board:
 		_perfect_boards += 1
 	
-	emit_signal("score_updated", _points, _boards_cleared)
+	emit_signal("score_updated", _points, _boards_cleared, _perfect_boards)
 	
 	_state = State.SHOWING_PATHS
 	next_prompt.start(player_index)

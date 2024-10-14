@@ -368,7 +368,7 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 
 
 func show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -> void:
-	for i in current_id_path.size() - 1:
+	for i in current_id_path.size():
 		var id: int = current_id_path[i]
 		
 		var is_in_shortest_path: bool = id in shortest_id_path
@@ -387,9 +387,6 @@ func show_paths(shortest_id_path: Array, current_id_path: Array, points: int) ->
 	
 	if shortest_id_path != current_id_path:
 		for id in shortest_id_path:
-			if id == shortest_id_path.back():
-				continue
-			
 			var cell: Cell = astar.cells[id]
 			
 			cell.show_value(true, true)

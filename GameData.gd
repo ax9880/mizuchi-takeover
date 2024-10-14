@@ -5,7 +5,7 @@ var is_two_player_mode: bool = false
 var can_grow_size: bool = true
 
 var starting_size: int = 3
-var time_seconds: int = 2
+var time_seconds: int = 60
 
 var player_one_score: int = 0
 var player_two_score: int = 0

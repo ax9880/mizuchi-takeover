@@ -20,14 +20,19 @@ func _ready() -> void:
 	else:
 		$CanvasLayer/MarginContainer2/HBoxContainer/PlayerLabel.text = "P2"
 	
-	_on_PlayerController_score_updated(0, 0)
+	if GameData.is_left_side_player(player_index):
+		$CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/GameControlsWasd.show()
+	else:
+		$CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/GameControls.show()
+	
+	_on_PlayerController_score_updated(0, 0, 0)
 	_on_PlayerController_level_increased(player_controller._level)
 	
 	_update_timer_label(timer.wait_time)
 	
 	$CanvasLayer/MarginContainer/ResultsMarginContainer.player_index = player_index
 	
-	$CanvasLayer/MarginContainer2/VBoxContainer/NextPrompt.hide()
+	$CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/NextPrompt.hide()
 	
 	# Set size and global position because the nodes in the canvas layer do
 	# not inherit that from the root container
@@ -50,8 +55,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	_update_timer_label(timer.time_left)
 	
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_select"):
 		var _error = Loader.change_scene("res://TitleScreen.tscn")
+		
+		GameMusic.stop()
 		
 		set_process(false)
 
@@ -75,10 +82,10 @@ func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, 
 	$CanvasLayer/MarginContainer/ResultsMarginContainer.show_results(points, boards_cleared, perfect_boards, level, lives)
 
 
-func _on_PlayerController_score_updated(points: int, boards_cleared: int) -> void:
+func _on_PlayerController_score_updated(points: int, boards_cleared: int, perfect_boards: int) -> void:
 	points_label.text = str(points)
 	
-	boards_cleared_label.text = "%s: %d" % [tr("BOARDS"), boards_cleared]
+	boards_cleared_label.text = "%s: %d | %d" % [tr("BOARDS"), boards_cleared, perfect_boards]
 
 
 func _on_PlayerController_level_increased(level: int) -> void:

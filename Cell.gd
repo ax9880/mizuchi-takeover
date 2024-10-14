@@ -69,7 +69,10 @@ func reset() -> void:
 func show_value(is_in_shortest_path: bool, is_correction: bool) -> void:
 	#$AnimationPlayer.play("fade")
 	
-	value_label.text = _value_to_string()
+	if has_cost_one:
+		value_label.text = "*"
+	else:
+		value_label.text = _value_to_string()
 	
 	value_label.show()
 	

@@ -1,11 +1,11 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://PlayerContainer.gd" type="Script" id=1]
 [ext_resource path="res://PlayerController.gd" type="Script" id=2]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Grid.tscn" type="PackedScene" id=4]
 [ext_resource path="res://NextPrompt.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Sounds/DbuMusic/04_hooduki_140.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Sounds/SoundEffectLab/decision41.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Sounds/Ovani/Hollow Clicks.wav" type="AudioStream" id=7]
 [ext_resource path="res://Fonts/GravityBold8EnEsx2.tres" type="DynamicFont" id=8]
 [ext_resource path="res://Fonts/theme.tres" type="Theme" id=9]
@@ -13,6 +13,8 @@
 [ext_resource path="res://Sounds/SoundEffectLab/decision2.mp3" type="AudioStream" id=11]
 [ext_resource path="res://Sounds/SoundEffectLab/cursor1.mp3" type="AudioStream" id=12]
 [ext_resource path="res://DotPack/System_Icons.png" type="Texture" id=13]
+[ext_resource path="res://GameControls.tscn" type="PackedScene" id=14]
+[ext_resource path="res://GameControlsWasd.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Animation" id=2]
 resource_name = "game over"
@@ -138,7 +140,7 @@ bus = "Sound effects"
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource( 2 )
 lives = 3
-next_prompt_node_path = NodePath("../CanvasLayer/MarginContainer2/VBoxContainer/NextPrompt")
+next_prompt_node_path = NodePath("../CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/NextPrompt")
 
 [node name="Grid" parent="PlayerController" instance=ExtResource( 4 )]
 
@@ -160,6 +162,10 @@ position = Vector2( 8, 295 )
 
 [node name="NoMovementAudioStreamPlayer" type="AudioStreamPlayer" parent="PlayerController"]
 stream = ExtResource( 7 )
+bus = "Sound effects"
+
+[node name="NextLevelAudioStreamPlayer" type="AudioStreamPlayer" parent="PlayerController"]
+stream = ExtResource( 6 )
 bus = "Sound effects"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -250,12 +256,34 @@ margin_right = 624.0
 margin_bottom = 324.0
 size_flags_vertical = 3
 
-[node name="NextPrompt" parent="CanvasLayer/MarginContainer2/VBoxContainer" instance=ExtResource( 5 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
 margin_top = 328.0
 margin_right = 624.0
 margin_bottom = 344.0
+
+[node name="NextPrompt" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 36.0
+margin_bottom = 16.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 40.0
+margin_right = 624.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+
+[node name="GameControls" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 14 )]
+visible = false
+margin_left = 492.0
+margin_right = 556.0
+margin_bottom = 16.0
+
+[node name="GameControlsWasd" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 15 )]
+visible = false
+margin_left = 560.0
+margin_right = 624.0
+margin_bottom = 16.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 margin_right = 640.0
@@ -297,11 +325,6 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 640.0
 margin_bottom = 360.0
-
-[node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
-autoplay = true
-bus = "Music"
 
 [connection signal="game_finished" from="PlayerController" to="." method="_on_PlayerController_game_finished"]
 [connection signal="level_increased" from="PlayerController" to="." method="_on_PlayerController_level_increased"]

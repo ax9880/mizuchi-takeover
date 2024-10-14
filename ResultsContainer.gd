@@ -77,13 +77,15 @@ func _show_vs_results() -> void:
 		
 		is_tie = true
 	elif player_index == winner_index:
-		$VBoxContainer/GameOverLabel.text = "YOU WON"
+		$VBoxContainer/GameOverLabel.text = "WIN"
+		
+		$VBoxContainer/GameOverLabel.modulate = Color("#5285bd")
 		
 		is_win = true
 		
 		$ScoreItemAudioStreamPlayer.play()
 	else:
-		$VBoxContainer/GameOverLabel.text = "YOU LOSE"
+		$VBoxContainer/GameOverLabel.text = "LOSE"
 	
 	if is_tie:
 		if GameData.is_left_side_player(player_index):
@@ -150,3 +152,5 @@ func _on_PlayAgainButton_pressed() -> void:
 
 func _on_QuitButton_pressed() -> void:
 	var _error := Loader.change_scene("res://TitleScreen.tscn")
+	
+	GameMusic.stop()

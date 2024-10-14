@@ -1,1 +1,5 @@
-extends Node2D
+extends Node
+
+
+func _ready() -> void:
+	GameMusic.play()

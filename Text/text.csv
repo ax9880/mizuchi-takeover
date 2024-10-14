@@ -29,3 +29,5 @@ LIVES,Lives,Vidas
 TOTAL,Total,Total
 PLAY_AGAIN,Play again,Jugar de nuevo
 TIE,Tie,Empate
+WIN,You win,Ganaste
+LOSE,You lose,Perdiste
