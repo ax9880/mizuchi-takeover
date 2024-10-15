@@ -26,6 +26,8 @@ var _boards_cleared: int = 0
 var _perfect_boards: int = 0
 var _level: int = 1
 
+var _can_advance_level: bool = false
+
 var _is_game_over: bool = false
 
 var _random := RandomNumberGenerator.new()
@@ -179,6 +181,9 @@ func _advance_level() -> void:
 	if GameData.is_two_player_mode and (width == 6 or height == 6):
 		return
 	
+	if not _can_advance_level:
+		return
+	
 	if _perfect_boards == 0:
 		return
 	
@@ -193,6 +198,8 @@ func _advance_level() -> void:
 	
 	_level += 1
 	emit_signal("level_increased", _level)
+	
+	_can_advance_level = false
 	
 	generate()
 
@@ -262,6 +269,8 @@ func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
 	
 	if is_perfect_board:
 		_perfect_boards += 1
+		
+		_can_advance_level = true
 	
 	emit_signal("score_updated", _points, _boards_cleared, _perfect_boards)
 	
