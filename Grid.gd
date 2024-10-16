@@ -14,14 +14,31 @@ class MyAStar:
 	extends AStar
 	
 	var cells: Array = []
+	var values: Array = []
+	
+	var is_pathfinding_mode: bool = false
 	
 	func _compute_cost(from_id: int, to_id: int) -> float:
 		var to_cell: Cell = cells[to_id]
 		
 		if to_cell.has_cost_one:
 			return 1.0
+		elif is_pathfinding_mode:
+			# When pathfinding, the cost to go from one cell to another
+			# is the distance between games or indexes. This way, the cost to
+			# go from 12.8 to 13 (1 game difference) is the same as the cost
+			# from 12.8 to 12.5 (1 game difference), because they are adjacent games
+			var from_index: int = values.find(cells[from_id].value)
+			var to_index: int = values.find(cells[to_id].value)
+			
+			assert(from_index != -1)
+			assert(to_index != -1)
+			
+			return abs(from_index - to_index)
 		else:
-			return abs(cells[from_id].value - to_cell.value)
+			# When generating a random path, the cost is the 
+			# difference between the cells' randomly assigned values
+			return abs(cells[from_id].value - cells[to_id].value)
 	
 	
 	func _estimate_cost(from_id: int, to_id: int) -> float:
@@ -123,6 +140,8 @@ func generate(width: int, height: int) -> void:
 
 
 func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is_left_side_player: bool) -> void:
+	astar.is_pathfinding_mode = false
+	
 	for cell in astar.cells:
 		cell.value = rng.randi_range(0, 1)
 		
@@ -148,6 +167,10 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 		values = shuffled_bags.keys()
 	
 	values.sort()
+	
+	# Use the values after removing (or keeping) the decimal games so that
+	# this object can calculate the correct cost
+	astar.values = values.duplicate()
 	
 	for characters in shuffled_bags.values():
 		characters.shuffle()
@@ -339,6 +362,8 @@ func _extract_index(path: String) -> int:
 func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 	var start_cell: Cell = path.front()
 	var target_cell: Cell = get_cell_from_coordinates(target_coordinates)
+	
+	astar.is_pathfinding_mode = true
 	
 	var shortest_id_path: Array = astar.get_id_path(start_cell.id, target_cell.id)
 	var lowest_cost: float = calculate_path_cost(shortest_id_path)
