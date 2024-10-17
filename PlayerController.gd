@@ -50,6 +50,11 @@ func _ready() -> void:
 	
 	_level = GameData.starting_size - 2
 	
+	# Generates the grid to pool the cells before the player sees anything
+	generate()
+	
+	$Grid.hide()
+	
 	set_process(false)
 
 
@@ -153,7 +158,14 @@ func _create_new_board() -> void:
 	
 	_choose_random_target()
 	
-	$Grid.randomize_board(coordinates, target, GameData.is_left_side_player(player_index))
+	while true:
+		if $Grid.randomize_board(coordinates, target, GameData.is_left_side_player(player_index)):
+			break
+		else:
+			printerr("Failed to generate suitable path, trying again")
+	
+	print("Board randomized")
+	
 	$Grid.drop_down_cells()
 	
 	yield($Grid, "cells_dropped")

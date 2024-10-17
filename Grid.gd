@@ -13,10 +13,19 @@ enum PathMode {
 class MyAStar:
 	extends AStar
 	
+	const ILLEGAL_MOVE_COST_PENALTY: float = 100.0
+	
 	var cells: Array = []
 	var values: Array = []
 	
+	# Flag used when finding the best path after the player has completed a
+	# board.
 	var is_pathfinding_mode: bool = false
+	
+	# Flag used to penalize illegal moves so that this class always finds the
+	# best legal path when comparing paths. A legal move is a move between
+	# characters of the same game or adjacent games.
+	var can_penalize_illegal_moves: bool = false
 	
 	func _compute_cost(from_id: int, to_id: int) -> float:
 		var to_cell: Cell = cells[to_id]
@@ -34,7 +43,12 @@ class MyAStar:
 			assert(from_index != -1)
 			assert(to_index != -1)
 			
-			return abs(from_index - to_index)
+			var difference: float = abs(from_index - to_index)
+			
+			if can_penalize_illegal_moves and difference > 1.0:
+				return difference * ILLEGAL_MOVE_COST_PENALTY
+			else:
+				return difference
 		else:
 			# When generating a random path, the cost is the 
 			# difference between the cells' randomly assigned values
@@ -51,6 +65,8 @@ var astar: MyAStar = MyAStar.new()
 
 var start_id: int = 0
 var target_id: int = 0
+
+var _randomized_id_path: Array = []
 
 # Dictionary[float, int (index of character)]
 var bags: Dictionary = {}
@@ -139,12 +155,11 @@ func generate(width: int, height: int) -> void:
 			astar.connect_points(cell.id, neighbor.id, false)
 
 
-func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is_left_side_player: bool) -> void:
+func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is_left_side_player: bool) -> bool:
 	astar.is_pathfinding_mode = false
 	
 	for cell in astar.cells:
 		cell.value = rng.randi_range(0, 1)
-		
 		cell.has_cost_one = false
 	
 	start_id = get_cell_from_coordinates(start_coordinates).id
@@ -158,11 +173,7 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 	
 	if rng.randf() < 0.7:
 		# Remove values with decimals
-		for value in values:
-			if not is_equal_approx(value, floor(value)):
-				var is_erased := shuffled_bags.erase(value)
-				
-				assert(is_erased)
+		_remove_decimals(values, shuffled_bags)
 		
 		values = shuffled_bags.keys()
 	
@@ -197,56 +208,45 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 		cell.set_frame(characters.pop_back())
 		
 		if characters.empty():
-			if is_equal_approx(current_value, floor(current_value)):
-				var index: int = values.find(current_value)
+			var index: int = values.find(current_value)
+			
+			if index == 0:
+				# Get upper range
+				values = values.slice(index + 1, values.size() - 1)
 				
-				if previous_value < current_value:
-					# Lower range
-					values = values.slice(0, index - 1)
-					
-					start_value_index = values.size() - 1
-					
-				elif previous_value > current_value:
-					# Upper range
-					values = values.slice(index + 1, values.size() - 1)
-					
-					start_value_index = 0
-				else:
-					var distance_to_end: int = values.size() - index
-					
-					if distance_to_end > index:
-						# Upper range
-						values = values.slice(index + 1, values.size() - 1)
-						
-						start_value_index = 0
-					else:
-						# Lower range
+				start_value_index = 0
+			elif index == values.size() - 1:
+				# Get lower range
+				values = values.slice(0, index - 1)
+				
+				start_value_index = values.size() - 1
+			else:
+				if path_mode == PathMode.RANDOM:
+					# Randomly pick the range that you want to keep
+					if rng.randf() < 0.5:
+						# Get lower range
 						values = values.slice(0, index - 1)
 						
 						start_value_index = values.size() - 1
-				
-				var _is_erased := shuffled_bags.erase(current_value)
-				
-				assert(values.size() > 0)
-			else:
-				# Is .5 or .8
-				var index: int = values.find(current_value)
-				
-				if rng.randf() < 0.5:
-					start_value_index -= 1
+					else:
+						# Get upper range
+						values = values.slice(index + 1, values.size() - 1)
+						
+						start_value_index = 0
+				elif path_mode == PathMode.DESCENDING:
+					values = values.slice(0, index - 1)
+					
+					start_value_index = values.size() - 1
 				else:
-					start_value_index += 1
-				
-				var next_value: float = values[start_value_index]
-				
-				values.remove(index)
-				var _is_erased := shuffled_bags.erase(current_value)
-				
-				start_value_index = values.find(next_value)
-				
-				assert(values.size() > 0)
+					values = values.slice(index + 1, values.size() - 1)
+					
+					start_value_index = 0
 			
-			current_value = previous_value
+			var _is_erased := shuffled_bags.erase(current_value)
+			
+			# Ran out of characters and didn't reach the goal. Return
+			if values.empty() and cell_id != shortest_id_path.back():
+				return false
 		else:
 			# No adjustment needed, pick next index according to path mode
 			var next_index: int = 0
@@ -256,6 +256,7 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 			elif path_mode == PathMode.DESCENDING:
 				next_index = start_value_index - 1
 				
+				# If you reach the limit, set the path mode to random
 				if next_index < 0:
 					path_mode = PathMode.RANDOM
 			else:
@@ -266,19 +267,57 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 			
 			start_value_index = int(clamp(next_index, 0, values.size() - 1))
 		
-		assert(values.size() > 0)
-		
-		assert(start_value_index >= 0)
-		
 		previous_value = current_value
-		current_value = values[start_value_index]
+		
+		if cell_id != shortest_id_path.back():
+			assert(values.size() > 0)
+			assert(start_value_index >= 0)
+			
+			current_value = values[start_value_index]
 	
+	# Assign the values again to fill the grid with random characters
+	# from the remaining games
 	values = shuffled_bags.keys()
 	values.sort()
+	
+	# Slice to ignore the last ID, which doesn't count because
+	# it always has cost one
+	if not _path_has_decimals(shortest_id_path.slice(0, shortest_id_path.size() - 2)):
+		# If the path doesn't have decimals remove them from the bags to avoid
+		# generating a board with 'hidden decimals', meaning that a move from
+		# 7 to 8 becomes illegal because the sequence is 7 -> 7.5, but the board
+		# didn't add any character from 7.5.
+		_remove_decimals(values, shuffled_bags)
+		
+		values = shuffled_bags.keys()
 	
 	_fill_cells_with_random_characters(shortest_id_path, shuffled_bags)
 	
 	set_target(is_left_side_player)
+	
+	_randomized_id_path = shortest_id_path
+	
+	assert(_is_path_legal(_randomized_id_path))
+	
+	return true
+
+
+func _remove_decimals(values: Array, _bags: Dictionary) -> void:
+	for value in values:
+		if not is_equal_approx(value, floor(value)):
+			var is_erased := _bags.erase(value)
+			
+			assert(is_erased)
+
+
+func _path_has_decimals(shortest_id_path: Array) -> bool:
+	for id in shortest_id_path:
+		var value: float = astar.cells[id].value
+		
+		if not is_equal_approx(value, floor(value)):
+			return true 
+	
+	return false
 
 
 func _fill_cells_with_random_characters(shortest_id_path: Array, shuffled_bags: Dictionary) -> void:
@@ -294,6 +333,7 @@ func _fill_cells_with_random_characters(shortest_id_path: Array, shuffled_bags: 
 			
 			if characters.empty():
 				values.remove(index)
+				
 				var _is_erased := shuffled_bags.erase(value)
 
 
@@ -364,8 +404,18 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 	var target_cell: Cell = get_cell_from_coordinates(target_coordinates)
 	
 	astar.is_pathfinding_mode = true
+	astar.can_penalize_illegal_moves = true
 	
 	var shortest_id_path: Array = astar.get_id_path(start_cell.id, target_cell.id)
+	
+	if not _is_path_legal(shortest_id_path):
+		print("Shortest path is not legal, using generated path")
+		
+		shortest_id_path = _randomized_id_path
+		
+		assert(_is_path_legal(_randomized_id_path))
+	
+	astar.can_penalize_illegal_moves = false
 	var lowest_cost: float = calculate_path_cost(shortest_id_path)
 	
 	var id_path: Array = []
@@ -373,28 +423,55 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 	for cell in path:
 		id_path.push_back(astar.get_closest_point(Vector3(cell.position.x, cell.position.y, 0)))
 	
+	var is_current_path_legal: bool = _is_path_legal(id_path)
 	var current_cost: float = calculate_path_cost(id_path)
 	
 	print("Lowest: %s, current: %s" % [lowest_cost, current_cost])
 	
 	var points: int = 0
 	
-	if current_cost <= lowest_cost:
+	if is_current_path_legal and current_cost <= lowest_cost:
 		points = base_score
 	else:
+		if current_cost <= lowest_cost:
+			# In case the player found an illegal path with a lower cost
+			current_cost = lowest_cost + 1
+		
 		points = int(base_score / (current_cost + 1 - lowest_cost))
 	
-	print("Score: %d" % [points])
+	print("Points: %d" % [points])
 	
-	if is_equal_approx(current_cost, lowest_cost):
+	if is_current_path_legal and is_equal_approx(current_cost, lowest_cost):
 		# In case there are two paths with lowest cost, use the one
 		# that the player used
 		shortest_id_path = id_path
 	
-	show_paths(shortest_id_path, id_path, points)
+	_show_paths(shortest_id_path, id_path, points)
 
 
-func show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -> void:
+func _is_path_legal(id_path: Array) -> bool:
+	var _values: Array = astar.values
+	
+	for i in id_path.size() - 1:
+		var current_cell: Cell = astar.cells[id_path[i]]
+		var next_cell: Cell = astar.cells[id_path[i + 1]]
+		
+		var current_index: int = _values.find(current_cell.value)
+		var next_cell_index: int = _values.find(next_cell.value)
+		
+		if current_index == -1 || next_cell_index == -1:
+			return false
+		
+		# If characters are not in the same or in adjacent games
+		if abs(current_index - next_cell_index) > 1:
+			printerr("Path is not legal because it jumps from %s to %s" % [_values[current_index], _values[next_cell_index]])
+			
+			return false
+	
+	return true
+
+
+func _show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -> void:
 	for i in current_id_path.size():
 		var id: int = current_id_path[i]
 		
