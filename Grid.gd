@@ -278,7 +278,7 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 	values.sort()
 	
 	# Slice to ignore the last ID, which doesn't count because
-	# it always has cost one
+	# it is going to have cost one after the target is set
 	if not _path_has_decimals(shortest_id_path.slice(0, shortest_id_path.size() - 2)):
 		# If the path doesn't have decimals remove them from the bags to avoid
 		# generating a board with 'hidden decimals', meaning that a move from
@@ -309,7 +309,12 @@ func _remove_decimals(_values: Array, _bags: Dictionary) -> void:
 
 func _path_has_decimals(shortest_id_path: Array) -> bool:
 	for id in shortest_id_path:
-		var value: float = astar.cells[id].value
+		var cell: Cell = astar.cells[id]
+		
+		if cell.has_cost_one:
+			continue
+		
+		var value: float = cell.value
 		
 		if not is_equal_approx(value, floor(value)):
 			return true 
@@ -452,6 +457,9 @@ func _is_path_legal(id_path: Array) -> bool:
 	for i in id_path.size() - 1:
 		var current_cell: Cell = astar.cells[id_path[i]]
 		var next_cell: Cell = astar.cells[id_path[i + 1]]
+		
+		if current_cell.has_cost_one or next_cell.has_cost_one:
+			continue
 		
 		var current_index: int = _values.find(current_cell.value)
 		var next_cell_index: int = _values.find(next_cell.value)
