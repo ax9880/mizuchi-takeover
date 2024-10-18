@@ -188,7 +188,6 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 	
 	var start_value_index: int = rng.randi_range(0, values.size() - 1)
 	var current_value: float = values[start_value_index]
-	var previous_value: float = current_value
 	
 	var path_mode: int = PathMode.RANDOM
 	
@@ -267,8 +266,6 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 			
 			start_value_index = int(clamp(next_index, 0, values.size() - 1))
 		
-		previous_value = current_value
-		
 		if cell_id != shortest_id_path.back():
 			assert(values.size() > 0)
 			assert(start_value_index >= 0)
@@ -302,8 +299,8 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 	return true
 
 
-func _remove_decimals(values: Array, _bags: Dictionary) -> void:
-	for value in values:
+func _remove_decimals(_values: Array, _bags: Dictionary) -> void:
+	for value in _values:
 		if not is_equal_approx(value, floor(value)):
 			var is_erased := _bags.erase(value)
 			
