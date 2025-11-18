@@ -12,3 +12,8 @@ Development/
 
 *.exe
 *.zip
+
+icon.ico
+icon64.png
+
+*.ttf
