@@ -59,8 +59,6 @@ func clear() -> void:
 func reset() -> void:
 	$AnimationPlayer.play("RESET")
 	
-	$Highlight.hide()
-	
 	hide_arrows()
 	
 	value_label.hide()
@@ -84,8 +82,8 @@ func show_value(is_in_shortest_path: bool, is_correction: bool) -> void:
 		value_label.modulate = Color.white
 
 
-func set_frame(frame: int) -> void:
-	$Sprite.frame = frame
+func set_texture(texture_path: String) -> void:
+	$Sprite.texture = ResourceLoader.load(texture_path)
 
 
 func show_arrow(direction: int) -> void:

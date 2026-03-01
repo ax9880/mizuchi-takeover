@@ -16,6 +16,7 @@
 script = ExtResource( 1 )
 floating_label_packed_scene = ExtResource( 7 )
 cell_packed_scene = ExtResource( 2 )
+tilesize = 156.0
 
 [node name="Target" parent="." instance=ExtResource( 4 )]
 visible = false

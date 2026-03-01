@@ -17,7 +17,7 @@ func rotate_sprite(angle_degrees: float) -> void:
 	_angle_degrees = angle_degrees
 	var angle_rad := deg2rad(_angle_degrees)
 	
-	$Sprite.position = 12 * Vector2(cos(angle_rad), sin(angle_rad))
+	$Sprite.position = 48 * Vector2(cos(angle_rad), sin(angle_rad))
 
 
 func advance_tween() -> void:

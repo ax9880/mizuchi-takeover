@@ -11,7 +11,7 @@ func _ready() -> void:
 	sorted_values.sort()
 	
 	for value in sorted_values:
-		# List of frames
+		# List of resource paths
 		var characters: Array = bags[value]
 		characters.sort()
 		
@@ -20,10 +20,6 @@ func _ready() -> void:
 		game_characters_container.initialize(value, characters)
 		
 		$MarginContainer/ScrollContainer/VBoxContainer.add_child(game_characters_container)
-	
-	#var margin_container := MarginContainer.new()
-	#margin_container.rect_size.y = 64
-	#$MarginContainer/ScrollContainer/VBoxContainer.add_child(margin_container)
 	
 	$MarginContainer/ScrollContainer/VBoxContainer/QuitButton.grab_focus()
 

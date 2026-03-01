@@ -1,11 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Fonts/theme.tres" type="Theme" id=1]
-[ext_resource path="res://Fonts/GravityBold8EnEsx2.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Fonts/Bungee-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://ResultsContainer.gd" type="Script" id=3]
 [ext_resource path="res://Sounds/SoundEffectLab/cursor7.mp3" type="AudioStream" id=4]
 [ext_resource path="res://AudioButton.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Sounds/SoundEffectLab/decision30.mp3" type="AudioStream" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 128
+use_filter = true
+font_data = ExtResource( 2 )
 
 [node name="ResultsMarginContainer" type="MarginContainer"]
 anchor_right = 1.0
@@ -19,144 +24,158 @@ script = ExtResource( 3 )
 wait_time = 0.5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 218.0
-margin_top = 106.0
-margin_right = 422.0
-margin_bottom = 254.0
+margin_left = 541.0
+margin_top = 259.0
+margin_right = 1378.0
+margin_bottom = 821.0
+rect_min_size = Vector2( 800, 0 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 alignment = 1
 
 [node name="GameOverLabel" type="Label" parent="VBoxContainer"]
-margin_right = 204.0
-margin_bottom = 32.0
+margin_right = 837.0
+margin_bottom = 170.0
 rect_min_size = Vector2( 0, 32 )
 size_flags_vertical = 0
-custom_fonts/font = ExtResource( 2 )
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 1 )
 text = "GAME_OVER"
 align = 1
 valign = 1
 
 [node name="PointsHBox" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 36.0
-margin_right = 204.0
-margin_bottom = 44.0
+margin_top = 174.0
+margin_right = 837.0
+margin_bottom = 217.0
+rect_min_size = Vector2( 64, 0 )
 
 [node name="Points" type="Label" parent="VBoxContainer/PointsHBox"]
-margin_right = 128.0
-margin_bottom = 8.0
+margin_right = 577.0
+margin_bottom = 43.0
 rect_min_size = Vector2( 128, 0 )
+size_flags_horizontal = 3
 text = "POINTS"
 
 [node name="ValueLabel" type="Label" parent="VBoxContainer/PointsHBox"]
-margin_left = 132.0
-margin_right = 204.0
-margin_bottom = 8.0
-rect_min_size = Vector2( 72, 0 )
+margin_left = 581.0
+margin_right = 837.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 256, 0 )
 text = "999.999"
 align = 2
 clip_text = true
 
 [node name="BoardsClearedHBox" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 48.0
-margin_right = 204.0
-margin_bottom = 56.0
+margin_top = 221.0
+margin_right = 837.0
+margin_bottom = 264.0
+rect_min_size = Vector2( 64, 0 )
 
 [node name="BoardsCleared" type="Label" parent="VBoxContainer/BoardsClearedHBox"]
-margin_right = 128.0
-margin_bottom = 8.0
+margin_right = 577.0
+margin_bottom = 43.0
 rect_min_size = Vector2( 128, 0 )
+size_flags_horizontal = 3
 text = "BOARDS_CLEARED"
 
 [node name="ValueLabel" type="Label" parent="VBoxContainer/BoardsClearedHBox"]
-margin_left = 132.0
-margin_right = 204.0
-margin_bottom = 8.0
-rect_min_size = Vector2( 72, 0 )
+margin_left = 581.0
+margin_right = 837.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 256, 0 )
 text = "999 x 1000"
 align = 2
 clip_text = true
 
 [node name="PerfectBoardsHBox" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 60.0
-margin_right = 204.0
-margin_bottom = 68.0
+margin_top = 268.0
+margin_right = 837.0
+margin_bottom = 311.0
+rect_min_size = Vector2( 64, 0 )
 
 [node name="PerfectBoards" type="Label" parent="VBoxContainer/PerfectBoardsHBox"]
-margin_right = 128.0
-margin_bottom = 8.0
+margin_right = 577.0
+margin_bottom = 43.0
 rect_min_size = Vector2( 128, 0 )
+size_flags_horizontal = 3
 text = "PERFECT_BOARDS"
 
 [node name="ValueLabel" type="Label" parent="VBoxContainer/PerfectBoardsHBox"]
-margin_left = 132.0
-margin_right = 204.0
-margin_bottom = 8.0
-rect_min_size = Vector2( 72, 0 )
+margin_left = 581.0
+margin_right = 837.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 256, 0 )
 text = "3 x 20000"
 align = 2
 clip_text = true
 
 [node name="LevelHBox" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 72.0
-margin_right = 204.0
-margin_bottom = 80.0
+margin_top = 315.0
+margin_right = 837.0
+margin_bottom = 358.0
+rect_min_size = Vector2( 64, 0 )
 
 [node name="Level" type="Label" parent="VBoxContainer/LevelHBox"]
-margin_right = 128.0
-margin_bottom = 8.0
+margin_right = 577.0
+margin_bottom = 43.0
 rect_min_size = Vector2( 128, 0 )
+size_flags_horizontal = 3
 text = "LEVEL"
 
 [node name="ValueLabel" type="Label" parent="VBoxContainer/LevelHBox"]
-margin_left = 132.0
-margin_right = 204.0
-margin_bottom = 8.0
-rect_min_size = Vector2( 72, 0 )
+margin_left = 581.0
+margin_right = 837.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 256, 0 )
 text = "99 x 10000"
 align = 2
 clip_text = true
 
 [node name="Total2" type="Label" parent="VBoxContainer"]
-margin_top = 84.0
-margin_right = 204.0
-margin_bottom = 92.0
-rect_min_size = Vector2( 128, 0 )
+margin_top = 362.0
+margin_right = 837.0
+margin_bottom = 405.0
+rect_min_size = Vector2( 64, 0 )
 text = "---"
 
 [node name="TotalHBox" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 96.0
-margin_right = 204.0
-margin_bottom = 104.0
+margin_top = 409.0
+margin_right = 837.0
+margin_bottom = 452.0
+rect_min_size = Vector2( 64, 0 )
 
 [node name="Total" type="Label" parent="VBoxContainer/TotalHBox"]
-margin_right = 128.0
-margin_bottom = 8.0
+margin_right = 577.0
+margin_bottom = 43.0
 rect_min_size = Vector2( 128, 0 )
+size_flags_horizontal = 3
 text = "TOTAL"
 
 [node name="ValueLabel" type="Label" parent="VBoxContainer/TotalHBox"]
-margin_left = 132.0
-margin_right = 204.0
-margin_bottom = 8.0
-rect_min_size = Vector2( 72, 0 )
+margin_left = 581.0
+margin_right = 837.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 256, 0 )
 text = "999.999.999"
 align = 2
 clip_text = true
 
 [node name="PlayAgainButton" parent="VBoxContainer" instance=ExtResource( 5 )]
-margin_left = 42.0
-margin_top = 108.0
-margin_right = 162.0
-margin_bottom = 126.0
+margin_left = 238.0
+margin_top = 456.0
+margin_right = 598.0
+margin_bottom = 507.0
+rect_min_size = Vector2( 360, 18 )
 disabled = true
 text = "PLAY_AGAIN"
 
 [node name="QuitButton" parent="VBoxContainer" instance=ExtResource( 5 )]
-margin_left = 42.0
-margin_top = 130.0
-margin_right = 162.0
-margin_bottom = 148.0
+margin_left = 238.0
+margin_top = 511.0
+margin_right = 598.0
+margin_bottom = 562.0
+rect_min_size = Vector2( 360, 18 )
 disabled = true
 text = "QUIT"
 

@@ -11,17 +11,17 @@ theme = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 640.0
-margin_bottom = 360.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 color = Color( 0.564706, 0.717647, 0.752941, 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 640.0
-margin_bottom = 360.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 custom_constants/separation = 0
 
 [node name="PlayerContainer" parent="HBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 640.0
-margin_bottom = 360.0
+margin_right = 1920.0
+margin_bottom = 1080.0

@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=15 format=2]
 
-[ext_resource path="res://Fonts/GravityBold8EnEs.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Fonts/squada.tres" type="DynamicFont" id=1]
 [ext_resource path="res://DotPack/System_Icons.png" type="Texture" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -9,16 +9,15 @@ content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
 bg_color = Color( 0.372549, 0.345098, 0.329412, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color( 0.882353, 0.823529, 0.776471, 1 )
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id=2]
 content_margin_left = 4.0
@@ -26,16 +25,15 @@ content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
 bg_color = Color( 0.662745, 0.580392, 0.611765, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color( 0.882353, 0.823529, 0.776471, 1 )
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 4.0
@@ -43,16 +41,15 @@ content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
 bg_color = Color( 0.211765, 0.176471, 0.164706, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color( 0.882353, 0.823529, 0.776471, 1 )
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 4.0
@@ -60,16 +57,15 @@ content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
 bg_color = Color( 0.882353, 0.823529, 0.776471, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color( 0.882353, 0.823529, 0.776471, 1 )
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-anti_aliasing = false
 
 [sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 2 )

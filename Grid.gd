@@ -68,7 +68,7 @@ var target_id: int = 0
 
 var _randomized_id_path: Array = []
 
-# Dictionary[float, int (index of character)]
+# Dictionary[float, string (character texture path)]
 var bags: Dictionary = {}
 
 # Array[float]
@@ -204,7 +204,7 @@ func randomize_board(start_coordinates: Vector2, target_coordinates: Vector2, is
 		cell.value = current_value
 		var characters: Array = shuffled_bags[current_value]
 		
-		cell.set_frame(characters.pop_back())
+		cell.set_texture(characters.pop_back())
 		
 		if characters.empty():
 			var index: int = values.find(current_value)
@@ -331,7 +331,7 @@ func _fill_cells_with_random_characters(shortest_id_path: Array, shuffled_bags: 
 			var characters: Array = shuffled_bags[value]
 			
 			cell.value = value
-			cell.set_frame(characters.pop_back())
+			cell.set_texture(characters.pop_back())
 			
 			if characters.empty():
 				values.remove(index)
@@ -372,7 +372,9 @@ func _read_characters(path: String) -> void:
 			
 			while not character.empty():
 				if character.ends_with(_SPRITE_EXTENSION):
-					bags[value].push_back(_extract_index(character))
+					var resource_path: String = directory.get_current_dir() + "/" + file_name + "/" + character.trim_suffix(".import")
+					
+					bags[value].push_back(resource_path)
 					
 				character = character_directory.get_next()
 				
@@ -545,7 +547,7 @@ func drop_down_cells() -> void:
 		
 		cell.position =  cell_coordinates_to_cell_origin(cell.coordinates)
 		
-		var y_start: float = cell.position.y - max(grid.front().size() * tilesize + tilesize, 360)
+		var y_start: float = cell.position.y - max(grid.front().size() * tilesize + tilesize, 1280)
 		
 		$Tween.interpolate_property(cell, "position", Vector2(cell.position.x, y_start), cell.position, 0.75, Tween.TRANS_SINE, Tween.EASE_IN)
 		
@@ -568,7 +570,7 @@ func drop_cells() -> void:
 	$DropCellsAudioStreamPlayer.play()
 	
 	for cell in astar.cells:
-		$Tween.interpolate_property(cell, "position", cell.position, Vector2(cell.position.x, cell.position.y + 480), 0.75, Tween.TRANS_SINE, Tween.EASE_IN)
+		$Tween.interpolate_property(cell, "position", cell.position, Vector2(cell.position.x, cell.position.y + 1080), 0.75, Tween.TRANS_SINE, Tween.EASE_IN)
 		
 		$Tween.start()
 		
@@ -583,9 +585,9 @@ func set_target(is_left_side_player: bool) -> void:
 	var cell: Cell = astar.cells[target_id]
 	
 	if is_left_side_player:
-		cell.set_frame(1)
+		cell.set_texture("res://Split/Charas_8_4b.png")
 	else:
-		cell.set_frame(0)
+		cell.set_texture("res://Split/Charas_8_4a.png")
 	
 	cell.has_cost_one = true
 
@@ -595,8 +597,8 @@ func show_target() -> void:
 	
 	$Target.position = cell.position
 	
-	$Target.position.x -= 26
-	$Target.position.y -= 19
+	$Target.position.x -= 26 * 3
+	$Target.position.y -= 19 * 3
 	
 	$Target.show()
 

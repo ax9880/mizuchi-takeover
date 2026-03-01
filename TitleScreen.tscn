@@ -1,13 +1,18 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Fonts/theme.tres" type="Theme" id=1]
 [ext_resource path="res://AudioButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://VolumeSlider.tscn" type="PackedScene" id=3]
 [ext_resource path="res://TitleScreen.gd" type="Script" id=4]
-[ext_resource path="res://Fonts/04b_30.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Fonts/Bungee-Regular.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Sounds/DbuMusic/04_hooduki_140.ogg" type="AudioStream" id=6]
 [ext_resource path="res://FadeableAudioStreamPlayer.gd" type="Script" id=7]
 [ext_resource path="res://Background.tscn" type="PackedScene" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 128
+use_filter = true
+font_data = ExtResource( 5 )
 
 [node name="TitleScreen" type="MarginContainer"]
 anchor_right = 1.0
@@ -16,10 +21,14 @@ theme = ExtResource( 1 )
 script = ExtResource( 4 )
 
 [node name="ColorRect" parent="." instance=ExtResource( 8 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 640.0
-margin_bottom = 360.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 custom_constants/margin_right = 64
 custom_constants/margin_top = 0
 custom_constants/margin_left = 64
@@ -27,116 +36,128 @@ custom_constants/margin_bottom = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 64.0
-margin_right = 576.0
-margin_bottom = 360.0
+margin_right = 1856.0
+margin_bottom = 1080.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_right = 512.0
-margin_bottom = 168.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 5 )
+margin_right = 1792.0
+margin_bottom = 432.0
+rect_min_size = Vector2( 0, 432 )
+size_flags_vertical = 1
+custom_constants/line_spacing = -12
+custom_fonts/font = SubResource( 1 )
 text = "MIZUCHI
 TAKEOVER"
 align = 1
 valign = 1
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 172.0
-margin_right = 512.0
-margin_bottom = 180.0
+margin_top = 436.0
+margin_right = 1792.0
+margin_bottom = 479.0
 text = "SUBTITLE"
 align = 1
 autowrap = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 184.0
-margin_right = 512.0
-margin_bottom = 200.0
+margin_top = 483.0
+margin_right = 1792.0
+margin_bottom = 531.0
+rect_min_size = Vector2( 0, 48 )
+size_flags_horizontal = 3
 custom_constants/margin_bottom = 16
 
 [node name="ArcadeModeButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_left = 196.0
-margin_top = 204.0
-margin_right = 316.0
-margin_bottom = 222.0
+margin_left = 716.0
+margin_top = 535.0
+margin_right = 1076.0
+margin_bottom = 599.0
+rect_min_size = Vector2( 360, 64 )
 text = "ARCADE_MODE"
 
 [node name="VsModeButton2" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_left = 196.0
-margin_top = 226.0
-margin_right = 316.0
-margin_bottom = 244.0
+margin_left = 716.0
+margin_top = 603.0
+margin_right = 1076.0
+margin_bottom = 667.0
+rect_min_size = Vector2( 360, 64 )
 text = "VS_MODE"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_left = 196.0
-margin_top = 248.0
-margin_right = 316.0
-margin_bottom = 264.0
-rect_min_size = Vector2( 120, 0 )
+margin_left = 716.0
+margin_top = 671.0
+margin_right = 1076.0
+margin_bottom = 735.0
+rect_min_size = Vector2( 360, 64 )
 size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_top = 4.0
-margin_right = 50.0
-margin_bottom = 12.0
-rect_min_size = Vector2( 50, 0 )
+margin_top = 10.0
+margin_right = 128.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 128, 0 )
 text = "BGM"
 
 [node name="VolumeSlider" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 3 )]
-margin_left = 54.0
-margin_right = 120.0
-margin_bottom = 16.0
+margin_left = 132.0
+margin_top = 24.0
+margin_right = 360.0
+margin_bottom = 40.0
 size_flags_horizontal = 3
+size_flags_vertical = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_left = 196.0
-margin_top = 268.0
-margin_right = 316.0
-margin_bottom = 284.0
-rect_min_size = Vector2( 120, 0 )
+margin_left = 716.0
+margin_top = 739.0
+margin_right = 1076.0
+margin_bottom = 803.0
+rect_min_size = Vector2( 360, 64 )
 size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_top = 4.0
-margin_right = 50.0
-margin_bottom = 12.0
-rect_min_size = Vector2( 50, 0 )
+margin_top = 10.0
+margin_right = 128.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 128, 0 )
 text = "SFX"
 
 [node name="VolumeSlider" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
-margin_left = 54.0
-margin_right = 120.0
-margin_bottom = 16.0
+margin_left = 132.0
+margin_top = 24.0
+margin_right = 360.0
+margin_bottom = 40.0
 size_flags_horizontal = 3
+size_flags_vertical = 4
 bus_name = "Sound effects"
 
 [node name="HelpButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_left = 196.0
-margin_top = 288.0
-margin_right = 316.0
-margin_bottom = 306.0
+margin_left = 716.0
+margin_top = 807.0
+margin_right = 1076.0
+margin_bottom = 871.0
+rect_min_size = Vector2( 360, 64 )
 text = "CHARACTERS"
 
 [node name="QuitButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_left = 196.0
-margin_top = 310.0
-margin_right = 316.0
-margin_bottom = 328.0
+margin_left = 716.0
+margin_top = 875.0
+margin_right = 1076.0
+margin_bottom = 939.0
+rect_min_size = Vector2( 360, 64 )
 text = "QUIT"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0.752941 )
-margin_top = 332.0
-margin_right = 512.0
-margin_bottom = 340.0
+margin_top = 943.0
+margin_right = 1792.0
+margin_bottom = 986.0
 text = "CREDITS"
 align = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 344.0
-margin_right = 512.0
-margin_bottom = 360.0
+margin_top = 990.0
+margin_right = 1792.0
+margin_bottom = 1006.0
 custom_constants/margin_bottom = 16
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
