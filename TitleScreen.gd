@@ -8,6 +8,8 @@ func _ready() -> void:
 		$MarginContainer/VBoxContainer/QuitButton.hide()
 	
 	$Music.start_playing()
+	
+	$MarginContainer/VBoxContainer/FullscreenCheckBox.set_pressed_no_signal(OS.window_fullscreen)
 
 
 func _on_ArcadeModeButton_pressed() -> void:
