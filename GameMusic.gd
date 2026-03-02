@@ -17,6 +17,9 @@ func _ready() -> void:
 
 
 func play() -> void:
+	if audio_streams.empty():
+		return
+	
 	if $AudioStreamPlayer.playing:
 		return
 	

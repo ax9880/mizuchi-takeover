@@ -30,5 +30,10 @@ func _on_VsModeButton2_pressed() -> void:
 	$Music.stop_playing()
 
 
+func _on_FullscreenCheckBox_toggled(button_pressed: bool) -> void:
+	OS.window_fullscreen = button_pressed
+
+
 func _on_HelpButton_pressed() -> void:
 	var _error: int = Loader.change_scene("res://CharacterList.tscn")
+

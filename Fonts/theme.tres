@@ -1,7 +1,10 @@
-[gd_resource type="Theme" load_steps=15 format=2]
+[gd_resource type="Theme" load_steps=11 format=2]
 
-[ext_resource path="res://Fonts/squada.tres" type="DynamicFont" id=1]
-[ext_resource path="res://DotPack/System_Icons.png" type="Texture" id=2]
+[ext_resource path="res://Fonts/bungee.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Ui/panel_light.png" type="Texture" id=2]
+[ext_resource path="res://Ui/slider.png" type="Texture" id=3]
+[ext_resource path="res://Ui/true.png" type="Texture" id=4]
+[ext_resource path="res://Ui/false.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 4.0
@@ -67,41 +70,13 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 2 )
-region = Rect2( 64, 96, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 2 )
-region = Rect2( 80, 96, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 2 )
-region = Rect2( 80, 96, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 2 )
-region = Rect2( 64, 96, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 2 )
-region = Rect2( 176, 192, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 2 )
-region = Rect2( 176, 208, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 2 )
-region = Rect2( 224, 192, 16, 16 )
-
 [sub_resource type="StyleBoxTexture" id=12]
-texture = SubResource( 11 )
+texture = ExtResource( 2 )
 region_rect = Rect2( 0, 0, 16, 16 )
-margin_left = 4.0
-margin_right = 4.0
-margin_top = 6.0
-margin_bottom = 6.0
+margin_left = 12.0
+margin_right = 12.0
+margin_top = 12.0
+margin_bottom = 11.0
 
 [resource]
 default_font = ExtResource( 1 )
@@ -110,12 +85,12 @@ Button/styles/focus = SubResource( 1 )
 Button/styles/hover = SubResource( 2 )
 Button/styles/normal = SubResource( 3 )
 Button/styles/pressed = SubResource( 4 )
-CheckBox/icons/checked = SubResource( 5 )
-CheckBox/icons/unchecked = SubResource( 6 )
-CheckButton/icons/off = SubResource( 7 )
-CheckButton/icons/on = SubResource( 8 )
-HSlider/icons/grabber = SubResource( 9 )
-HSlider/icons/grabber_highlight = SubResource( 10 )
+CheckBox/icons/checked = ExtResource( 4 )
+CheckBox/icons/checked_disabled = ExtResource( 5 )
+CheckBox/icons/unchecked = ExtResource( 5 )
+HSlider/icons/grabber = ExtResource( 3 )
+HSlider/icons/grabber_disabled = ExtResource( 3 )
+HSlider/icons/grabber_highlight = ExtResource( 3 )
 HSlider/styles/grabber_area = SubResource( 12 )
 HSlider/styles/grabber_area_highlight = SubResource( 12 )
 HSlider/styles/slider = SubResource( 12 )

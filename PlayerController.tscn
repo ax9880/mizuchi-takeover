@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://PlayerContainer.gd" type="Script" id=1]
 [ext_resource path="res://PlayerController.gd" type="Script" id=2]
@@ -12,9 +12,9 @@
 [ext_resource path="res://ResultsContainer.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Sounds/SoundEffectLab/decision2.mp3" type="AudioStream" id=11]
 [ext_resource path="res://Sounds/SoundEffectLab/cursor1.mp3" type="AudioStream" id=12]
-[ext_resource path="res://DotPack/System_Icons.png" type="Texture" id=13]
-[ext_resource path="res://GameControls.tscn" type="PackedScene" id=14]
-[ext_resource path="res://GameControlsWasd.tscn" type="PackedScene" id=15]
+[ext_resource path="res://nine_patch.png" type="Texture" id=13]
+[ext_resource path="res://Controls/GameControls.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Controls/GameControlsWasd.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Animation" id=2]
 resource_name = "game over"
@@ -118,10 +118,6 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 1, 2 )
 }
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 13 )
-region = Rect2( 192, 208, 16, 16 )
-
 [sub_resource type="DynamicFont" id=4]
 size = 128
 font_data = ExtResource( 8 )
@@ -147,9 +143,10 @@ lives = 3
 next_prompt_node_path = NodePath("../CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/NextPrompt")
 
 [node name="Grid" parent="PlayerController" instance=ExtResource( 4 )]
+tile_offset = 4.0
 
 [node name="Player" parent="PlayerController" instance=ExtResource( 3 )]
-position = Vector2( 32, 64 )
+position = Vector2( 164, 259 )
 
 [node name="Timer" type="Timer" parent="PlayerController"]
 wait_time = 60.0
@@ -179,19 +176,19 @@ follow_viewport_enable = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 9 )
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
+custom_constants/margin_right = 16
+custom_constants/margin_top = 4
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 1912.0
-margin_bottom = 86.0
+margin_left = 16.0
+margin_top = 4.0
+margin_right = 1904.0
+margin_bottom = 82.0
 rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -205,13 +202,13 @@ text = "P1"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 margin_left = 45.0
-margin_right = 506.0
+margin_right = 502.0
 margin_bottom = 78.0
 size_flags_horizontal = 3
 custom_constants/separation = -8
 
 [node name="Time" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer"]
-margin_right = 461.0
+margin_right = 457.0
 margin_bottom = 43.0
 rect_min_size = Vector2( 36, 0 )
 size_flags_horizontal = 3
@@ -219,7 +216,7 @@ text = "TIME"
 
 [node name="TimerLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer"]
 margin_top = 35.0
-margin_right = 461.0
+margin_right = 457.0
 margin_bottom = 78.0
 rect_min_size = Vector2( 36, 0 )
 size_flags_horizontal = 3
@@ -236,59 +233,59 @@ size_flags_horizontal = 3
 text = "P. Timer"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
-margin_left = 510.0
-margin_right = 972.0
+margin_left = 506.0
+margin_right = 964.0
 margin_bottom = 78.0
 size_flags_horizontal = 3
 custom_constants/separation = -8
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer2"]
-margin_right = 462.0
+margin_right = 458.0
 margin_bottom = 43.0
 text = "LEVEL"
 
 [node name="Level" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer2"]
 margin_top = 35.0
-margin_right = 462.0
+margin_right = 458.0
 margin_bottom = 78.0
 size_flags_horizontal = 3
 text = "999"
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
-margin_left = 976.0
-margin_right = 1438.0
+margin_left = 968.0
+margin_right = 1426.0
 margin_bottom = 78.0
 size_flags_horizontal = 3
 custom_constants/separation = -8
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer3"]
-margin_right = 462.0
+margin_right = 458.0
 margin_bottom = 43.0
 text = "BOARDS"
 
 [node name="BoardsCleared" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer3"]
 margin_top = 35.0
-margin_right = 462.0
+margin_right = 458.0
 margin_bottom = 78.0
 rect_min_size = Vector2( 96, 0 )
 size_flags_horizontal = 3
 text = "999 | 999"
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
-margin_left = 1442.0
-margin_right = 1904.0
+margin_left = 1430.0
+margin_right = 1888.0
 margin_bottom = 78.0
 size_flags_horizontal = 3
 custom_constants/separation = -8
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer4"]
-margin_right = 462.0
+margin_right = 458.0
 margin_bottom = 43.0
 text = "POINTS"
 
 [node name="Points" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer/VBoxContainer4"]
 margin_top = 35.0
-margin_right = 462.0
+margin_right = 458.0
 margin_bottom = 78.0
 rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 3
@@ -296,48 +293,74 @@ text = "999.999"
 clip_text = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 1912.0
-margin_bottom = 1072.0
+margin_left = 16.0
+margin_top = 4.0
+margin_right = 1904.0
+margin_bottom = 1064.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
-margin_right = 1904.0
-margin_bottom = 1044.0
+margin_right = 1888.0
+margin_bottom = 1005.0
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
-margin_top = 1048.0
-margin_right = 1904.0
-margin_bottom = 1064.0
+margin_top = 1009.0
+margin_right = 1888.0
+margin_bottom = 1060.0
 
 [node name="NextPrompt" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 36.0
-margin_bottom = 16.0
+margin_top = 1.0
+margin_right = 144.0
+margin_bottom = 51.0
+size_flags_vertical = 8
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer"]
-margin_left = 40.0
-margin_right = 1904.0
-margin_bottom = 16.0
+margin_left = 148.0
+margin_top = 51.0
+margin_right = 1668.0
+margin_bottom = 51.0
 size_flags_horizontal = 3
+size_flags_vertical = 8
 
 [node name="GameControls" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 14 )]
 visible = false
-margin_left = 492.0
-margin_right = 556.0
-margin_bottom = 16.0
+margin_left = 1252.0
+margin_top = 70.0
+margin_right = 1464.0
+margin_bottom = 120.0
+size_flags_vertical = 8
 
 [node name="GameControlsWasd" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 15 )]
 visible = false
-margin_left = 560.0
-margin_right = 624.0
-margin_bottom = 16.0
+margin_left = 1468.0
+margin_top = 70.0
+margin_right = 1668.0
+margin_bottom = 120.0
+size_flags_vertical = 8
+custom_constants/separation = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 1672.0
+margin_top = 51.0
+margin_right = 1704.0
+margin_bottom = 51.0
+rect_min_size = Vector2( 32, 0 )
+size_flags_vertical = 8
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 1708.0
+margin_right = 1888.0
+margin_bottom = 51.0
+rect_min_size = Vector2( 180, 48 )
+size_flags_vertical = 8
+text = "QUIT"
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 theme = ExtResource( 9 )
 __meta__ = {
 "_edit_lock_": true
@@ -346,11 +369,11 @@ __meta__ = {
 [node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/MarginContainer"]
 margin_right = 1920.0
 margin_bottom = 1080.0
-texture = SubResource( 3 )
-patch_margin_left = 4
-patch_margin_top = 4
-patch_margin_right = 4
-patch_margin_bottom = 4
+texture = ExtResource( 13 )
+patch_margin_left = 12
+patch_margin_top = 11
+patch_margin_right = 15
+patch_margin_bottom = 14
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/MarginContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -382,3 +405,4 @@ margin_bottom = 1080.0
 [connection signal="score_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_shown"]
 [connection signal="timeout" from="PlayerController/Timer" to="PlayerController" method="_on_Timer_timeout"]
 [connection signal="timeout" from="PlayerController/PosessionTimer" to="PlayerController" method="_on_PosessionTimer_timeout"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

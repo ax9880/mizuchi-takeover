@@ -23,6 +23,8 @@ func _ready() -> void:
 	
 	if GameData.is_left_side_player(player_index):
 		$CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/GameControlsWasd.show()
+		
+		$CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/QuitButton.hide()
 	else:
 		$CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/GameControls.show()
 	
@@ -57,11 +59,15 @@ func _process(_delta: float) -> void:
 	_update_timer_label(timer.time_left)
 	
 	if Input.is_action_just_pressed("ui_cancel"):
-		var _error = Loader.change_scene("res://TitleScreen.tscn")
-		
-		GameMusic.stop()
-		
-		set_process(false)
+		_quit()
+
+
+func _quit() -> void:
+	var _error = Loader.change_scene("res://TitleScreen.tscn")
+	
+	GameMusic.stop()
+	
+	set_process(false)
 
 
 func _update_timer_label(time_left: float) -> void:
@@ -91,3 +97,7 @@ func _on_PlayerController_score_updated(points: int, boards_cleared: int, perfec
 
 func _on_PlayerController_level_increased(level: int) -> void:
 	level_label.text = "%d" % [level]
+
+
+func _on_QuitButton_pressed() -> void:
+	_quit()

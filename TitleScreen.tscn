@@ -5,9 +5,9 @@
 [ext_resource path="res://VolumeSlider.tscn" type="PackedScene" id=3]
 [ext_resource path="res://TitleScreen.gd" type="Script" id=4]
 [ext_resource path="res://Fonts/Bungee-Regular.ttf" type="DynamicFontData" id=5]
-[ext_resource path="res://Sounds/DbuMusic/04_hooduki_140.ogg" type="AudioStream" id=6]
 [ext_resource path="res://FadeableAudioStreamPlayer.gd" type="Script" id=7]
 [ext_resource path="res://Background.tscn" type="PackedScene" id=8]
+[ext_resource path="res://LanguageOptionButton.gd" type="Script" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 128
@@ -38,11 +38,12 @@ custom_constants/margin_bottom = 0
 margin_left = 64.0
 margin_right = 1856.0
 margin_bottom = 1080.0
+size_flags_horizontal = 5
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 margin_right = 1792.0
-margin_bottom = 432.0
-rect_min_size = Vector2( 0, 432 )
+margin_bottom = 400.0
+rect_min_size = Vector2( 0, 400 )
 size_flags_vertical = 1
 custom_constants/line_spacing = -12
 custom_fonts/font = SubResource( 1 )
@@ -52,38 +53,39 @@ align = 1
 valign = 1
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_top = 436.0
+margin_top = 404.0
 margin_right = 1792.0
-margin_bottom = 479.0
+margin_bottom = 447.0
 text = "SUBTITLE"
 align = 1
 autowrap = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 483.0
+margin_top = 451.0
 margin_right = 1792.0
-margin_bottom = 531.0
-rect_min_size = Vector2( 0, 48 )
+margin_bottom = 483.0
+rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 3
 custom_constants/margin_bottom = 16
 
 [node name="ArcadeModeButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 716.0
-margin_top = 535.0
+margin_top = 487.0
 margin_right = 1076.0
-margin_bottom = 599.0
+margin_bottom = 551.0
 rect_min_size = Vector2( 360, 64 )
 text = "ARCADE_MODE"
 
 [node name="VsModeButton2" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 716.0
-margin_top = 603.0
+margin_top = 555.0
 margin_right = 1076.0
-margin_bottom = 667.0
+margin_bottom = 619.0
 rect_min_size = Vector2( 360, 64 )
 text = "VS_MODE"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
 margin_left = 716.0
 margin_top = 671.0
 margin_right = 1076.0
@@ -108,9 +110,9 @@ size_flags_vertical = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_left = 716.0
-margin_top = 739.0
+margin_top = 623.0
 margin_right = 1076.0
-margin_bottom = 803.0
+margin_bottom = 687.0
 rect_min_size = Vector2( 360, 64 )
 size_flags_horizontal = 4
 
@@ -123,45 +125,66 @@ text = "SFX"
 
 [node name="VolumeSlider" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
 margin_left = 132.0
-margin_top = 24.0
+margin_top = 6.0
 margin_right = 360.0
-margin_bottom = 40.0
+margin_bottom = 57.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 bus_name = "Sound effects"
 
+[node name="LanguageOptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+margin_left = 716.0
+margin_top = 691.0
+margin_right = 1076.0
+margin_bottom = 755.0
+rect_min_size = Vector2( 360, 64 )
+size_flags_horizontal = 4
+text = "English"
+items = [ "English", null, false, 0, null, "Español", null, false, 1, null ]
+selected = 0
+script = ExtResource( 9 )
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+margin_left = 716.0
+margin_top = 759.0
+margin_right = 1076.0
+margin_bottom = 817.0
+rect_min_size = Vector2( 360, 0 )
+size_flags_horizontal = 4
+text = "FULL_SCREEN"
+
 [node name="HelpButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 716.0
-margin_top = 807.0
+margin_top = 821.0
 margin_right = 1076.0
-margin_bottom = 871.0
+margin_bottom = 885.0
 rect_min_size = Vector2( 360, 64 )
 text = "CHARACTERS"
 
 [node name="QuitButton" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_left = 716.0
-margin_top = 875.0
+margin_top = 889.0
 margin_right = 1076.0
-margin_bottom = 939.0
+margin_bottom = 953.0
 rect_min_size = Vector2( 360, 64 )
 text = "QUIT"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0.752941 )
-margin_top = 943.0
+margin_top = 957.0
 margin_right = 1792.0
-margin_bottom = 986.0
+margin_bottom = 1000.0
 text = "CREDITS"
 align = 1
+autowrap = true
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 990.0
+margin_top = 1004.0
 margin_right = 1792.0
-margin_bottom = 1006.0
+margin_bottom = 1020.0
 custom_constants/margin_bottom = 16
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
 volume_db = -8.0
 bus = "Music"
 script = ExtResource( 7 )
@@ -170,5 +193,7 @@ script = ExtResource( 7 )
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ArcadeModeButton" to="." method="_on_ArcadeModeButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VsModeButton2" to="." method="_on_VsModeButton2_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/LanguageOptionButton" to="MarginContainer/VBoxContainer/LanguageOptionButton" method="_on_LanguageOptionButton_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/FullscreenCheckBox" to="." method="_on_FullscreenCheckBox_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HelpButton" to="." method="_on_HelpButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

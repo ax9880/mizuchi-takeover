@@ -1,16 +1,8 @@
 keys,en,es
 ARCADE_MODE,Arcade mode,Modo arcade
-VS_MODE,VS. mode, Modo VS.
+VS_MODE,VS. mode,Modo VS.
 QUIT,Quit,Salir
-CREDITS,"By: illusorybread for Touhou Station Game Jam 2024
-Touhou Pixel Character pack provided by tea_basira
-Touhou Game Jam BGM pack provided by dBu Music
-Sounds: SoundEffect-lab, Ovani Sound
-Fonts: Gravity Pixel Font by jotson, 04B-25 by 04.jp.org","Por: illusorybread para Touhou Station Game Jam 2024
-Touhou Pixel Character pack por tea_basira
-Touhou Game Jam BGM pack por dBu Music
-Sonidos: SoundEffect-lab, Ovani Sound,
-Fuentes: Gravity Pixel Font por jotson, 04B-25 por 04.jp.org"
+CREDITS,"By: illusorybread for Touhou Station Game Jam 2024. Touhou character art by dairi. Sounds: SoundEffect-lab, Ovani Sound. Font: Bungee Regular","Por: illusorybread para Touhou Station Game Jam 2024. Arte de personajes de Touhou hecho por dairi. Sonidos: SoundEffect-lab, Ovani Sound. Fuente: Bungee Regular"
 SUBTITLE,"Help Mizuchi find the best path to possess Reimu","Ayuda a Mizuchi a encontrar el mejor camino para poseer a Reimu"
 TIME_LEFT,Time,Tiempo
 SIZE,Size,Tamaño
@@ -19,13 +11,12 @@ TIME_MINUTES,Time (minutes),Tiempo (minutos)
 START,Start,Comenzar
 CANCEL,Cancel,Cancelar
 GAME_OVER,Game over,Fin del juego
-SCORE_ASSETS,Assets,Activos
 TOTAL,Total,Total
 TIME,Time,Tiempo
 POINTS,Points,Puntos
 BOARDS,Boards,Tableros
 BOARDS_CLEARED,Boards,Tableros
-PERFECT_BOARDS,Perfect boards,Tableros pfctos.
+PERFECT_BOARDS,Perfect boards,Tableros perfectos
 LEVEL,Level,Nivel
 LIVES,Lives,Vidas
 TOTAL,Total,Total
@@ -34,3 +25,4 @@ TIE,Tie,Empate
 WIN,You win,Ganaste
 LOSE,You lose,Perdiste
 CHARACTERS,Characters,Personajes
+FULL_SCREEN,Full screen,Maximizar

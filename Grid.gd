@@ -597,8 +597,8 @@ func show_target() -> void:
 	
 	$Target.position = cell.position
 	
-	$Target.position.x -= 26 * 3
-	$Target.position.y -= 19 * 3
+	$Target.position.x -= 90
+	$Target.position.y -= 85
 	
 	$Target.show()
 
@@ -667,4 +667,4 @@ func get_cell_from_coordinates(cell_coordinates: Vector2) -> Cell:
 
 
 func cell_coordinates_to_cell_origin(cell_coordinates: Vector2) -> Vector2:
-	return Vector2(cell_coordinates.x * tilesize + half_tilesize + tile_offset, cell_coordinates.y * tilesize + + half_tilesize + tile_offset)
+	return Vector2(cell_coordinates.x * tilesize + half_tilesize, cell_coordinates.y * tilesize + + half_tilesize + tile_offset)

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Charas_002.png-ff57337e75575f8df50b702fe9402a01.stex"
+path="res://.import/controls_down.png-3c411f4280606ff0759a52c11e2ccdc1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://DotPack/Charas_002.png"
-dest_files=[ "res://.import/Charas_002.png-ff57337e75575f8df50b702fe9402a01.stex" ]
+source_file="res://Controls/controls_down.png"
+dest_files=[ "res://.import/controls_down.png-3c411f4280606ff0759a52c11e2ccdc1.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -31,5 +31,5 @@ process/invert_color=false
 process/normal_map_invert_y=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
