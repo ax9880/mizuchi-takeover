@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Charas_3.png-7d6e079e8a0112ee00b62be030393b6d.stex"
+path="res://.import/Charas_20_1.png-66f4d5f365e07d21cb671d5c8883f06d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Split/Touhou20/Charas_3.png"
-dest_files=[ "res://.import/Charas_3.png-7d6e079e8a0112ee00b62be030393b6d.stex" ]
+source_file="res://Split/Touhou20/Charas_20_1.png"
+dest_files=[ "res://.import/Charas_20_1.png-66f4d5f365e07d21cb671d5c8883f06d.stex" ]
 
 [params]
 
