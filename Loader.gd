@@ -85,6 +85,9 @@ func change_scene(path: String, _data = null) -> int:
 		
 		return ERR_ALREADY_IN_USE
 	
+	if is_loading:
+		return ERR_ALREADY_IN_USE
+	
 	loader = ResourceLoader.load_interactive(path)
 	
 	if loader == null:
