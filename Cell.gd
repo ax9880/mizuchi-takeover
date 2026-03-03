@@ -9,6 +9,8 @@ enum DIRECTION {
 	RIGHT
 }
 
+signal pressed(is_dragged)
+
 # Value of this cell
 var value: float = 6 setget set_value
 
@@ -16,6 +18,8 @@ var value: float = 6 setget set_value
 var id: int = 0
 
 export var has_cost_one: bool = false
+
+export var highlight_color: Color
 
 onready var value_label: Label = $CanvasLayer/MarginContainer2/VBoxContainer/ValueHintLabel
 
@@ -25,6 +29,15 @@ var coordinates: Vector2 = Vector2.ZERO
 
 # Array of Cell. Only valid, non-null neighbors
 var neighbors: Array = []
+
+
+func _ready() -> void:
+	set_process(false)
+
+
+func _process(_delta: float) -> void:
+	if Input.is_action_pressed("ui_select"):
+		emit_signal("pressed", true)
 
 
 func add_neighbor(neighbor: Cell) -> void:
@@ -110,6 +123,14 @@ func _value_to_string() -> String:
 		return "%.1f" % value
 
 
+func enable() -> void:
+	pass
+
+
+func disable() -> void:
+	pass
+
+
 func _play_animation(animation_name: String) -> void:
 	$AnimatedSprite.show()
 	
@@ -119,3 +140,20 @@ func _play_animation(animation_name: String) -> void:
 	yield($AnimatedSprite, "animation_finished")
 	
 	$AnimatedSprite.hide()
+
+
+func _on_Area2D_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton and (event.pressed or Input.is_action_pressed("ui_select")):
+		emit_signal("pressed", false)
+
+
+func _on_Area2D_mouse_entered() -> void:
+	$Border.modulate = highlight_color
+	
+	set_process(true)
+
+
+func _on_Area2D_mouse_exited() -> void:
+	$Border.modulate = Color.white
+	
+	set_process(false)

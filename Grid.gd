@@ -1,6 +1,5 @@
 extends Node2D
 
-
 const _SPRITE_PREFFIX: String = "Charas_"
 const _SPRITE_EXTENSION: String = ".png.import"
 
@@ -71,6 +70,8 @@ var _randomized_id_path: Array = []
 # Dictionary[float, string (character texture path)]
 var bags: Dictionary = {}
 
+var textures: Array = []
+
 # Array[float]
 var values: Array = []
 
@@ -90,6 +91,7 @@ export var tile_offset: float = 0.0
 onready var half_tilesize: float = tilesize / 2.0
 
 
+signal cell_pressed(cell, is_dragged)
 signal cells_dropped
 signal score_calculated(points, is_perfect_board)
 signal score_shown
@@ -374,6 +376,8 @@ func _read_characters(path: String) -> void:
 				if character.ends_with(_SPRITE_EXTENSION):
 					var resource_path: String = directory.get_current_dir() + "/" + file_name + "/" + character.trim_suffix(".import")
 					
+					textures.push_back(ResourceLoader.load(resource_path))
+					
 					bags[value].push_back(resource_path)
 					
 				character = character_directory.get_next()
@@ -579,6 +583,8 @@ func drop_cells() -> void:
 	yield($Tween, "tween_all_completed")
 	
 	emit_signal("score_shown")
+	
+	#enable_cells()
 
 
 func set_target(is_left_side_player: bool) -> void:
@@ -609,7 +615,10 @@ func hide_target() -> void:
 
 func _build_cell(x_position: float, y_position: float) -> Cell:
 	if _cell_pool.empty():
-		_cell_pool.push_back(cell_packed_scene.instance())
+		var cell: Cell = cell_packed_scene.instance()
+		var _error = cell.connect("pressed", self, "_on_Cell_pressed", [cell])
+		
+		_cell_pool.push_back(cell)
 	
 	var cell: Cell = _cell_pool.pop_front()
 	
@@ -649,6 +658,10 @@ func _is_in_range(cell_coordinates: Vector2, width, height) -> bool:
 		return false
 	else:
 		return true
+
+
+func _on_Cell_pressed(is_dragged: bool, cell: Cell) -> void:
+	emit_signal("cell_pressed", cell, is_dragged)
 
 
 # Returns the x, y coordinates of a cell (whole numbers)

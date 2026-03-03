@@ -34,6 +34,8 @@ var _random := RandomNumberGenerator.new()
 
 var _state: int = State.ACTIVE
 
+var _last_pressed_cell: Cell
+
 onready var next_prompt: Control = get_node(next_prompt_node_path)
 
 signal game_finished(points, boards_cleared, perfect_boards, level, lives)
@@ -86,42 +88,52 @@ func _move_player() -> void:
 	if !coordinates.is_equal_approx(next_coordinates) and $Grid._is_in_range(next_coordinates, width, height):
 		var cell = $Grid.get_cell_from_coordinates(next_coordinates)
 		
-		if not cell in traversed_cells:
-			var direction_vector: Vector2 = next_coordinates - coordinates
-			
-			var direction: int = Cell.DIRECTION.RIGHT
-			
-			if direction_vector.is_equal_approx(Vector2.UP):
-				direction = Cell.DIRECTION.UP
-			elif direction_vector.is_equal_approx(Vector2.DOWN):
-				direction = Cell.DIRECTION.DOWN
-			elif direction_vector.is_equal_approx(Vector2.LEFT):
-				direction = Cell.DIRECTION.LEFT
-			
-			traversed_cells.back().show_arrow(direction)
-			
-			coordinates = next_coordinates
-			traversed_cells.push_back(cell)
-			
-			update_player_position()
-			
-			cell.possess()
-		elif traversed_cells.size() > 1 and cell == traversed_cells[traversed_cells.size() - 2]:
-			traversed_cells.back().release()
-			traversed_cells.pop_back()
-			
-			coordinates = next_coordinates
-			
-			update_player_position()
-			
-			traversed_cells.back().possess_again()
-		else:
-			$NoMovementAudioStreamPlayer.play()
+		_update_cell(next_coordinates, cell)
 	
+	_check_win_condition()
+
+
+func _update_cell(next_coordinates: Vector2, cell: Cell, is_dragged: bool = false) -> void:
+	if not cell in traversed_cells:
+		var direction_vector: Vector2 = next_coordinates - coordinates
+		
+		var direction: int = Cell.DIRECTION.RIGHT
+		
+		if direction_vector.is_equal_approx(Vector2.UP):
+			direction = Cell.DIRECTION.UP
+		elif direction_vector.is_equal_approx(Vector2.DOWN):
+			direction = Cell.DIRECTION.DOWN
+		elif direction_vector.is_equal_approx(Vector2.LEFT):
+			direction = Cell.DIRECTION.LEFT
+		
+		traversed_cells.back().show_arrow(direction)
+		
+		coordinates = next_coordinates
+		traversed_cells.push_back(cell)
+		
+		update_player_position()
+		
+		cell.possess()
+	elif traversed_cells.size() > 1 and cell == traversed_cells[traversed_cells.size() - 2]:
+		traversed_cells.back().release()
+		traversed_cells.pop_back()
+		
+		coordinates = next_coordinates
+		
+		update_player_position()
+		
+		traversed_cells.back().possess_again()
+	else:
+		_play_no_movement_audio(cell, is_dragged)
+
+
+func _check_win_condition() -> void:
 	if coordinates.is_equal_approx(target):
 		print("You win!")
 		
 		$Grid.hide_target()
+		
+		#$Grid.disable_cells()
 		
 		$PosessionTimer.stop()
 		
@@ -130,6 +142,14 @@ func _move_player() -> void:
 		$Grid.compare_paths(traversed_cells, target)
 		
 		set_process(false)
+
+
+func _play_no_movement_audio(cell: Cell, is_dragged: bool) -> void:
+	if is_dragged:
+		if _last_pressed_cell != cell:
+			$NoMovementAudioStreamPlayer.play()
+	else:
+		$NoMovementAudioStreamPlayer.play()
 
 
 func generate() -> void:
@@ -289,7 +309,30 @@ func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
 	_state = State.SHOWING_PATHS
 	next_prompt.start(player_index)
 	
+	#Grid.enable_next_prompt_cell()
+	
 	set_process(true)
+
+
+func _on_Grid_cell_pressed(cell: Cell, is_dragged: bool) -> void:
+	if _state != State.ACTIVE:
+		return
+	
+	var current_cell = $Grid.get_cell_from_coordinates(coordinates)
+	
+	if cell == current_cell:
+		return
+	
+	if not cell in current_cell.neighbors:
+		_play_no_movement_audio(cell, is_dragged)
+		
+		_last_pressed_cell = cell
+		
+		return
+	
+	_update_cell(cell.coordinates, cell, is_dragged)
+	
+	_last_pressed_cell = cell
 
 
 func _on_Grid_cells_dropped() -> void:
@@ -297,3 +340,4 @@ func _on_Grid_cells_dropped() -> void:
 		_state = State.ACTIVE
 		
 		set_process(true)
+

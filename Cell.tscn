@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://Cell.gd" type="Script" id=1]
 [ext_resource path="res://Split/Touhou10/Charas_10_1b.png" type="Texture" id=2]
@@ -328,8 +328,12 @@ outline_color = Color( 0.187012, 0.159252, 0.161388, 1 )
 use_filter = true
 font_data = ExtResource( 11 )
 
+[sub_resource type="RectangleShape2D" id=44]
+extents = Vector2( 75, 75 )
+
 [node name="Cell" type="Node2D"]
 script = ExtResource( 1 )
+highlight_color = Color( 0.564706, 0.717647, 0.752941, 1 )
 
 [node name="Background" type="Sprite" parent="."]
 z_index = -1
@@ -404,6 +408,7 @@ margin_left = -72.0
 margin_top = -82.0
 margin_right = 35.0
 margin_bottom = -15.0
+mouse_filter = 2
 theme = ExtResource( 10 )
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
@@ -415,6 +420,7 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = 103.0
 margin_bottom = 63.0
+mouse_filter = 2
 
 [node name="ValueHintLabel" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
 margin_right = 99.0
@@ -422,3 +428,16 @@ margin_bottom = 59.0
 size_flags_vertical = 7
 custom_fonts/font = SubResource( 43 )
 text = "13.5"
+
+[node name="Area2D" type="Area2D" parent="."]
+monitorable = false
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 44 )
+
+[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

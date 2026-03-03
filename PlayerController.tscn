@@ -125,6 +125,7 @@ font_data = ExtResource( 8 )
 [node name="PlayerContainer" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 size_flags_horizontal = 3
 theme = ExtResource( 9 )
 script = ExtResource( 1 )
@@ -156,9 +157,6 @@ one_shot = true
 wait_time = 900.0
 one_shot = true
 
-[node name="Path" type="Node2D" parent="PlayerController"]
-position = Vector2( 8, 295 )
-
 [node name="Tween" type="Tween" parent="PlayerController"]
 
 [node name="NoMovementAudioStreamPlayer" type="AudioStreamPlayer" parent="PlayerController"]
@@ -175,6 +173,7 @@ follow_viewport_enable = true
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 theme = ExtResource( 9 )
 custom_constants/margin_right = 16
 custom_constants/margin_top = 4
@@ -297,10 +296,12 @@ margin_left = 16.0
 margin_top = 4.0
 margin_right = 1904.0
 margin_bottom = 1064.0
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
 margin_right = 1888.0
 margin_bottom = 1005.0
+mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
@@ -400,6 +401,7 @@ margin_bottom = 1080.0
 [connection signal="game_finished" from="PlayerController" to="." method="_on_PlayerController_game_finished"]
 [connection signal="level_increased" from="PlayerController" to="." method="_on_PlayerController_level_increased"]
 [connection signal="score_updated" from="PlayerController" to="." method="_on_PlayerController_score_updated"]
+[connection signal="cell_pressed" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_cell_pressed"]
 [connection signal="cells_dropped" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_cells_dropped"]
 [connection signal="score_calculated" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_calculated"]
 [connection signal="score_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_shown"]

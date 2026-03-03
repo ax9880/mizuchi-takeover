@@ -7,6 +7,7 @@
 [node name="Main" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 theme = ExtResource( 2 )
 script = ExtResource( 3 )
 
@@ -16,11 +17,13 @@ layer = -1
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 margin_right = 1920.0
 margin_bottom = 1080.0
+mouse_filter = 2
 color = Color( 0.564706, 0.717647, 0.752941, 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 1920.0
 margin_bottom = 1080.0
+mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="PlayerContainer" parent="HBoxContainer" instance=ExtResource( 1 )]
