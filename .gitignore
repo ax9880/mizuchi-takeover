@@ -1,7 +1,6 @@
 *.aseprite
 .import/
 
-DotPack/**.png
 Split/**/*.png
 Sounds/DbuMusic/*.ogg
 Sounds/Ovani/*.wav
@@ -12,6 +11,7 @@ Development/
 
 *.exe
 *.zip
+*.pck
 
 icon.ico
 icon64.png
@@ -19,3 +19,5 @@ icon64.png
 *.ttf
 
 *.png
+
+*web_export/
