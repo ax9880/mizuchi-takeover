@@ -6,8 +6,6 @@ enum State {
 	LOADING_NEXT_BOARD
 }
 
-export var lives: int = 2
-
 export var width: int = 3
 export var height: int = 3
 
@@ -39,7 +37,7 @@ var _last_pressed_cell: Cell
 
 onready var next_prompt: Control = get_node(next_prompt_node_path)
 
-signal game_finished(points, boards_cleared, perfect_boards, level, lives)
+signal game_finished(points, boards_cleared, perfect_boards, level)
 signal score_updated(points, boards_cleared, perfect_boards)
 signal level_increased(level)
 
@@ -133,8 +131,6 @@ func _check_win_condition() -> void:
 		$Grid.hide_target()
 		$Grid.disable_cell_selection()
 		
-		$PosessionTimer.stop()
-		
 		_boards_cleared += 1
 		
 		$Grid.compare_paths(traversed_cells, target)
@@ -191,8 +187,6 @@ func start() -> void:
 func _create_new_board() -> void:
 	set_process(false)
 	
-	$PosessionTimer.stop()
-	
 	$Grid.hide()
 	
 	_advance_level()
@@ -221,8 +215,6 @@ func _create_new_board() -> void:
 	
 	update_player_position()
 	traversed_cells.back().possess()
-	
-	$PosessionTimer.start()
 	
 	set_process(true)
 
@@ -293,24 +285,11 @@ func _finish_game() -> void:
 	
 	print("Game over!")
 	
-	emit_signal("game_finished", _points, _boards_cleared, _perfect_boards, _level, lives)
+	emit_signal("game_finished", _points, _boards_cleared, _perfect_boards, _level)
 
 
 func _on_Timer_timeout() -> void:
 	_finish_game()
-
-
-func _on_PosessionTimer_timeout() -> void:
-	print("Possession timeout!")
-	
-	lives -= 1
-	
-	if lives > 0:
-		_create_new_board()
-	else:
-		print("You lose!")
-		
-		_finish_game()
 
 
 func _on_Grid_score_shown() -> void:

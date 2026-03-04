@@ -83,10 +83,10 @@ func _set_container_rect_size(container: Control) -> void:
 	container.rect_global_position = rect_global_position
 
 
-func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, level, lives) -> void:
+func _on_PlayerController_game_finished(points, boards_cleared, perfect_boards, level) -> void:
 	$AnimationPlayer.play("game over")
 	
-	$CanvasLayer/MarginContainer/ResultsMarginContainer.show_results(points, boards_cleared, perfect_boards, level, lives)
+	$CanvasLayer/MarginContainer/ResultsMarginContainer.show_results(points, boards_cleared, perfect_boards, level)
 
 
 func _on_PlayerController_score_updated(points: int, boards_cleared: int, perfect_boards: int) -> void:

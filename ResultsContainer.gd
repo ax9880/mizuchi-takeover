@@ -12,7 +12,7 @@ func _ready() -> void:
 	hide()
 
 
-func show_results(score, boards_cleared, perfect_boards, level, _lives) -> void:
+func show_results(score, boards_cleared, perfect_boards, level) -> void:
 	show()
 	
 	var boards_score: int = boards_cleared * boards_cleared_multiplier

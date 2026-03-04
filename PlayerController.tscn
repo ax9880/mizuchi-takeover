@@ -145,7 +145,6 @@ bus = "Sound effects"
 
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource( 2 )
-lives = 3
 next_prompt_node_path = NodePath("../CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/NextPrompt")
 
 [node name="Grid" parent="PlayerController" instance=ExtResource( 4 )]
@@ -156,10 +155,6 @@ position = Vector2( 164, 259 )
 
 [node name="Timer" type="Timer" parent="PlayerController"]
 wait_time = 60.0
-one_shot = true
-
-[node name="PosessionTimer" type="Timer" parent="PlayerController"]
-wait_time = 900.0
 one_shot = true
 
 [node name="Tween" type="Tween" parent="PlayerController"]
@@ -417,6 +412,5 @@ margin_bottom = 1080.0
 [connection signal="score_calculated" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_calculated"]
 [connection signal="score_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_shown"]
 [connection signal="timeout" from="PlayerController/Timer" to="PlayerController" method="_on_Timer_timeout"]
-[connection signal="timeout" from="PlayerController/PosessionTimer" to="PlayerController" method="_on_PosessionTimer_timeout"]
 [connection signal="input_event" from="PlayerController/NextArea2D" to="PlayerController" method="_on_NextArea2D_input_event"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
