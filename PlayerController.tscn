@@ -12,7 +12,6 @@
 [ext_resource path="res://ResultsContainer.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Sounds/SoundEffectLab/decision2.mp3" type="AudioStream" id=11]
 [ext_resource path="res://Sounds/SoundEffectLab/cursor1.mp3" type="AudioStream" id=12]
-[ext_resource path="res://nine_patch.png" type="Texture" id=13]
 [ext_resource path="res://Controls/GameControls.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Controls/GameControlsWasd.tscn" type="PackedScene" id=15]
 
@@ -119,6 +118,10 @@ tracks/4/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id=5]
+
+[sub_resource type="StreamTexture" id=6]
+flags = 4
+load_path = "res://.import/nine_patch.png-2ad702e41118ab4e8e13b8366ee23217.stex"
 
 [sub_resource type="DynamicFont" id=4]
 size = 128
@@ -378,7 +381,7 @@ __meta__ = {
 [node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/MarginContainer"]
 margin_right = 1920.0
 margin_bottom = 1080.0
-texture = ExtResource( 13 )
+texture = SubResource( 6 )
 patch_margin_left = 12
 patch_margin_top = 11
 patch_margin_right = 15
