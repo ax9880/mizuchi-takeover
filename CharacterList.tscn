@@ -11,6 +11,10 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 3 )
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
 script = ExtResource( 5 )
 game_characters_container_packed_scene = ExtResource( 1 )
 
@@ -20,12 +24,16 @@ visible = false
 [node name="ColorRect2" parent="." instance=ExtResource( 6 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 1920.0
-margin_bottom = 1080.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 1912.0
+margin_bottom = 1072.0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 1920.0
-margin_bottom = 1080.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 1912.0
+margin_bottom = 1072.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
@@ -34,19 +42,20 @@ custom_constants/margin_bottom = 8
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 1912.0
-margin_bottom = 1072.0
+margin_right = 1896.0
+margin_bottom = 1056.0
 follow_focus = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
-margin_right = 1904.0
-margin_bottom = 51.0
+margin_right = 1888.0
+margin_bottom = 120.0
 size_flags_horizontal = 3
 
 [node name="QuitButton" parent="MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_left = 879.0
-margin_right = 1025.0
-margin_bottom = 51.0
+margin_left = 824.0
+margin_right = 1064.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 240, 120 )
 text = "RETURN"
 
 [connection signal="pressed" from="MarginContainer/ScrollContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
