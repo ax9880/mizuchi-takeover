@@ -18,5 +18,4 @@ Touhou Project is a property of Team Shanghai Alice.
 
 ### Jam version credits
 
-[Gravity Pixel Font](https://jotson.itch.io/gravity-pixel-font) by jotson. 04B-25 font by [04.jp.org](http://04.jp.org/) (used in the title screen).
-
+[Gravity Pixel Font](https://jotson.itch.io/gravity-pixel-font) by jotson. 04B-25 font by [04.jp.org](http://04.jp.org/) (used in the title screen). Touhou Pixel Character pack provided by tea_basira. Music provided by dBu Music.
