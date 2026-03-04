@@ -33,6 +33,9 @@ var coordinates: Vector2 = Vector2.ZERO
 var neighbors: Array = []
 
 
+var _is_touch_pressed: bool = false
+
+
 func _ready() -> void:
 	disable_selection()
 
@@ -40,6 +43,13 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("ui_select"):
 		emit_signal("pressed", true)
+
+
+func _input(event: InputEvent):
+	if event is InputEventScreenDrag:
+		emit_signal("pressed", true)
+		
+		_is_touch_pressed = true
 
 
 func add_neighbor(neighbor: Cell) -> void:
@@ -131,6 +141,7 @@ func disable_selection() -> void:
 	_remove_highlight()
 	
 	set_process(false)
+	set_process_input(false)
 
 
 func _remove_highlight() -> void:
@@ -147,19 +158,29 @@ func _modulate_border(target_color: Color) -> void:
 
 
 func _on_Area2D_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		emit_signal("pressed", false)
-		
-		set_process(false)
+	if (event is InputEventMouseButton or event is InputEventScreenTouch):
+		if event.pressed and not _is_touch_pressed:
+			emit_signal("pressed", false)
+			
+			_is_touch_pressed = true
+			
+			set_process(false)
+			set_process_input(false)
+		elif not event.pressed:
+			_is_touch_pressed = false
 
 
 func _on_Area2D_mouse_entered() -> void:
 	_modulate_border(highlight_color)
 	
 	set_process(true)
+	set_process_input(true)
 
 
 func _on_Area2D_mouse_exited() -> void:
 	_remove_highlight()
 	
 	set_process(false)
+	set_process_input(false)
+	
+	_is_touch_pressed = false
