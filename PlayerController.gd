@@ -281,8 +281,6 @@ func _finish_game() -> void:
 	
 	_is_game_over = true
 	
-	$PosessionTimer.stop()
-	
 	print("Game over!")
 	
 	emit_signal("game_finished", _points, _boards_cleared, _perfect_boards, _level)

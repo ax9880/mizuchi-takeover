@@ -48,7 +48,6 @@ func add_neighbor(neighbor: Cell) -> void:
 
 
 func possess() -> void:
-	_play_animation("possess")
 	$AnimationPlayer.play("possess")
 
 
@@ -59,7 +58,6 @@ func possess_again() -> void:
 
 
 func release() -> void:
-	_play_animation("release")
 	$AnimationPlayer.play("release")
 	
 	hide_arrows()
@@ -80,8 +78,6 @@ func reset() -> void:
 
 
 func show_value(is_in_shortest_path: bool, is_correction: bool) -> void:
-	#$AnimationPlayer.play("fade")
-	
 	if has_cost_one:
 		value_label.text = "*"
 	else:
@@ -148,17 +144,6 @@ func _modulate_border(target_color: Color) -> void:
 	var _error = _tween.interpolate_property($Border, "modulate", $Border.modulate, target_color, 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	
 	_error = _tween.start()
-
-
-func _play_animation(animation_name: String) -> void:
-	$AnimatedSprite.show()
-	
-	$AnimatedSprite.frame = 0
-	$AnimatedSprite.play(animation_name)
-	
-	yield($AnimatedSprite, "animation_finished")
-	
-	$AnimatedSprite.hide()
 
 
 func _on_Area2D_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
