@@ -2,7 +2,8 @@ extends Node2D
 
 enum State {
 	ACTIVE,
-	SHOWING_PATHS
+	SHOWING_PATHS,
+	LOADING_NEXT_BOARD
 }
 
 export var lives: int = 2
@@ -66,11 +67,7 @@ func _process(_delta: float) -> void:
 			_move_player()
 		State.SHOWING_PATHS:
 			if Input.is_action_just_pressed("ui_down_%d" % player_index):
-				$Grid.drop_cells()
-				
-				next_prompt.stop()
-				
-				set_process(false)
+				_drop_cells()
 
 
 func _move_player() -> void:
@@ -131,9 +128,10 @@ func _check_win_condition() -> void:
 	if coordinates.is_equal_approx(target):
 		print("You win!")
 		
-		$Grid.hide_target()
+		_state = State.SHOWING_PATHS
 		
-		#$Grid.disable_cells()
+		$Grid.hide_target()
+		$Grid.disable_cell_selection()
 		
 		$PosessionTimer.stop()
 		
@@ -146,10 +144,24 @@ func _check_win_condition() -> void:
 
 func _play_no_movement_audio(cell: Cell, is_dragged: bool) -> void:
 	if is_dragged:
-		if _last_pressed_cell != cell:
+		if _last_pressed_cell != cell and not $NoMovementAudioStreamPlayer.playing:
 			$NoMovementAudioStreamPlayer.play()
 	else:
 		$NoMovementAudioStreamPlayer.play()
+
+
+func _drop_cells() -> void:
+	if _state == State.LOADING_NEXT_BOARD:
+		return
+	
+	_state = State.LOADING_NEXT_BOARD
+	
+	$Grid.drop_cells()
+	
+	next_prompt.stop()
+	$NextArea2D.hide()
+	
+	set_process(false)
 
 
 func generate() -> void:
@@ -159,6 +171,15 @@ func generate() -> void:
 	var grid_height: float = $Grid.tilesize * height
 	
 	$Grid.position = Vector2(rect_size.x - grid_width, rect_size.y - grid_height) / 2.0
+	
+	# Place in the middle container
+	$NextArea2D.position = Vector2(rect_size.x, rect_size.y) / 2.0
+	var shape = $NextArea2D/CollisionShape2D.shape as RectangleShape2D
+	
+	# Make it as big as the board
+	shape.extents = Vector2(grid_width, grid_height) / 2.0
+	
+	$NextArea2D.hide()
 
 
 func start() -> void:
@@ -306,10 +327,9 @@ func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
 	
 	emit_signal("score_updated", _points, _boards_cleared, _perfect_boards)
 	
-	_state = State.SHOWING_PATHS
 	next_prompt.start(player_index)
 	
-	#Grid.enable_next_prompt_cell()
+	$NextArea2D.show()
 	
 	set_process(true)
 
@@ -321,6 +341,15 @@ func _on_Grid_cell_pressed(cell: Cell, is_dragged: bool) -> void:
 	var current_cell = $Grid.get_cell_from_coordinates(coordinates)
 	
 	if cell == current_cell:
+		if not is_dragged:
+			var last_cell: Cell = traversed_cells[traversed_cells.size() - 1]
+			
+			# Click on the last cell to release it
+			if traversed_cells.size() > 1 and cell == last_cell:
+				var second_to_last_cell: Cell = traversed_cells[traversed_cells.size() - 2]
+				
+				_update_cell(second_to_last_cell.coordinates, second_to_last_cell, is_dragged)
+		
 		return
 	
 	if not cell in current_cell.neighbors:
@@ -332,6 +361,8 @@ func _on_Grid_cell_pressed(cell: Cell, is_dragged: bool) -> void:
 	
 	_update_cell(cell.coordinates, cell, is_dragged)
 	
+	_check_win_condition()
+	
 	_last_pressed_cell = cell
 
 
@@ -341,3 +372,8 @@ func _on_Grid_cells_dropped() -> void:
 		
 		set_process(true)
 
+
+
+func _on_NextArea2D_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		_drop_cells()

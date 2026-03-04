@@ -23,6 +23,8 @@ export var highlight_color: Color
 
 onready var value_label: Label = $CanvasLayer/MarginContainer2/VBoxContainer/ValueHintLabel
 
+onready var _tween: Tween = $Tween
+
 
 # x,y coordinates in the grid matrix, for convenience.
 var coordinates: Vector2 = Vector2.ZERO
@@ -32,7 +34,7 @@ var neighbors: Array = []
 
 
 func _ready() -> void:
-	set_process(false)
+	disable_selection()
 
 
 func _process(_delta: float) -> void:
@@ -123,12 +125,29 @@ func _value_to_string() -> String:
 		return "%.1f" % value
 
 
-func enable() -> void:
-	pass
+func enable_selection() -> void:
+	$Area2D.show()
 
 
-func disable() -> void:
-	pass
+func disable_selection() -> void:
+	$Area2D.hide()
+	
+	_remove_highlight()
+	
+	set_process(false)
+
+
+func _remove_highlight() -> void:
+	_modulate_border(Color.white)
+
+
+func _modulate_border(target_color: Color) -> void:
+	if _tween.is_active():
+		var _error = _tween.stop($Border)
+	
+	var _error = _tween.interpolate_property($Border, "modulate", $Border.modulate, target_color, 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	
+	_error = _tween.start()
 
 
 func _play_animation(animation_name: String) -> void:
@@ -143,17 +162,19 @@ func _play_animation(animation_name: String) -> void:
 
 
 func _on_Area2D_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton and (event.pressed or Input.is_action_pressed("ui_select")):
+	if event is InputEventMouseButton and event.pressed:
 		emit_signal("pressed", false)
+		
+		set_process(false)
 
 
 func _on_Area2D_mouse_entered() -> void:
-	$Border.modulate = highlight_color
+	_modulate_border(highlight_color)
 	
 	set_process(true)
 
 
 func _on_Area2D_mouse_exited() -> void:
-	$Border.modulate = Color.white
+	_remove_highlight()
 	
 	set_process(false)

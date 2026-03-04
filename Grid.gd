@@ -565,6 +565,9 @@ func drop_down_cells() -> void:
 	
 	yield($Tween, "tween_all_completed")
 	
+	for cell in astar.cells:
+		cell.enable_selection()
+	
 	emit_signal("cells_dropped")
 
 
@@ -583,8 +586,6 @@ func drop_cells() -> void:
 	yield($Tween, "tween_all_completed")
 	
 	emit_signal("score_shown")
-	
-	#enable_cells()
 
 
 func set_target(is_left_side_player: bool) -> void:
@@ -611,6 +612,11 @@ func show_target() -> void:
 
 func hide_target() -> void:
 	$Target.hide()
+
+
+func disable_cell_selection() -> void:
+	for cell in astar.cells:
+		cell.disable_selection()
 
 
 func _build_cell(x_position: float, y_position: float) -> Cell:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://PlayerContainer.gd" type="Script" id=1]
 [ext_resource path="res://PlayerController.gd" type="Script" id=2]
@@ -118,6 +118,8 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 1, 2 )
 }
 
+[sub_resource type="RectangleShape2D" id=5]
+
 [sub_resource type="DynamicFont" id=4]
 size = 128
 font_data = ExtResource( 8 )
@@ -166,6 +168,12 @@ bus = "Sound effects"
 [node name="NextLevelAudioStreamPlayer" type="AudioStreamPlayer" parent="PlayerController"]
 stream = ExtResource( 6 )
 bus = "Sound effects"
+
+[node name="NextArea2D" type="Area2D" parent="PlayerController"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerController/NextArea2D"]
+shape = SubResource( 5 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enable = true
@@ -407,4 +415,5 @@ margin_bottom = 1080.0
 [connection signal="score_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_shown"]
 [connection signal="timeout" from="PlayerController/Timer" to="PlayerController" method="_on_Timer_timeout"]
 [connection signal="timeout" from="PlayerController/PosessionTimer" to="PlayerController" method="_on_PosessionTimer_timeout"]
+[connection signal="input_event" from="PlayerController/NextArea2D" to="PlayerController" method="_on_NextArea2D_input_event"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/VBoxContainer/HBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
