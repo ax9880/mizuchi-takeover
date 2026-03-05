@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/title screen_color.png-8b08d749e2f5d86fc7cfa5b1d90c8290.stex"
+path="res://.import/title_screen_color.png-a43bca16c8fd9b407aed9765c227d58b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://title screen_color.png"
-dest_files=[ "res://.import/title screen_color.png-8b08d749e2f5d86fc7cfa5b1d90c8290.stex" ]
+source_file="res://title_screen_color.png"
+dest_files=[ "res://.import/title_screen_color.png-a43bca16c8fd9b407aed9765c227d58b.stex" ]
 
 [params]
 
