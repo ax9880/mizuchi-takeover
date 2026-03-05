@@ -9,7 +9,9 @@ func _ready() -> void:
 	
 	$Music.start_playing()
 	
-	$MarginContainer/VBoxContainer/FullscreenCheckBox.set_pressed_no_signal(OS.window_fullscreen)
+	_on_screen_resized()
+	
+	get_tree().connect("screen_resized", self, "_on_screen_resized")
 
 
 func _on_ArcadeModeButton_pressed() -> void:
@@ -39,3 +41,6 @@ func _on_FullscreenCheckBox_toggled(button_pressed: bool) -> void:
 func _on_HelpButton_pressed() -> void:
 	var _error: int = Loader.change_scene("res://CharacterList.tscn")
 
+
+func _on_screen_resized() -> void:
+	$MarginContainer/VBoxContainer/FullscreenCheckBox.set_pressed_no_signal(OS.window_fullscreen)
