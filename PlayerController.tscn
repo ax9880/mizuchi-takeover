@@ -150,10 +150,10 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="RectangleShape2D" id=5]
@@ -423,11 +423,14 @@ patch_margin_right = 15
 patch_margin_bottom = 14
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/MarginContainer"]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
 margin_right = 1920.0
 margin_bottom = 1080.0
 color = Color( 0, 0, 0, 0.501961 )
 
 [node name="ReadyLabel" type="Label" parent="CanvasLayer/MarginContainer"]
+visible = false
 margin_top = 455.0
 margin_right = 1920.0
 margin_bottom = 625.0
