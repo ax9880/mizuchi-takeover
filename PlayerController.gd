@@ -150,6 +150,9 @@ func _drop_cells() -> void:
 	if _state == State.LOADING_NEXT_BOARD:
 		return
 	
+	if _is_game_over:
+		return
+	
 	_state = State.LOADING_NEXT_BOARD
 	
 	$Grid.drop_cells()
@@ -301,14 +304,6 @@ func _on_Grid_score_calculated(points: int, is_perfect_board: bool) -> void:
 		_perfect_boards += 1
 		
 		_can_advance_level = true
-	
-	emit_signal("score_updated", _points, _boards_cleared, _perfect_boards)
-	
-	next_prompt.start(player_index)
-	
-	$NextArea2D.show()
-	
-	set_process(true)
 
 
 func _on_Grid_cell_pressed(cell: Cell, is_dragged: bool) -> void:
@@ -349,6 +344,15 @@ func _on_Grid_cells_dropped() -> void:
 		
 		set_process(true)
 
+
+func _on_Grid_path_shown() -> void:
+	emit_signal("score_updated", _points, _boards_cleared, _perfect_boards)
+	
+	next_prompt.start(player_index)
+	
+	$NextArea2D.show()
+	
+	set_process(true)
 
 
 func _on_NextArea2D_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

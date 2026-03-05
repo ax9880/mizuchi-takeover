@@ -94,6 +94,7 @@ onready var half_tilesize: float = tilesize / 2.0
 signal cell_pressed(cell, is_dragged)
 signal cells_dropped
 signal score_calculated(points, is_perfect_board)
+signal path_shown
 signal score_shown
 
 
@@ -454,7 +455,11 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 		# that the player used
 		shortest_id_path = id_path
 	
-	_show_paths(shortest_id_path, id_path, points)
+	var is_perfect_board: bool = points == base_score
+	
+	emit_signal("score_calculated", points, is_perfect_board)
+	
+	_show_paths(shortest_id_path, id_path, points, is_perfect_board)
 
 
 func _is_path_legal(id_path: Array) -> bool:
@@ -482,7 +487,7 @@ func _is_path_legal(id_path: Array) -> bool:
 	return true
 
 
-func _show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -> void:
+func _show_paths(shortest_id_path: Array, current_id_path: Array, points: int, is_perfect_board: bool) -> void:
 	for i in current_id_path.size():
 		var id: int = current_id_path[i]
 		
@@ -513,12 +518,8 @@ func _show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -
 	var cell: Cell = astar.cells[shortest_id_path.back()]
 	floating_label.position = cell.position
 	
-	var is_perfect_board: bool = false
-	
 	if points == base_score:
 		$GoodScoreAudioStreamPlayer.play()
-		
-		is_perfect_board = true
 	elif points >= int(base_score * 0.10):
 		$BadScoreAudioStreamPlayer2.play()
 	else:
@@ -526,12 +527,9 @@ func _show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -
 		
 		print("Very bad score")
 	
-	# TODO: If score is less than 10% of base score, play wrong score and lose one life
-	# Also set score to 0
-	
 	floating_label.start(points)
 	
-	emit_signal("score_calculated", points, is_perfect_board)
+	emit_signal("path_shown")
 
 
 func calculate_path_cost(id_path: Array) -> float:

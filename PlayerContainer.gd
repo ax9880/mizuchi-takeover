@@ -101,3 +101,4 @@ func _on_PlayerController_level_increased(level: int) -> void:
 
 func _on_QuitButton_pressed() -> void:
 	_quit()
+

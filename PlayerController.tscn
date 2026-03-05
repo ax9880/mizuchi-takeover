@@ -409,6 +409,7 @@ margin_bottom = 1080.0
 [connection signal="score_updated" from="PlayerController" to="." method="_on_PlayerController_score_updated"]
 [connection signal="cell_pressed" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_cell_pressed"]
 [connection signal="cells_dropped" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_cells_dropped"]
+[connection signal="path_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_path_shown"]
 [connection signal="score_calculated" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_calculated"]
 [connection signal="score_shown" from="PlayerController/Grid" to="PlayerController" method="_on_Grid_score_shown"]
 [connection signal="timeout" from="PlayerController/Timer" to="PlayerController" method="_on_Timer_timeout"]
