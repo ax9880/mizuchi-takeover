@@ -459,7 +459,7 @@ func compare_paths(path: Array, target_coordinates: Vector2) -> void:
 	
 	emit_signal("score_calculated", points, is_perfect_board)
 	
-	_show_paths(shortest_id_path, id_path, points, is_perfect_board)
+	_show_paths(shortest_id_path, id_path, points)
 
 
 func _is_path_legal(id_path: Array) -> bool:
@@ -487,7 +487,7 @@ func _is_path_legal(id_path: Array) -> bool:
 	return true
 
 
-func _show_paths(shortest_id_path: Array, current_id_path: Array, points: int, is_perfect_board: bool) -> void:
+func _show_paths(shortest_id_path: Array, current_id_path: Array, points: int) -> void:
 	for i in current_id_path.size():
 		var id: int = current_id_path[i]
 		
