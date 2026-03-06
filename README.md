@@ -12,7 +12,7 @@ This repository only includes the source code and a few original graphics, which
 
 - Touhou character art by [dairi](https://www.pixiv.net/en/users/4920496).
 - [Bungee font](https://fonts.google.com/specimen/Bungee) from Google Fonts.
-- 04B-25 font by [04.jp.org](http://04.jp.org/) (used in the title screen).
+- Sound effects from [SoundEffect Lab](https://soundeffect-lab.info/) and [Ovani Sound](https://ovanisound.com/).
 
 Touhou Project is a property of Team Shanghai Alice.
 
